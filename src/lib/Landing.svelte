@@ -1,31 +1,48 @@
 <script>
-import Gradient from './Gradient.svelte';
+    import Gradient from "./Gradient.svelte";
+    import Link from "./Link.svelte";
 </script>
+
+<Gradient />
+<div class="container">
+    <div class="name-text">Dalton<br />Luce</div>
+    <div class="text-box">
+        I am an Electrical and Computer Engineering undergraduate
+        <Link text="@Cornell" href="https://www.engineering.cornell.edu/" />,
+        actively engaged with the Cornell
+        <Link text="@IEEE" href="https://www.cornellieee.com/" />chapter , and
+        contributing to innovations at the
+        <Link text="@Autobike" href="https://www.cuautobike.org/" /> project team.
+        Currently, I'm expanding my software engineering expertise as an intern
+        <Link text="@RTX" href="https://www.rtx.com/" />.
+    </div>
+</div>
 
 <style>
     .container {
-        position: relative;
-        width: 100%;
-        height: 100vh;
+        position: absolute;
+        left: 2em; /* Adjust as needed */
+        top: 2em; /* Adjust as needed */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        pointer-events: none; /* Passes through the mouse events */
     }
 
     .name-text {
-        position: absolute;
-        top: 0.25em; /* Adjust as needed */
-        left: 0.25em; /* Adjust as needed */
-        color: #c1c4c5; /* Choose a color that is visible on your gradient */
-        font-size: 80px; /* Adjust the size as needed */
-        z-index: 1; /* Ensure the text is above the canvas */
-        font-family: 'Yeseva One', serif;
-        mix-blend-mode: normal; /* Or another blend mode like 'screen', 'multiply', etc. */
+        color: rgb(200, 200, 200);
+        font-size: 6em;
+        margin-bottom: 10px; /* Space between name and text box */
+        font-family: "Yeseva One", serif;
     }
 
+    .text-box {
+        pointer-events: auto; /* Enable pointer events for the name text */
+        width: 30rem;
+        font-family: "Lucida Console", monospace;
+        font-weight: normal;
+        font-size: 1rem;
+        color: #c6c8d1;
+        line-height: 2.5rem; /*Increase line height to avoid "link" borders overlapping */
+    }
 </style>
-
-<div class="container">
-    <div class="name-text">Dalton<br>Luce</div>
-    <div class="text-box">
-        Your additional text goes here. You can write anything you like, format it, and style it as needed.
-    </div>
-    <Gradient />
-</div>
