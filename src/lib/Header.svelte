@@ -1,96 +1,86 @@
-<script lang="ts">
-    import AnimatedIcon from './components/header/AnimatedIcon.svelte'
-    import svelteLogo from '../assets/svelte.svg'
-    import Icon from './Icon.svelte'
+<script>
+  let isOpen = false;
 
-    let nav_items = [
-        { name: 'home', href: '#home', color: '#e27878', id: 1 },
-        { name: 'experience', href: '#experience', color: '#b4be82', id: 2 },
-        { name: 'contact', href: '#contact', color:'#b4be82', id: 3 },
-        { name: 'about', href: '#about', color: '#84a0c6', id: 4 },
-    ];
-    let active_nav_id = -1;
-
-    let social_icons = [
-
-    ];
+  // Function to toggle mobile menu
+  function toggleMenu() {
+    isOpen = !isOpen;
+  }
 </script>
 
-<header class="site-header">
-    <div class="wrapper site-header__wrapper">
-        <div class="logo-and-name">
-            <img src={svelteLogo} class="logo" alt="Vite Logo" />
-            <h3>Dalton Luce</h3>
-        </div>
-        <nav class="nav-items">
-            {#each nav_items as item, index (item.id)}
-                <div class="nav-item">
-                    <p style:opacity={active_nav_id == item.id ? 1 : 0} style:color={item.color}>●</p>
-                    <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={item.href}
-                        style="color: {item.color};"
-                        on:mouseenter={() => {
-                            active_nav_id = item.id
-                        }}
-                        on:mouseleave={() => {
-                            active_nav_id = -1
-                        }}
-                    >
-                        {item.name}
-                    </a>
-                </div>
-            {/each}
-        </nav>
-        <div class="social-icons">
-            <Icon name="trash" />
-        </div>
-    </div>
+<header>
+  <div class="logo">Your Name</div>
+  <nav class={isOpen ? 'navigation open' : 'navigation'}>
+    <a href="#home">Home</a>
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="menu-toggle" on:click={toggleMenu}>
+    {#if isOpen}
+      Close
+    {:else}
+      Menu
+    {/if}
+  </button>
 </header>
 
 <style>
-    .site-header {
-        top: 0;
-        width: 100%;
-        background-color: var(--background-primary);
-    }
+header {
+  background-color: black;
+  color: off-white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+}
 
-    .site-header__wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
-    }
+header .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+}
 
-    .site-header__wrapper > div {
-        /* Have items take up equal space */
-        flex: 1 1 0px;
-    }
+header .navigation {
+  display: flex;
+}
 
-    .logo-and-name > * {
-        display: inline-block;
-    }
+header .navigation.open {
+  flex-direction: column;
+  position: absolute;
+  top: 60px; /* Adjust based on header height */
+  left: 0;
+  width: 100%;
+  background-color: black;
+}
 
-    .nav-items {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        gap: 2rem;
-    }
+header .navigation a {
+  color: off-white;
+  text-decoration: none;
+  margin: 0 10px;
+}
 
-    .nav-item {
-        display: flex;
-        align-items: center;
-    }
+header .navigation a:hover {
+  text-decoration: underline;
+}
 
-    .nav-item > a {
-        text-decoration: none;
-    }
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: off-white;
+}
 
-    .nav-item > p {
-        transition: 0.2s;
-        padding: 0rem 0.25rem 0rem 0rem;
-        font-weight: bolder;
-    }
+@media (max-width: 600px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  header .navigation {
+    display: none;
+  }
+
+  header .navigation.open {
+    display: flex;
+  }
+}
+
 </style>

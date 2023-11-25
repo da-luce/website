@@ -1,8 +1,5 @@
 <script lang="ts">
-  import Header from './lib/Header.svelte'
+  import Landing from './lib/Landing.svelte'
 </script>
 
-<Header />
-
-<main>
-</main>
+<Landing></Landing>
