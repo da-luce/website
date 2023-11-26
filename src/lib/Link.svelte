@@ -54,6 +54,7 @@
         justify-content: center; /* Horizontally center content */
         line-height: 1; /* Reducing line height can reduce the height taken by text */
         margin: 0; /* Ensure no margin is adding extra space */
+        pointer-events: auto; /* Passes through the mouse events */
         /* Other styles */
     }
 

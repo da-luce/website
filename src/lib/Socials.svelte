@@ -35,6 +35,7 @@
         right: 0;
         top: 2em;
         right: 2em;
+        pointer-events: none; /* Passes through the mouse events */
     }
 
     .social-icons {
@@ -42,5 +43,6 @@
         flex-direction: column;
         align-items: flex-end; /* Align icons to the end of the flex container (right side) */
         gap: 0.5rem; /* Adjust the gap between icons as necessary */
+        pointer-events: auto; /* Enable pointer events for the name text */
     }
 </style>

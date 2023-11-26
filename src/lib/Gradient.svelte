@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createShaderProgram } from "./gl_utils";
-    import { onMount } from 'svelte';
+    import { onMount } from "svelte";
 
     // --- Constants and Type Definitions ---
     const numPoints = 5;
@@ -25,6 +25,8 @@
         // [97, 140, 249],
         // [84, 115, 251],
         // [75, 98, 253],
+        // Red
+        // [200, 100, 100],
         // Black
         // [255, 255, 255],
         // [40, 40, 40],
@@ -40,8 +42,6 @@
         [3, 12, 29],
         [3, 12, 29],
         [3, 12, 29],
-        // Red
-        // [200, 100, 100],
         // Others
         // [143, 191, 255],
         // [180, 180, 254],
@@ -56,7 +56,8 @@
         return color.map((c) => c / 255) as color;
     }
 
-    const colorPalletteNorm: Array<color> = colorPalletteRGB.map(normalizeColor);
+    const colorPalletteNorm: Array<color> =
+        colorPalletteRGB.map(normalizeColor);
 
     function applyRepulsionForce(
         pointA,
@@ -118,14 +119,18 @@
     const frictionCoefficient = 0.95;
 
     function applyFriction(point) {
-        const currentSpeed = Math.sqrt(point.vx * point.vx + point.vy * point.vy);
+        const currentSpeed = Math.sqrt(
+            point.vx * point.vx + point.vy * point.vy
+        );
 
         if (currentSpeed > baseVelocity) {
             point.vx *= frictionCoefficient;
             point.vy *= frictionCoefficient;
 
             // Recheck speed after applying friction
-            const newSpeed = Math.sqrt(point.vx * point.vx + point.vy * point.vy);
+            const newSpeed = Math.sqrt(
+                point.vx * point.vx + point.vy * point.vy
+            );
             if (newSpeed < baseVelocity) {
                 // Scale velocity up to base velocity
                 const scale = baseVelocity / newSpeed;
@@ -135,7 +140,9 @@
         }
     }
 
-    const updateVelocitiesAndPositions = (points: Array<Point>): Array<Point> => {
+    const updateVelocitiesAndPositions = (
+        points: Array<Point>
+    ): Array<Point> => {
         // for (let i = 0; i < points.length; i++) {
         //     for (let j = i + 1; j < points.length; j++) {
         //         applyRepulsionForce(points[i], points[j], 0.005, 0.1); // Adjust these values as needed
@@ -270,12 +277,10 @@
     }
 
     onMount(() => {
-
         resizeCanvas(); // Set initial size
 
         // Add window resize listener
-        window.addEventListener('resize', resizeCanvas);
-
+        window.addEventListener("resize", resizeCanvas);
 
         // Convert screen coordinates to WebGL coordinates
         function screenToWebGL(x, y, gradientCanvas) {
@@ -300,7 +305,9 @@
         const gl = gradientCanvas.getContext("webgl");
 
         if (!gl) {
-            alert("Unable to initialize WebGL. Your browser may not support it.");
+            alert(
+                "Unable to initialize WebGL. Your browser may not support it."
+            );
             throw new Error("WebGL not supported");
         }
 
@@ -312,21 +319,35 @@
         const positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array(positions),
+            gl.STATIC_DRAW
+        );
 
         const positionAttributeLocation = gl.getAttribLocation(
             spGradient,
             "aVertexPosition"
         );
         gl.enableVertexAttribArray(positionAttributeLocation);
-        gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+        gl.vertexAttribPointer(
+            positionAttributeLocation,
+            2,
+            gl.FLOAT,
+            false,
+            0,
+            0
+        );
 
         // --- Uniform Locations ---
         const pointLocation = gl.getUniformLocation(spGradient, "u_points");
         const redLocation = gl.getUniformLocation(spGradient, "u_reds");
         const greenLocation = gl.getUniformLocation(spGradient, "u_greens");
         const blueLocation = gl.getUniformLocation(spGradient, "u_blues");
-        const resolutionLocation = gl.getUniformLocation(spGradient, "u_resolution");
+        const resolutionLocation = gl.getUniformLocation(
+            spGradient,
+            "u_resolution"
+        );
         const timeLocation = gl.getUniformLocation(spGradient, "u_time");
 
         // Set the resolution uniform once
@@ -380,7 +401,6 @@
         }
 
         const gradient_pass = (gl: WebGLRenderingContext) => {
-
             // Render to the custom framebuffer
             gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
             gl.useProgram(spGradient);
@@ -396,13 +416,15 @@
         };
 
         const noise_pass = (gl: WebGLRenderingContext) => {
-
             // Render to the default framebuffer (screen)
             gl.bindFramebuffer(gl.FRAMEBUFFER, null);
             gl.useProgram(spNoise);
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.uniform1i(gl.getUniformLocation(spNoise, "u_firstPassTexture"), 0);
+            gl.uniform1i(
+                gl.getUniformLocation(spNoise, "u_firstPassTexture"),
+                0
+            );
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         };
@@ -418,7 +440,6 @@
 
         render();
     });
-
 </script>
 
 <canvas bind:this={gradientCanvas}></canvas>

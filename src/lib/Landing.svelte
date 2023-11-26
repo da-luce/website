@@ -7,11 +7,11 @@
 <div class="container">
     <div class="name-text">Dalton<br />Luce</div>
     <div class="text-box">
-        I am an Electrical and Computer Engineering undergraduate
+        I'm an Electrical and Computer Engineering undergraduate
         <Link text="@Cornell" href="https://www.engineering.cornell.edu/" />,
         actively engaged with the Cornell
         <Link text="@IEEE" href="https://www.cornellieee.com/" /> chapter, and contributing
-        to innovations at the
+        to innovations on the
         <Link text="@Autobike" href="https://www.cuautobike.org/" /> project team.
         Currently, I'm expanding my software engineering expertise as an intern
         <Link text="@RTX" href="https://www.rtx.com/" />.
@@ -44,5 +44,6 @@
         font-size: 1rem;
         color: var(--foreground);
         line-height: 2.5rem; /*Increase line height to avoid "link" borders overlapping */
+        pointer-events: none; /* Passes through the mouse events */
     }
 </style>
