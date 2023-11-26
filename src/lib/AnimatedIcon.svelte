@@ -1,18 +1,29 @@
 <script lang="ts">
-    let svg_path:string;
-    let link:string;
-    let title:string;
+    export let path: string;
+    export let link: string;
+    export let title: string;
+    export let strokeWidth: number = 1;
+    export let viewBoxWidth: number;
+    export let viewBoxHeight: number;
 </script>
 
 <a href={link} target="_blank">
-    <svg class="icon" 
+    <svg
+        class="icon"
+        viewBox={-strokeWidth +
+            " " +
+            -strokeWidth +
+            " " +
+            (viewBoxWidth + 2 * strokeWidth) +
+            " " +
+            (viewBoxHeight + 2 * strokeWidth)}
         role="graphics-symbol"
-        xmlns="http://www.w3.org/2000/svg">
+        xmlns="http://www.w3.org/2000/svg"
+    >
         <title>{title}</title>
-        <path d={svg_path} pathLength="1"/>
+        <path d={path} pathLength="1" />
     </svg>
 </a>
-
 
 <style>
     /* Doesn't work in chrome! */
@@ -24,7 +35,11 @@
         animation-timing-function: ease;
         animation-iteration-count: infinite;
         animation-play-state: paused;
+    }
+
+    svg {
         animation-fill-mode: initial;
+        fill: var(--foreground);
     }
 
     .icon:hover {
@@ -34,14 +49,18 @@
     .icon path {
         stroke-width: 0px; /* no stroke width to avoid writing over fill in regular state */
         fill: var(--foreground);
-        stroke: var(--background-primary);
+        stroke: none;
         transition: all 0.5s ease;
     }
 
     .icon:hover path {
         stroke-width: 1px;
-        fill: var(--background-primary);
+        fill: none;
         stroke: var(--foreground);
+    }
+
+    :root {
+        --gap: 0.25;
     }
 
     @keyframes draw {

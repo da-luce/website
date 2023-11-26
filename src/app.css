@@ -1,7 +1,7 @@
 :root {
-    --background-primary: #000000;
-    --background-secondary: #121212;
-    --foreground: #e5e5e5;
+    --background-primary: #030c1d;
+    --background-secondary: #030c1d;
+    --foreground: #c6c8d1;
 }
 
 html,
@@ -9,7 +9,11 @@ body {
     /* Remove default padding */
     margin: 0;
     padding: 0;
-    background-color: rgb(0, 0, 0);
+    background-color: var(--background-primary);
+
+    /* Hide the overflow of the whole page */
+    height: 100%;
+    overflow: hidden;
 }
 
 .wrapper {

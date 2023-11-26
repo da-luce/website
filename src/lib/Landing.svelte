@@ -10,8 +10,8 @@
         I am an Electrical and Computer Engineering undergraduate
         <Link text="@Cornell" href="https://www.engineering.cornell.edu/" />,
         actively engaged with the Cornell
-        <Link text="@IEEE" href="https://www.cornellieee.com/" />chapter , and
-        contributing to innovations at the
+        <Link text="@IEEE" href="https://www.cornellieee.com/" /> chapter, and contributing
+        to innovations at the
         <Link text="@Autobike" href="https://www.cuautobike.org/" /> project team.
         Currently, I'm expanding my software engineering expertise as an intern
         <Link text="@RTX" href="https://www.rtx.com/" />.
@@ -30,7 +30,7 @@
     }
 
     .name-text {
-        color: rgb(200, 200, 200);
+        color: var(--foreground);
         font-size: 6em;
         margin-bottom: 10px; /* Space between name and text box */
         font-family: "Yeseva One", serif;
@@ -42,7 +42,7 @@
         font-family: "Lucida Console", monospace;
         font-weight: normal;
         font-size: 1rem;
-        color: #c6c8d1;
+        color: var(--foreground);
         line-height: 2.5rem; /*Increase line height to avoid "link" borders overlapping */
     }
 </style>
