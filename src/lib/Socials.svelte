@@ -15,14 +15,14 @@
             path={linkedinPath}
             viewBoxWidth={24}
             viewBoxHeight={24}
-            link="https://linkedin.com/in/yourusername"
+            link="https://linkedin.com/in/dalton-luce"
             title="LinkedIn"
         />
         <AnimatedIcon
             path={githubPath}
             viewBoxWidth={24}
             viewBoxHeight={24}
-            link="https://github.com/yourusername"
+            link="https://github.com/da-luce"
             title="GitHub"
         />
     </div>
@@ -33,7 +33,8 @@
         position: absolute;
         top: 0;
         right: 0;
-        padding: 1rem; /* Adjust padding as necessary */
+        top: 2em;
+        right: 2em;
     }
 
     .social-icons {

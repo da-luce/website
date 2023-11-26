@@ -21,8 +21,8 @@
 <style>
     .container {
         position: absolute;
-        left: 2em; /* Adjust as needed */
-        top: 2em; /* Adjust as needed */
+        left: 2em;
+        top: 2em;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
