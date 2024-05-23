@@ -1,11 +1,16 @@
 <script>
     import Gradient from "./Gradient.svelte";
     import Link from "./Link.svelte";
+    import Arrow from "./Arrow.svelte";
 </script>
 
+<!-- Background canvas -->
 <Gradient />
+
+<!-- Name and info -->
 <div class="container">
-    <div class="name-text">Dalton<br />Luce</div>
+    <div class="first-name">Dalton</div>
+    <div class="last-name">Luce</div>
     <div class="text-box">
         I'm an Electrical and Computer Engineering undergraduate
         <Link text="@Cornell" href="https://www.engineering.cornell.edu/" />,
@@ -18,7 +23,20 @@
     </div>
 </div>
 
+<!-- Scroll down arrow -->
+<div class="arrow-container"><Arrow /></div>
+
 <style>
+    .arrow-container {
+        position: absolute;
+        bottom: 20px; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .container {
         position: absolute;
         left: 2em;
@@ -29,12 +47,23 @@
         pointer-events: none; /* Passes through the mouse events */
     }
 
-    .name-text {
+    .first-name {
         color: var(--foreground);
         font-size: 6em;
         margin-bottom: 10px; /* Space between name and text box */
         font-family: "Yeseva One", serif;
+        /* font-family: "EB Garamond", serif; */
     }
+
+    .last-name {
+        color: rgba(0, 0, 0, 0); /* Transparent fill */
+        font-size: 6em;
+        margin-bottom: 10px; /* Space between name and text box */
+        font-family: "Yeseva One", serif;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: var(--foreground);
+    }
+    /* font-family: "EB Garamond", serif; */
 
     .text-box {
         pointer-events: auto; /* Enable pointer events for the name text */

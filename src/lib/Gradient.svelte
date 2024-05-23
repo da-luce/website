@@ -437,6 +437,7 @@
 
             requestAnimationFrame(render);
         };
+        console.log(gl.getError());
 
         render();
     });
