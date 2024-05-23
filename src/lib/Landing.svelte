@@ -51,7 +51,7 @@
         color: var(--foreground);
         font-size: 6em;
         margin-bottom: 10px; /* Space between name and text box */
-        font-family: "Yeseva One", serif;
+        font-family: var(--fancy-font);
         /* font-family: "EB Garamond", serif; */
     }
 
@@ -59,7 +59,7 @@
         color: rgba(0, 0, 0, 0); /* Transparent fill */
         font-size: 6em;
         margin-bottom: 10px; /* Space between name and text box */
-        font-family: "Yeseva One", serif;
+        font-family: var(--fancy-font);
         -webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: var(--foreground);
     }
@@ -68,7 +68,7 @@
     .text-box {
         pointer-events: auto; /* Enable pointer events for the name text */
         width: 30rem;
-        font-family: "Lucida Console", monospace;
+        font-family: var(--mono-font);
         font-weight: normal;
         font-size: 1rem;
         color: var(--foreground);

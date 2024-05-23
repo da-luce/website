@@ -2,6 +2,8 @@
     --background-primary: #030c1d;
     --background-secondary: #030c1d;
     --foreground: #c6c8d1;
+    --fancy-font: "Yeseva One", serif;
+    --mono-font: "Lucida Console",monospace;
 }
 
 html,
