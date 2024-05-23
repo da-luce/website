@@ -9,26 +9,60 @@
     <svg
         width={size}
         height={size}
-        viewBox="0 0 {size} {size}"
+        viewBox={`0 0 ${size} ${size}`}
         xmlns="http://www.w3.org/2000/svg"
     >
-        <!-- Define a circular path for the text -->
         <defs>
-            <path
-                id="circlePath"
-                d="M {center}, {center} m -{radius}, 0 a {radius},{radius} 0 1,1 {radius *
-                    2},0 a {radius},{radius} 0 1,1 -{radius * 2},0"
-            />
+            <!-- Define the mask -->
+            <mask id="arrow-mask">
+                <rect x="0" y="0" width={size} height={size} fill="white" />
+                <!-- Use white lines for masking out the arrow part -->
+                <line
+                    class="slant-left"
+                    x1={center - radius / 3}
+                    y1={center + radius / 3}
+                    x2={center}
+                    y2={center + radius / 2}
+                    stroke-width={width}
+                    stroke-linecap="round"
+                    stroke="black"
+                />
+                <line
+                    class="middle"
+                    x1={center}
+                    y1={center - radius / 2}
+                    x2={center}
+                    y2={center + radius / 2}
+                    stroke-width={width}
+                    stroke-linecap="round"
+                    stroke="black"
+                />
+                <line
+                    class="slant-right"
+                    x1={center + radius / 3}
+                    y1={center + radius / 3}
+                    x2={center}
+                    y2={center + radius / 2}
+                    stroke-width={width}
+                    stroke-linecap="round"
+                    stroke="black"
+                />
+            </mask>
         </defs>
-        <!-- Text following the circular path -->
-        <text font-size="12">
-            <textPath href="#circlePath" startOffset="0">
-                * ABOUT ME * ABOUT ME
-            </textPath>
-        </text>
+
+        <!-- Circle element that grows on hover -->
+        <circle
+            class="hover-circle"
+            cx={center}
+            cy={center}
+            r={radius}
+            fill="var(--foreground)"
+            mask="url(#arrow-mask)"
+        ></circle>
+
         <!-- Arrow elements -->
         <line
-            class="slant-left"
+            class="arrow slant-left"
             x1={center - radius / 3}
             y1={center + radius / 3}
             x2={center}
@@ -38,7 +72,7 @@
             stroke="black"
         />
         <line
-            class="middle"
+            class="arrow middle"
             x1={center}
             y1={center - radius / 2}
             x2={center}
@@ -48,7 +82,7 @@
             stroke="black"
         />
         <line
-            class="slant-right"
+            class="arrow slant-right"
             x1={center + radius / 3}
             y1={center + radius / 3}
             x2={center}
@@ -61,22 +95,32 @@
 </div>
 
 <style>
+    .arrow-container {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     svg {
         cursor: pointer;
     }
 
-    text {
-        fill: var(--foreground);
-        font-family: var(--mono-font);
+    .hover-circle {
+        transform: scale(0);
+        transform-origin: 50% 50%;
+        transition: transform 0.5s ease-in-out;
     }
 
-    line {
-        fill: none;
-        stroke: var(--foreground);
+    svg:hover .hover-circle {
+        transform: scale(1);
     }
 
     .middle {
-        animation: grow 3s infinite;
+        animation: grow 2s infinite;
         animation-timing-function: ease-in-out;
     }
 
@@ -88,7 +132,17 @@
         }
         50% {
             stroke-dasharray: 40, 40;
-            stroke-dashoffset: -40;
+            stroke-dashoffset: -30;
         }
+    }
+
+    .arrow {
+        fill: none;
+        stroke: var(--foreground);
+        transition: stroke 0.5s ease-in-out;
+    }
+
+    svg:hover .arrow {
+        stroke: transparent;
     }
 </style>
