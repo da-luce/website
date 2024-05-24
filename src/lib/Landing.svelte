@@ -9,7 +9,7 @@
 
 <!-- Name and info -->
 <div class="container">
-    <div class="first-name">Dalton</div>
+    <h1 class="first-name">Dalton</h1>
     <div class="last-name">Luce</div>
     <div class="text-box">
         I'm an Electrical and Computer Engineering undergraduate
