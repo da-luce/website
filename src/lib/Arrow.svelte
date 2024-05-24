@@ -18,7 +18,7 @@
 
         // Adjust opacity based on scroll position
         const halfHeight = scrollableDistance / 2;
-        opacity = (Math.abs(scrollY - halfHeight) / halfHeight) ** 10;
+        opacity = (Math.abs(scrollY - halfHeight) / halfHeight) ** 5;
 
         if (opacity < 0.3) {
             cursor = "default";
@@ -31,6 +31,9 @@
     }
 
     function handleClick() {
+        if (opacity < 0.3) {
+            return;
+        }
         if (rotation > 90) {
             window.scrollTo({ top: 0, behavior: "smooth" });
         } else {

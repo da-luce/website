@@ -4,6 +4,8 @@
     import Link from "./lib/Link.svelte";
     import Arrow from "./lib/Arrow.svelte";
     import Gradient from "./lib/Gradient.svelte";
+    import Card from "./lib/Card.svelte";
+    import Carousel from "./lib/Carousel.svelte";
 </script>
 
 <head>
@@ -50,5 +52,23 @@
         <div class="arrow-container"><Arrow /></div>
     </section>
     <!-- Projects -->
-    <section id="projects"></section>
+    <section id="projects">
+        <Carousel>
+            <Card
+                disc="Description for project 1"
+                img="./assets/logo1.png"
+                link="https://github.com/project1"
+            />
+            <Card
+                disc="Description for project 1"
+                img="./assets/logo1.png"
+                link="https://github.com/project1"
+            />
+            <Card
+                disc="Description for project 1"
+                img="./assets/logo1.png"
+                link="https://github.com/project1"
+            />
+        </Carousel>
+    </section>
 </body>

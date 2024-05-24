@@ -10,7 +10,7 @@ html, body {
     /* Remove default padding */
     margin: 0;
     padding: 0;
-    background-color: --var(background-primary);
+    background-color: var(--background-primary);
     overflow-x: hidden;
     scroll-behavior: smooth;
 }
@@ -67,8 +67,16 @@ html, body {
 }
 
 section {
+    position: relative; /* Needed to make sure sections stack on top of background */
     height: 100vh;
     width: 100vw;
     /* Each section takes up the entire viewport height */
 }
 
+#projects {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 40px 0;
+}
