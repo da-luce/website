@@ -1,65 +1,59 @@
-<!-- src/lib/Carousel.svelte -->
-<script lang="ts">
+<script>
     import { onMount } from "svelte";
 
+    let container;
     let currentIndex = 0;
-    let childComponents = [];
+    let totalSlides;
 
-    function next() {
-        currentIndex = (currentIndex + 1) % childComponents.length;
-    }
+    const next = () => {
+        if (currentIndex < totalSlides - 1) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        updateCarousel();
+    };
 
-    function prev() {
-        currentIndex =
-            (currentIndex - 1 + childComponents.length) %
-            childComponents.length;
-    }
+    const prev = () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+        } else {
+            currentIndex = totalSlides - 1;
+        }
+        updateCarousel();
+    };
+
+    const updateCarousel = () => {
+        container.style.transform = `translateX(-${currentIndex * 100}%)`;
+    };
 
     onMount(() => {
-        childComponents = Array.from(
-            document.querySelectorAll(".carousel > *")
-        );
+        totalSlides = container.children.length;
     });
 </script>
 
-<div class="carousel-container">
-    <button on:click={prev} class="arrow left">&lt;</button>
-    <div class="carousel">
-        {#each childComponents.slice(currentIndex, currentIndex + 4) as component}
-            {component}
-        {/each}
+<div class="carousel">
+    <button on:click={prev}>Previous</button>
+    <div class="carousel-container" bind:this={container}>
+        <slot></slot>
     </div>
-    <button on:click={next} class="arrow right">&gt;</button>
+    <button on:click={next}>Next</button>
 </div>
 
 <style>
-    .carousel-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 40vh;
-        width: 100%;
-    }
     .carousel {
         display: flex;
+        align-items: center;
+    }
+
+    .carousel-container {
+        display: flex;
         overflow: hidden;
-        border: 2px white;
         width: 100%;
-        max-width: 1200px; /* Optional: to control the maximum width */
-        scroll-behavior: smooth;
+        padding: 10px; /* For when cards translate in 3D */
     }
-    .arrow {
-        background: none;
-        border: none;
-        font-size: 2rem;
-        cursor: pointer;
-    }
-    .left {
-        margin-right: 10px;
-        color: var(--foreground);
-    }
-    .right {
-        margin-left: 10px;
-        color: var(--foreground);
+
+    .carousel-container > * {
+        flex: 0 0 100%;
     }
 </style>

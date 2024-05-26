@@ -12,12 +12,13 @@
 
 <style>
     .container {
-        background: var(--background-primary);
+        background: #afafaf;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 300px;
+        min-height: 20vh;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -29,7 +30,7 @@
         color: inherit;
     }
     .container:hover {
-        transform: scale(1.05) rotate3d(1, 1, 0, 10deg);
+        transform: scale(1.05) rotate3d(1, -1, 0, 15deg);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
     img {
