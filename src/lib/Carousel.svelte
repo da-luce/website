@@ -1,68 +1,101 @@
 <script>
     import { onMount } from "svelte";
 
-    let container;
-    let currentIndex = 0;
-    let totalSlides;
+    let itemList;
+    let prevBtn;
+    let nextBtn;
+    const itemWidth = 300; // Adjust this value to match your item width
+    const padding = 20; // Adjust this value to match your item padding
 
-    const next = () => {
-        if (currentIndex < totalSlides - 1) {
-            currentIndex++;
-        } else {
-            currentIndex = 0;
-        }
-        updateCarousel();
+    const scrollLeft = () => {
+        itemList.scrollBy({
+            left: -(itemWidth + padding),
+            behavior: "smooth",
+        });
+        updateButtonState();
     };
 
-    const prev = () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-        } else {
-            currentIndex = totalSlides - 1;
-        }
-        updateCarousel();
+    const scrollRight = () => {
+        itemList.scrollBy({
+            left: itemWidth + padding,
+            behavior: "smooth",
+        });
+        updateButtonState();
     };
 
-    const updateCarousel = () => {
-        container.style.transform = `translateX(${currentIndex * 50}%)`;
+    const updateButtonState = () => {
+        prevBtn.disabled = itemList.scrollLeft === 0;
+        nextBtn.disabled =
+            itemList.scrollLeft + itemList.clientWidth >= itemList.scrollWidth;
     };
 
     onMount(() => {
-        totalSlides = container.children.length;
+        prevBtn.addEventListener("click", scrollLeft);
+        nextBtn.addEventListener("click", scrollRight);
+        itemList.addEventListener("scroll", updateButtonState);
+        updateButtonState(); // Initial check
     });
 </script>
 
-<div class="carousel">
-    <button on:click={prev} class="arrow left">Previous</button>
-    <div class="carousel-container" bind:this={container}>
+<div class="container">
+    <button id="prev-btn" bind:this={prevBtn} class="prev-btn">
+        <svg viewBox="0 0 512 512" width="30" title="chevron-circle-left">
+            <path
+                d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM142.1 273l135.5 135.5c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L226.9 256l101.6-101.6c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L142.1 239c-9.4 9.4-9.4 24.6 0 34z"
+            />
+        </svg>
+    </button>
+    <div id="item-list" class="item-list" bind:this={itemList}>
         <slot></slot>
     </div>
-    <button on:click={next} class="arrow right">Next</button>
+    <button id="next-btn" bind:this={nextBtn} class="next-btn">
+        <svg viewBox="0 0 512 512" width="30" title="chevron-circle-right">
+            <path
+                d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm113.9 231L234.4 103.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L285.1 256 183.5 357.6c-9.4 9.4-9.4 24.6 0 33.9l17 17c9.4 9.4 24.6 9.4 33.9 0L369.9 273c9.4-9.4 9.4-24.6 0-34z"
+            />
+        </svg>
+    </button>
 </div>
 
 <style>
-    .carousel {
+    .container {
+        width: 100%;
+        height: 40vh;
         display: flex;
+        justify-content: space-around;
         align-items: center;
     }
 
-    .carousel-container {
+    .item-list {
+        max-width: 950px;
+        width: 80vw;
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-        transition: transform 0.5s ease-in-out;
-        gap: 20px;
-        overflow: hidden;
-        width: 80%; /* Adjust to fit your layout */
+        transition: all 0.25s ease-in;
+        gap: 48px;
+        scroll-behavior: smooth;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        overflow: auto;
+        scroll-snap-type: x mandatory;
     }
 
-    .arrow {
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    .item-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .prev-btn,
+    .next-btn {
+        fill: var(--foreground);
         background: none;
         border: none;
-        font-size: 1.5rem;
         cursor: pointer;
-        margin: 0 20px;
-        color: white;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .prev-btn:disabled,
+    .next-btn:disabled {
+        opacity: 0.2;
+        cursor: not-allowed;
     }
 </style>

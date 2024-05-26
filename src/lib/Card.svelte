@@ -6,6 +6,7 @@
     let imgPath = `/src/assets/${img}`;
 
     let container;
+    let scale = 2;
 
     function handleMouseMove(event: MouseEvent) {
         const rect = container.getBoundingClientRect();
@@ -15,8 +16,8 @@
         const centerY = rect.height / 2;
         const deltaX = x - centerX;
         const deltaY = y - centerY;
-        const rotateX = (deltaY / centerY) * 5;
-        const rotateY = (deltaX / centerX) * -5;
+        const rotateX = (deltaY / centerY) * scale;
+        const rotateY = (deltaX / centerX) * -scale;
 
         container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
     }
@@ -56,11 +57,14 @@
         flex-direction: column;
         align-items: left;
         transition:
-            transform 0.1s ease,
+            transform 0.5s ease,
             box-shadow 0.3s ease;
         text-decoration: none;
         color: inherit;
         transform-style: preserve-3d; /* Required for perspective to work */
+        backdrop-filter: blur(0px);
+        scroll-snap-align: center;
+        min-width: 300px;
     }
 
     .container:hover {

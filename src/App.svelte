@@ -72,6 +72,8 @@
                 img="stars.png"
                 link="https://github.com/project1"
             />
+            <Card />
+            <Card />
         </Carousel>
     </section>
 </body>
