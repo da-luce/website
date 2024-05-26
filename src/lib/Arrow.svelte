@@ -2,6 +2,7 @@
     import { onMount, onDestroy } from "svelte";
 
     export let size = 100; // Default size
+    let sizeVh;
     let width = 3;
     const center = size / 2;
     const radius = center - 25; // Adjust the radius as needed
@@ -9,6 +10,8 @@
     let opacity = 1;
     let rotation = 0;
     let cursor = "pointer";
+    let arrowGap = 2; // Initial position from bottom in vh
+    let arrowPosition = arrowGap;
 
     function handleScroll() {
         const y = window.scrollY;
@@ -18,7 +21,7 @@
 
         // Adjust opacity based on scroll position
         const halfHeight = scrollableDistance / 2;
-        opacity = (Math.abs(scrollY - halfHeight) / halfHeight) ** 5;
+        opacity = (Math.abs(y - halfHeight) / halfHeight) ** 5;
 
         if (opacity < 0.3) {
             cursor = "default";
@@ -28,6 +31,11 @@
 
         // Calculate rotation angle
         rotation = y > (documentHeight - windowHeight) / 2 ? 180 : 0;
+
+        // Adjust arrow position
+        arrowPosition =
+            arrowGap + (y / scrollableDistance) * (100 - 2 * arrowGap - sizeVh);
+        // FIXME: why 2*gap?
     }
 
     function handleClick() {
@@ -52,6 +60,8 @@
 
     onMount(() => {
         window.addEventListener("scroll", handleScroll);
+        handleScroll(); // Initial call to set the correct position
+        sizeVh = (size * 100) / document.documentElement.clientHeight;
         return () => window.removeEventListener("scroll", handleScroll);
     });
 </script>
@@ -63,13 +73,14 @@
     on:keydown={handleKeydown}
     aria-label="Scroll to top or bottom"
     on:click={handleClick}
+    style="bottom: {arrowPosition}vh; opacity: {opacity}; cursor: {cursor};"
 >
     <svg
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         xmlns="http://www.w3.org/2000/svg"
-        style="opacity: {opacity}; transform: rotate({rotation}deg); cursor: {cursor}"
+        style="transform: rotate({rotation}deg);"
     >
         <defs>
             <!-- Define the mask -->
@@ -156,8 +167,9 @@
 <style>
     svg {
         cursor: pointer;
-        transition: transform 0.5s ease-in-out;
-        opacity: 0.05s ease-in-out;
+        transition:
+            transform 0.5s ease-in-out,
+            opacity 0.5s ease-in-out;
     }
 
     /* Circle */
@@ -174,8 +186,7 @@
 
     /* Arrow */
     .arrow-container {
-        position: absolute;
-        bottom: 20px;
+        position: fixed;
         left: 50%;
         transform: translateX(-50%);
         display: flex;

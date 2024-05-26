@@ -4,8 +4,8 @@
     let itemList;
     let prevBtn;
     let nextBtn;
-    const itemWidth = 300; // Adjust this value to match your item width
-    const padding = 20; // Adjust this value to match your item padding
+    let itemWidth;
+    let padding;
 
     const scrollLeft = () => {
         itemList.scrollBy({
@@ -30,6 +30,15 @@
     };
 
     onMount(() => {
+        // Calculate item width and padding dynamically
+        const firstItem = itemList.children[0];
+        if (firstItem) {
+            const itemStyle = getComputedStyle(firstItem);
+            itemWidth = firstItem.offsetWidth;
+            padding =
+                parseInt(itemStyle.marginRight) || parseInt(itemStyle.gap) || 0; // fallback to gap if marginRight is not set
+        }
+
         prevBtn.addEventListener("click", scrollLeft);
         nextBtn.addEventListener("click", scrollRight);
         itemList.addEventListener("scroll", updateButtonState);
@@ -51,7 +60,7 @@
     <button id="next-btn" bind:this={nextBtn} class="next-btn">
         <svg viewBox="0 0 512 512" width="30" title="chevron-circle-right">
             <path
-                d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm113.9 231L234.4 103.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L285.1 256 183.5 357.6c-9.4 9.4-9.4 24.6 0 33.9l17 17c9.4 9.4 24.6 9.4 33.9 0L369.9 273c9.4-9.4 9.4-24.6 0-34z"
+                d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm113.9 231L234.4 103.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L285.1 256 183.5 357.6c-9.4 9.4-9.4 24.6 0 33.9l17 17c-9.4 9.4 24.6 9.4 33.9 0L369.9 273c9.4-9.4 9.4-24.6 0-34z"
             />
         </svg>
     </button>
@@ -71,7 +80,7 @@
         width: 80vw;
         display: flex;
         transition: all 0.25s ease-in;
-        gap: 48px;
+        gap: 20px; /* Adjust this value to match your item padding */
         scroll-behavior: smooth;
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */

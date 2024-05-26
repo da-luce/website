@@ -29,6 +29,8 @@
     <Gradient />
     <!-- Social Icons -->
     <Socials />
+    <!-- Scroll Arrow -->
+    <Arrow />
     <!-- Landing -->
     <section id="landing">
         <div class="landing-text">
@@ -49,7 +51,6 @@
                 <Link text="@RTX" href="https://www.rtx.com/" />.
             </p>
         </div>
-        <div class="arrow-container"><Arrow /></div>
     </section>
     <!-- Projects -->
     <section id="projects">
