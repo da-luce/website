@@ -24,7 +24,7 @@
     };
 
     const updateCarousel = () => {
-        container.style.transform = `translateX(-${currentIndex * 100}%)`;
+        container.style.transform = `translateX(${currentIndex * 50}%)`;
     };
 
     onMount(() => {
@@ -33,11 +33,11 @@
 </script>
 
 <div class="carousel">
-    <button on:click={prev}>Previous</button>
+    <button on:click={prev} class="arrow left">Previous</button>
     <div class="carousel-container" bind:this={container}>
         <slot></slot>
     </div>
-    <button on:click={next}>Next</button>
+    <button on:click={next} class="arrow right">Next</button>
 </div>
 
 <style>
@@ -48,12 +48,21 @@
 
     .carousel-container {
         display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        transition: transform 0.5s ease-in-out;
+        gap: 20px;
         overflow: hidden;
-        width: 100%;
-        padding: 10px; /* For when cards translate in 3D */
+        width: 80%; /* Adjust to fit your layout */
     }
 
-    .carousel-container > * {
-        flex: 0 0 100%;
+    .arrow {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin: 0 20px;
+        color: white;
     }
 </style>

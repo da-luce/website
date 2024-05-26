@@ -55,18 +55,21 @@
     <section id="projects">
         <Carousel>
             <Card
-                disc="Description for project 1"
-                img="./assets/logo1.png"
+                name="Project 1"
+                disc="Some long description for project 1... Very very Very very Very very Very very Very very Very very"
+                img="stars.png"
                 link="https://github.com/project1"
             />
             <Card
-                disc="Description for project 1"
-                img="./assets/logo1.png"
+                name="Project 2"
+                disc="Description for project 2"
+                img="stars.png"
                 link="https://github.com/project1"
             />
             <Card
-                disc="Description for project 1"
-                img="./assets/logo1.png"
+                name="Project 3"
+                disc="Description for project 3"
+                img="stars.png"
                 link="https://github.com/project1"
             />
         </Carousel>
