@@ -6,6 +6,7 @@
     import Gradient from "./lib/Gradient.svelte";
     import Card from "./lib/Card.svelte";
     import Carousel from "./lib/Carousel.svelte";
+    import Timeline from "./lib/Timeline.svelte";
 </script>
 
 <head>
@@ -22,15 +23,32 @@
         href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap"
         rel="stylesheet"
     />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap"
+        rel="stylesheet"
+    />
 </head>
 
 <body>
     <!-- Background -->
     <Gradient />
+
     <!-- Social Icons -->
     <Socials />
+
     <!-- Scroll Arrow -->
     <Arrow />
+
     <!-- Landing -->
     <section id="landing">
         <div class="landing-text">
@@ -52,29 +70,34 @@
             </p>
         </div>
     </section>
-    <!-- Projects -->
-    <section id="projects">
-        <Carousel>
-            <Card
-                name="Project 1"
-                disc="Some long description for project 1... Very very Very very Very very Very very Very very Very very"
-                img="stars.png"
-                link="https://github.com/project1"
-            />
-            <Card
-                name="Project 2"
-                disc="Description for project 2"
-                img="stars.png"
-                link="https://github.com/project1"
-            />
-            <Card
-                name="Project 3"
-                disc="Description for project 3"
-                img="stars.png"
-                link="https://github.com/project1"
-            />
-            <Card />
-            <Card />
-        </Carousel>
+
+    <!-- Experience -->
+    <section id="experience">
+        <div class="experience-container">
+            <div class="sideways">Experience</div>
+            <ul class="timeline">
+                <Timeline
+                    date="MAY-JUN 2023 & 2024"
+                    title="Software Engineer, Intern"
+                    at="RTX"
+                    desc="Worked on X-Band Radar software. Learned Ada language, ClearCase, Jenkins to support correcting software bugs and new development. Assisted in redevelopment of tool allowing better testing of capabilities of radar software. Participated in daily scrum, sprint planning and backlog refinement"
+                />
+                <Timeline
+                    date="SEP 2022-PRESENT"
+                    title="Autobike Project Team"
+                    at="Cornell Autobike"
+                    desc="Member of the Navigation team. Reinforcement learning to determine optimal bicycle routing, Docker, Python. Optical flow and computer vision techniques to predict future occupancy grids, OpenCV"
+                />
+                <Timeline
+                    date="2022"
+                    title="Software Testing Intern"
+                    at="Tholyl"
+                    desc="Tested and reported bugs, provided insight into development of software product. Managed website"
+                />
+            </ul>
+        </div>
     </section>
+
+    <!-- Projects -->
+    <section id="projects"></section>
 </body>
