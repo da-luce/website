@@ -1,78 +1,85 @@
-<script>
+<script lang="ts">
     import Gradient from "./Gradient.svelte";
     import Link from "./Link.svelte";
     import Arrow from "./Arrow.svelte";
-</script>
+    import { onMount } from "svelte";
 
-<!-- Background canvas -->
-<Gradient />
+    let landingHeight = 100; // Initial height in vh
 
-<!-- Name and info -->
-<div class="container">
-    <h1 class="first-name">Dalton</h1>
-    <div class="last-name">Luce</div>
-    <div class="text-box">
-        I'm an Electrical and Computer Engineering undergraduate
-        <Link text="@Cornell" href="https://www.engineering.cornell.edu/" />,
-        actively engaged with the Cornell
-        <Link text="@IEEE" href="https://www.cornellieee.com/" /> chapter, and contributing
-        to innovations on the
-        <Link text="@Autobike" href="https://www.cuautobike.org/" /> project team.
-        Currently, I'm expanding my software engineering expertise as an intern
-        <Link text="@RTX" href="https://www.rtx.com/" />.
-    </div>
-</div>
-
-<!-- Scroll down arrow -->
-<div class="arrow-container"><Arrow /></div>
-
-<style>
-    .arrow-container {
-        position: absolute;
-        bottom: 20px; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    // Cubic easing function
+    function cubicEase(x: number) {
+        if (x < 0) return 0;
+        if (x > 1) return 1;
+        return x ** 2 * (3 - 2 * x);
     }
 
-    .container {
-        position: absolute;
+    // Function to handle scroll event
+    const handleScroll = () => {
+        const maxScroll = window.innerHeight;
+        const scrollY = window.scrollY;
+        const scrollFraction = scrollY / maxScroll;
+        const easedScroll = cubicEase(scrollFraction);
+        landingHeight = Math.max(100 - easedScroll * 50, 60); // Minimum height of 10vh
+    };
+
+    onMount(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    });
+</script>
+
+<section id="landing" style="height: {landingHeight}vh;">
+    <div class="landing-text">
+        <!-- Don't use h1, messes up text outline -->
+        <div class="title" style="color: var(--foreground);">Dalton</div>
+        <div class="title" style="color: rgba(0, 0, 0, 0);">Luce</div>
+        <p class="subheading">
+            I'm an Electrical and Computer Engineering undergraduate at
+            <Link text="Cornell" href="https://www.engineering.cornell.edu/" />,
+            actively engaged with the Cornell
+            <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter, and
+            contributing to innovations on the
+            <Link text="Autobike" href="https://www.cuautobike.org/" /> project team.
+            Currently, I'm expanding my software engineering expertise as an intern
+            at
+            <Link text="RTX" href="https://www.rtx.com/" />.
+        </p>
+    </div>
+</section>
+
+<style>
+    .title {
+        font-family: var(--fancy-font);
+        font-size: 6em;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: var(--foreground);
+    }
+
+    .landing-text {
+        position: relative;
         left: 2em;
         top: 2em;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        pointer-events: none; /* Passes through the mouse events */
+        pointer-events: none;
+        margin: 80px 0px 0px 80px;
     }
 
-    .first-name {
-        color: var(--foreground);
-        font-size: 6em;
-        margin-bottom: 10px; /* Space between name and text box */
-        font-family: var(--fancy-font);
-        /* font-family: "EB Garamond", serif; */
-    }
-
-    .last-name {
-        color: rgba(0, 0, 0, 0); /* Transparent fill */
-        font-size: 6em;
-        margin-bottom: 10px; /* Space between name and text box */
-        font-family: var(--fancy-font);
-        -webkit-text-stroke-width: 2px;
-        -webkit-text-stroke-color: var(--foreground);
-    }
-    /* font-family: "EB Garamond", serif; */
-
-    .text-box {
-        pointer-events: auto; /* Enable pointer events for the name text */
-        width: 30rem;
-        font-family: var(--mono-font);
+    .subheading {
+        pointer-events: auto;
+        max-width: 40rem;
+        min-width: 20rem;
+        font-family: var(--reddit-font);
         font-weight: normal;
         font-size: 1rem;
         color: var(--foreground);
-        line-height: 2.5rem; /*Increase line height to avoid "link" borders overlapping */
-        pointer-events: none; /* Passes through the mouse events */
+        line-height: 2.5rem;
+    }
+
+    section {
+        scroll-snap-align: start;
     }
 </style>

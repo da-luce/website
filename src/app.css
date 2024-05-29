@@ -4,8 +4,9 @@
     --foreground: #c6c8d1;
     --fancy-font: "Yeseva One", serif;
     --mono-font: "Lucida Console",monospace;
-    --sans-font: "DM Sans", sans-serif;
-    --reddit-font: "Reddit Mono", monospace;
+    --sans-font: "Rubik", sans-serif;
+    --reddit-font: "Inconsolata", monospace;
+    --f-font: "Averia Serif Libre", serif;
 }
 
 html, body {
@@ -14,45 +15,35 @@ html, body {
     padding: 0;
     background-color: rgba(0,0,0,0);
     overflow-x: hidden;
-    scroll-behavior: smooth;
+    scroll-behavior: smooth !important;
 }
 
-.title {
-    font-family: var(--fancy-font);
-    font-size: 6em;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: var(--foreground);
-}
-
-.landing-text {
-    position: relative;
-    left: 2em;
-    top: 2em;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    pointer-events: none;
-    margin: 80px 0px 0px 80px;
-    /* Passes through the mouse events */
-}
-
-.subheading {
-    /* Enable pointer events for the name text */
-    pointer-events: auto;
-    max-width: 40rem;
-    min-width: 20rem;
-    font-family: var(--reddit-font);
-    font-weight: normal;
-    font-size: 1rem;
-    color: var(--foreground);
-    /*Increase line height to avoid "link" borders overlapping */
-    line-height: 2.5rem;
+body {
+    scroll-snap-type: y mandatory;
+    height: auto;
 }
 
 section {
     /*position: relative; *//* Needed to make sure sections stack on top of background */
     height: 100vh;
     width: 100vw;
+    scroll-snap-align: start;
+    /* Each section takes up the entire viewport height */
+}
+
+#projects {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 40px 0;
+}
+ 
+section {
+    /*position: relative; *//* Needed to make sure sections stack on top of background */
+    height: 100vh;
+    width: 100vw;
+    scroll-snap-align: start;
     /* Each section takes up the entire viewport height */
 }
 
@@ -67,7 +58,8 @@ section {
 #experience {
     display: flex;
     justify-content: left;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     width: 100%;
 }
 
@@ -79,20 +71,3 @@ section {
     gap: 25px;
 }
 
-.sideways
-{
-    font-family: var(--fancy-font);
-    color: var(--foreground);
-    writing-mode: vertical-rl;
-    transform: scale(-1);
-    font-size: 8em;
-    opacity: 0.5;
-    margin: 0px 0px 0px 80px;
-}
-
-.experience-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-content: center;
-}

@@ -71,6 +71,7 @@
         color: var(--foreground);
         font-family: var(--fancy-font);
         transition: color 0.3s;
+        font-weight: bold;
     }
 
     .container:hover .at {
@@ -79,7 +80,7 @@
 
     .desc {
         opacity: 0.9;
-        font-family: var(--reddit-font);
+        font-family: var(--mono-font);
         font-size: 1em;
         color: var(--foreground);
         margin-top: 0.5em;
