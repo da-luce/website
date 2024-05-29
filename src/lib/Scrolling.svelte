@@ -51,7 +51,7 @@
 <style>
     textPath {
         font-family: var(--fancy-font);
-        font-size: 0.2rem;
+        font-size: 0.05rem;
         fill: var(--foreground);
         font-style: italic;
     }

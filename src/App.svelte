@@ -5,6 +5,7 @@
     import Gradient from "./lib/Gradient.svelte";
     import Timeline from "./lib/Timeline.svelte";
     import Scrolling from "./lib/Scrolling.svelte";
+    import Logo from "./lib/Logo.svelte";
 </script>
 
 <head>
@@ -31,27 +32,19 @@
 <Landing />
 
 <section id="experience">
-    <Scrolling text="Experience" icon="✧" spacing="1px" />
-    <ul class="timeline">
-        <Timeline
-            date="MAY-JUN 2023 & 2024"
-            title="Software Engineer, Intern"
-            at="RTX"
-            desc="Worked on X-Band Radar software. Learned Ada language, ClearCase, Jenkins to support correcting software bugs and new development. Assisted in redevelopment of tool allowing better testing of capabilities of radar software. Participated in daily scrum, sprint planning and backlog refinement"
-        />
-        <Timeline
-            date="SEP 2022-PRESENT"
-            title="Autobike Project Team"
-            at="Cornell Autobike"
-            desc="Member of the Navigation team. Reinforcement learning to determine optimal bicycle routing, Docker, Python. Optical flow and computer vision techniques to predict future occupancy grids, OpenCV"
-        />
-        <Timeline
-            date="2022"
-            title="Software Testing Intern"
-            at="Tholyl"
-            desc="Tested and reported bugs, provided insight into development of software product. Managed website"
-        />
-    </ul>
+    <div class="heading" style="color: var(--foreground);">Experience</div>
+    <div
+        class="heading"
+        style="color: var(--foreground); opacity: 0.8; font-size: 2em;"
+    >
+        Where I've worked.
+    </div>
+    <div class="logos">
+        <Logo src="src/assets/rtx.svg" alt="bruh" />
+        <Logo src="src/assets/bike.png" alt="bruh" />
+        <Logo src="src/assets/cornell.svg" alt="bruh" />
+        <Logo src="src/assets/ieee.png" alt="bruh" />
+    </div>
 </section>
 
 <section id="projects">

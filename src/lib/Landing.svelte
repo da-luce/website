@@ -34,11 +34,12 @@
     <div class="landing-text">
         <!-- Don't use h1, messes up text outline -->
         <div class="title" style="color: var(--foreground);">Dalton</div>
-        <div class="title" style="color: rgba(0, 0, 0, 0);">Luce</div>
+        <div class="title" style="color: transparent;">Luce</div>
         <p class="subheading">
-            I'm an Electrical and Computer Engineering undergraduate at
-            <Link text="Cornell" href="https://www.engineering.cornell.edu/" />,
-            actively engaged with the Cornell
+            Electrical and Computer Engineering undergraduate at <Link
+                text="Cornell"
+                href="https://www.engineering.cornell.edu/"
+            />, actively engaged with the Cornell
             <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter, and
             contributing to innovations on the
             <Link text="Autobike" href="https://www.cuautobike.org/" /> project team.
@@ -58,14 +59,10 @@
     }
 
     .landing-text {
-        position: relative;
-        left: 2em;
-        top: 2em;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         pointer-events: none;
-        margin: 80px 0px 0px 80px;
     }
 
     .subheading {
@@ -80,6 +77,7 @@
     }
 
     section {
+        padding-top: 7vw;
         scroll-snap-align: start;
     }
 </style>
