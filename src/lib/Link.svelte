@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let color: string = "#c6c8d1"; // Default color
+    export let color: string = "#b6e4fc"; // Default color
     export let href: string;
     export let text: string;
 

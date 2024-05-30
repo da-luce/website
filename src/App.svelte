@@ -32,18 +32,25 @@
 <Landing />
 
 <section id="experience">
-    <div class="heading" style="color: var(--foreground);">Experience</div>
-    <div
-        class="heading"
-        style="color: var(--foreground); opacity: 0.8; font-size: 2em;"
-    >
-        Where I've worked.
-    </div>
-    <div class="logos">
-        <Logo src="src/assets/rtx.svg" alt="bruh" />
-        <Logo src="src/assets/bike.png" alt="bruh" />
-        <Logo src="src/assets/cornell.svg" alt="bruh" />
-        <Logo src="src/assets/ieee.png" alt="bruh" />
+    <div>
+        <div
+            class="heading"
+            style="color: var(--foreground); font-style: italic;"
+        >
+            Experience
+        </div>
+        <div
+            class="heading"
+            style="color: var(--foreground); opacity: 0.8; font-size: 2em;"
+        >
+            Where I've worked.
+        </div>
+        <div class="logos">
+            <Logo src="src/assets/rtx.svg" alt="bruh" />
+            <Logo src="src/assets/bike.png" alt="bruh" />
+            <Logo src="src/assets/cornell.svg" alt="bruh" />
+            <Logo src="src/assets/ieee.png" alt="bruh" />
+        </div>
     </div>
 </section>
 

@@ -3,6 +3,7 @@
     import Link from "./Link.svelte";
     import Arrow from "./Arrow.svelte";
     import { onMount } from "svelte";
+    import ArrowLink from "./ArrowLink.svelte";
 
     let landingHeight = 100; // Initial height in vh
 
@@ -31,7 +32,7 @@
 </script>
 
 <section id="landing" style="height: {landingHeight}vh;">
-    <div class="landing-text">
+    <div>
         <!-- Don't use h1, messes up text outline -->
         <div class="title" style="color: var(--foreground);">Dalton</div>
         <div class="title" style="color: transparent;">Luce</div>
@@ -45,7 +46,8 @@
             <Link text="Autobike" href="https://www.cuautobike.org/" /> project team.
             Currently, I'm expanding my software engineering expertise as an intern
             at
-            <Link text="RTX" href="https://www.rtx.com/" />.
+            <Link text="RTX" href="https://www.rtx.com/" />. Feel free to read
+            my <ArrowLink text="full resume!" href="eee" />
         </p>
     </div>
 </section>
@@ -58,13 +60,6 @@
         -webkit-text-stroke-color: var(--foreground);
     }
 
-    .landing-text {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        pointer-events: none;
-    }
-
     .subheading {
         pointer-events: auto;
         max-width: 40rem;
@@ -74,10 +69,5 @@
         font-size: 1rem;
         color: var(--foreground);
         line-height: 2.5rem;
-    }
-
-    section {
-        padding-top: 7vw;
-        scroll-snap-align: start;
     }
 </style>

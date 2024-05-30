@@ -5,6 +5,7 @@
 
 <div class="container">
     <div class="background" style="--mask-image: url({src});"></div>
+    <img {src} {alt} class="logo" />
 </div>
 
 <style>
@@ -12,11 +13,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 160px;
-        height: 80px;
+        width: 8em;
+        height: 4em;
         position: relative;
         background-color: transparent;
-
         border-radius: 1rem;
         transition: all 0.5s;
         padding: 20px;
@@ -45,14 +45,12 @@
     }
 
     .logo {
-        width: 80%;
-        height: 80%;
-        filter: grayscale(100%);
-        transition: filter 0.3s ease-in-out;
-        position: relative;
+        width: 100%; /* Ensure the logo takes the full container size */
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
     }
 
-    .logo:hover {
-        filter: none;
+    .container:hover .logo {
+        opacity: 1;
     }
 </style>
