@@ -23,7 +23,7 @@
     const handleMouseEnter = () => {
         if (videoSrc === "recursive") {
             startScreenCapture();
-        } else {
+        } else if (videoSrc) {
             videoElement.play();
         }
     };
@@ -33,7 +33,7 @@
             const tracks = videoElement.srcObject?.getTracks();
             tracks?.forEach((track) => track.stop());
             videoElement.srcObject = null;
-        } else {
+        } else if (videoSrc) {
             videoElement.pause();
         }
     };
@@ -47,11 +47,21 @@
 >
     <div class="video-container">
         <Hover>
-            <video bind:this={videoElement} src={videoSrc} loop muted></video>
+            {#if videoSrc === "recursive" || videoSrc}
+                <video
+                    bind:this={videoElement}
+                    src={videoSrc}
+                    loop
+                    muted
+                    class="media-element"
+                ></video>
+            {:else}
+                <div class="placeholder media-element"></div>
+            {/if}
         </Hover>
     </div>
     <div class="content">
-        <div class="title">{title}</div>
+        <div class="title">• {title}</div>
         <p class="description">{desc}</p>
         <div class="tags">
             {#each tags as tag}
@@ -76,7 +86,7 @@
         max-width: 30vw; /* Adjust the size as needed */
     }
 
-    video {
+    .media-element {
         width: 100%;
         height: auto;
         border-radius: 10px;
@@ -84,8 +94,21 @@
         filter: grayscale(1);
     }
 
-    video:hover {
+    .media-element:hover {
         filter: grayscale(0);
+    }
+
+    .placeholder {
+        border: 2px solid var(--foreground);
+        background: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 10px,
+            var(--foreground) 10px,
+            var(--foreground) 12px
+        );
+        height: 0;
+        padding-bottom: 56.25%; /* Aspect ratio 16:9 */
     }
 
     .content {

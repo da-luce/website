@@ -35,5 +35,7 @@
     div {
         perspective: 1000px;
         transition: transform 0.3s ease;
+        background-color: transparent;
+        border-color: transparent;
     }
 </style>

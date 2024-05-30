@@ -40,9 +40,10 @@
         tags={["c", "Meson", "ncurses"]}
     />
     <Project
-        videoSrc="recursive"
+        videoSrc="src/assets/website.mov"
         title="Personal Website"
-        desc="..."
+        desc="The website you're looking at right now! :) I have always had an interest for design."
         tags={["JavaScript", "TypeScript", "HTML & CSS", "Svelte 4.0"]}
     />
+    <Project videoSrc="" title="More coming soon!" desc="" tags={[]} />
 </section>
