@@ -6,6 +6,7 @@
     import Timeline from "./lib/Timeline.svelte";
     import Scrolling from "./lib/Scrolling.svelte";
     import Logo from "./lib/Logo.svelte";
+    import Project from "./lib/Project.svelte";
 </script>
 
 <head>
@@ -31,29 +32,17 @@
 <Arrow />
 <Landing />
 
-<section id="experience">
-    <div>
-        <div
-            class="heading"
-            style="color: var(--foreground); font-style: italic;"
-        >
-            Experience
-        </div>
-        <div
-            class="heading"
-            style="color: var(--foreground); opacity: 0.8; font-size: 2em;"
-        >
-            Where I've worked.
-        </div>
-        <div class="logos">
-            <Logo src="src/assets/rtx.svg" alt="bruh" />
-            <Logo src="src/assets/bike.png" alt="bruh" />
-            <Logo src="src/assets/cornell.svg" alt="bruh" />
-            <Logo src="src/assets/ieee.png" alt="bruh" />
-        </div>
-    </div>
-</section>
-
 <section id="projects">
-    <Scrolling text="Projects" icon="✦" spacing="1px" />
+    <Project
+        videoSrc="src/assets/starsaver.mov"
+        title="Starsaver"
+        desc="I've always been interested in the command line-the power of ASCII characters and a limited selection of colors to portray more than just text. Starsaver enables users to display the positions of stars in realtime. Also got to explore c."
+        tags={["c", "Meson", "ncurses"]}
+    />
+    <Project
+        videoSrc="recursive"
+        title="Personal Website"
+        desc="..."
+        tags={["JavaScript", "TypeScript", "HTML & CSS", "Svelte 4.0"]}
+    />
 </section>
