@@ -1,41 +1,21 @@
 <script lang="ts">
     import Hover from "./Hover.svelte";
+    import ArrowLink from "./ArrowLink.svelte";
+
     export let videoSrc: string;
     export let title: string;
     export let desc: string;
     export let tags: string[];
+    export let href: string;
 
     let videoElement: HTMLVideoElement;
 
-    async function startScreenCapture() {
-        try {
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: { cursor: "always" },
-                audio: false,
-            });
-            videoElement.srcObject = stream;
-            videoElement.play();
-        } catch (err) {
-            console.error("Error: " + err);
-        }
-    }
-
     const handleMouseEnter = () => {
-        if (videoSrc === "recursive") {
-            startScreenCapture();
-        } else if (videoSrc) {
-            videoElement.play();
-        }
+        videoElement.play();
     };
 
     const handleMouseLeave = () => {
-        if (videoSrc === "recursive") {
-            const tracks = videoElement.srcObject?.getTracks();
-            tracks?.forEach((track) => track.stop());
-            videoElement.srcObject = null;
-        } else if (videoSrc) {
-            videoElement.pause();
-        }
+        videoElement.pause();
     };
 </script>
 
@@ -47,7 +27,7 @@
 >
     <div class="video-container">
         <Hover>
-            {#if videoSrc === "recursive" || videoSrc}
+            {#if videoSrc}
                 <video
                     bind:this={videoElement}
                     src={videoSrc}
@@ -61,7 +41,7 @@
         </Hover>
     </div>
     <div class="content">
-        <div class="title">• {title}</div>
+        <ArrowLink {href}><div class="title">• {title}</div></ArrowLink>
         <p class="description">{desc}</p>
         <div class="tags">
             {#each tags as tag}
@@ -77,13 +57,22 @@
         align-items: flex-start;
         justify-content: space-between;
         gap: 20px;
-        padding: 20px;
-        max-width: 50vw;
+        width: 50vw;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+
+    .project:hover {
+        opacity: 1;
     }
 
     .video-container {
-        flex: 1;
+        flex: 1; /*?*/
         max-width: 30vw; /* Adjust the size as needed */
+    }
+
+    .video-container:hover {
+        cursor: pointer;
     }
 
     .media-element {
@@ -92,6 +81,7 @@
         border-radius: 10px;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
         filter: grayscale(1);
+        transition: filter 0.3s ease;
     }
 
     .media-element:hover {
@@ -99,13 +89,13 @@
     }
 
     .placeholder {
-        border: 2px solid var(--foreground);
+        border: 1px solid var(--foreground);
         background: repeating-linear-gradient(
             -45deg,
             transparent,
             transparent 10px,
             var(--foreground) 10px,
-            var(--foreground) 12px
+            var(--foreground) 11px
         );
         height: 0;
         padding-bottom: 56.25%; /* Aspect ratio 16:9 */
@@ -146,9 +136,5 @@
         font-family: var(--mono-font);
         font-size: 0.8em;
         backdrop-filter: blur(1000px);
-    }
-
-    .project:hover {
-        cursor: pointer;
     }
 </style>

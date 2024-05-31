@@ -1,7 +1,5 @@
 <script lang="ts">
-    import Gradient from "./Gradient.svelte";
     import Link from "./Link.svelte";
-    import Arrow from "./Arrow.svelte";
     import { onMount } from "svelte";
     import ArrowLink from "./ArrowLink.svelte";
 
@@ -47,12 +45,19 @@
             Currently, I'm expanding my software engineering expertise as an intern
             at
             <Link text="RTX" href="https://www.rtx.com/" />. Feel free to read
-            my <ArrowLink text="full resume!" href="eee" />
+            my
+            <ArrowLink href="eee"><div id="resume">full resume!</div></ArrowLink
+            >
         </p>
     </div>
 </section>
 
 <style>
+    #resume {
+        text-decoration: underline;
+        color: var(--foreground);
+    }
+
     .title {
         font-family: var(--fancy-font);
         font-size: 6em;
