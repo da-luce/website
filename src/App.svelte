@@ -5,9 +5,12 @@
     import Project from "./lib/Project.svelte";
     import Link from "./lib/Link.svelte";
     import ArrowLink from "./lib/ArrowLink.svelte";
+    import Jelly from "./lib/Jelly.svelte";
 </script>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -45,7 +48,7 @@
                 as an intern at
                 <Link text="RTX" href="https://www.rtx.com/" />. Feel free to
                 read my
-                <ArrowLink href="eee"
+                <ArrowLink href="/resume.pdf"
                     ><p style="text-decoration: underline;">
                         full resume!
                     </p></ArrowLink
@@ -55,32 +58,38 @@
     </section>
 
     <section id="projects">
-        <Project
-            videoSrc="src/assets/starsaver.mov"
-            title="Starsaver"
-            desc="I've always been interested in the command line—the power of ASCII characters and a limited selection of colors to portray more than just text. Starsaver enables users to display the positions of stars in real-time. This project allowed me to explore C programming deeply, combining my passion for astronomy and coding to create an engaging and educational tool. Through Starsaver, users can experience the night sky in a unique way, bringing the beauty of the cosmos right to their terminals."
-            tags={["C", "Meson", "ncurses"]}
-            href="https://github.com/da-luce/starsaver"
-        />
-        <Project
-            videoSrc="src/assets/website.mov"
-            title="Personal Website"
-            desc="The website you're looking at right now! Though an engineer by study, I've always had a soft spot for clean, beautiful UIs. This is my crack at one using Svelte (my fav♡rite JS framework). Here, you'll find my projects, like Starsaver, as well as other works that highlight my journey in programming and design. Explore, enjoy, and get inspired!"
-            tags={["JavaScript", "TypeScript", "HTML & CSS", "Svelte 4.0"]}
-            href=""
-        />
-        <Project
-            videoSrc=""
-            title="More coming soon!"
-            desc="Feel free to drop a star or two :)"
-            tags={[]}
-            href="https://github.com/da-luce/"
-        />
+        <div id="projects-container">
+            <Project
+                videoSrc="src/assets/starsaver.mov"
+                title="Starsaver"
+                desc="I've always been interested in the command line—the power of ASCII characters and a limited selection of colors to portray more than just text. Starsaver enables users to display the positions of stars in real-time. This project allowed me to explore C programming deeply, combining my passion for astronomy and coding to create an engaging and educational tool. Through Starsaver, users can experience the night sky in a unique way, bringing the beauty of the cosmos right to their terminals."
+                tags={["C", "Meson", "ncurses"]}
+                href="https://github.com/da-luce/starsaver"
+            />
+            <Project
+                videoSrc="src/assets/website.mov"
+                title="Personal Website"
+                desc="The website you're looking at right now! Though an engineer by study, I've always had a soft spot for clean, beautiful UIs. This is my crack at one using Svelte (my fav♡rite JS framework). Here, you'll find my projects, like Starsaver, as well as other works that highlight my journey in programming and design. Explore, enjoy, and get inspired!"
+                tags={["JavaScript", "TypeScript", "HTML & CSS", "Svelte 4.0"]}
+                href=""
+            />
+            <Project
+                videoSrc=""
+                title="More coming soon!"
+                desc="Feel free to drop a star or two :)"
+                tags={[]}
+                href="https://github.com/da-luce/"
+            />
+        </div>
     </section>
+
     <footer>
         <p>
-            Designed and hand coded by me ✌️ <br />
+            Designed and hand coded by me <span class="emoji">✌️</span>
+            <br />
+            <span style="opacity: 0.4;"
+                >© Dalton Luce 2024. All Rights Reserved.</span
+            >
         </p>
-        <p style="opacity: 0.4;">© Dalton Luce 2024. All Rights Reserved.</p>
     </footer>
 </body>

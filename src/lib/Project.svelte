@@ -11,11 +11,15 @@
     let videoElement: HTMLVideoElement;
 
     const handleMouseEnter = () => {
-        videoElement.play();
+        if (videoSrc) {
+            videoElement.play();
+        }
     };
 
     const handleMouseLeave = () => {
-        videoElement.pause();
+        if (videoSrc) {
+            videoElement.pause();
+        }
     };
 </script>
 

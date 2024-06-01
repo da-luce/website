@@ -15,17 +15,23 @@ body {
     margin: 0;
     padding: 0;
     background-color: rgba(0, 0, 0, 0);
-    overflow-x: hidden;
+
     scroll-behavior: smooth !important;
 }
 
 section {
-    height: 100vh;
     width: 100vw;
+    padding: 0 2em 0em 2em;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+section > div:first-child {
+    max-width: 40em;
+    width: 100%;
+    margin: 0 auto;
 }
 
 /* A simple CSS reset */
@@ -63,19 +69,46 @@ p {
     font-size: 1em;
 }
 
+#landing {
+    height: 100vh;
+}
+
 #subheading {
     pointer-events: auto;
-    max-width: 40rem;
-    min-width: 20rem;
-    line-height: 2.5rem; /* Extra room for links */
+    line-height: 2.5rem;
+    /* Extra room for links */
 }
 
 #projects {
-    gap: 50px;
+    margin-top: 5em; /* Add some room to breath */
+}
+
+#projects-container {
+    flex-direction: column;
+    align-items: flex-start;
+    display: flex;
+    gap: 5em;
+}
+
+/* Needed to display emojis properly in Chrome for some reason */
+.emoji {
+    font-family:
+        apple color emoji,
+        segoe ui emoji,
+        noto color emoji,
+        android emoji,
+        emojisymbols,
+        emojione mozilla,
+        twemoji mozilla,
+        segoe ui symbol;
 }
 
 footer {
-    margin-bottom: 1em;
+    height: 20vh;
     width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
     text-align: center;
+    margin-bottom: 1em;
 }

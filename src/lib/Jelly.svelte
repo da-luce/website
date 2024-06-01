@@ -1,5 +1,4 @@
 <script lang="ts">
-    /* FIXME: janky on Chrome */
     import { onMount } from "svelte";
     import { throttle } from "../throttle"; // Ensure this path is correct
 
@@ -8,13 +7,13 @@
     let iconGap = defaultGap; // Initial spacing in rem
     let lastTime = 0;
     let lastY = 0;
-    let returnInterval;
+    let returnAnimationFrame;
 
-    let b = 0.02; // Damping coefficient
-    let k = 0.1; // Return coefficient
+    export let dampingCoeff = 0.02; // Damping coefficient
+    export let returnCoeff = 0.1; // Return coefficient
 
     function handleScroll(event) {
-        clearInterval(returnInterval); // Clear any existing interval
+        cancelAnimationFrame(returnAnimationFrame); // Cancel any existing animation frame
 
         const currentTime = performance.now();
         const timeDiff = currentTime - lastTime;
@@ -23,25 +22,31 @@
         if (timeDiff > 0) {
             const scrollVelocity = scrollDiff / timeDiff;
 
-            iconGap = iconGap + b * scrollVelocity - k * (iconGap - defaultGap);
+            iconGap =
+                iconGap +
+                dampingCoeff * scrollVelocity -
+                returnCoeff * (iconGap - defaultGap);
 
             lastTime = currentTime;
             lastY = window.scrollY;
         }
 
-        startReturnInterval(); // Start the return interval immediately after handling scroll
+        startReturnAnimation(); // Start the return animation immediately after handling scroll
     }
 
-    function startReturnInterval() {
-        returnInterval = setInterval(() => {
-            iconGap -= k * (iconGap - defaultGap);
+    function startReturnAnimation() {
+        function animate() {
+            iconGap -= returnCoeff * (iconGap - defaultGap);
 
             // If close enough, set normal
-            if (Math.abs(defaultGap - iconGap) < 0.01) {
+            if (Math.abs(defaultGap - iconGap) >= 0.01) {
+                returnAnimationFrame = requestAnimationFrame(animate); // Continue the animation
+            } else {
                 iconGap = defaultGap;
-                clearInterval(returnInterval);
             }
-        }, 16);
+        }
+
+        returnAnimationFrame = requestAnimationFrame(animate);
     }
 
     const throttledScrollHandler = throttle(handleScroll, 10); // 10 ms
@@ -50,7 +55,7 @@
         window.addEventListener("scroll", throttledScrollHandler);
         return () => {
             window.removeEventListener("scroll", throttledScrollHandler);
-            clearInterval(returnInterval); // Clear the interval on unmount
+            cancelAnimationFrame(returnAnimationFrame); // Cancel the animation frame on unmount
         };
     });
 </script>
@@ -63,9 +68,8 @@
     #content {
         display: flex;
         flex-direction: column;
-        align-items: flex-end; /* Align items to the end of the flex container (right side) */
-        gap: var(--icon-spacing); /* Use CSS variable for spacing */
+        align-items: center;
+        gap: var(--icon-spacing);
         pointer-events: auto; /* Enable pointer events for the children */
-        transition: gap 0.01s linear; /* Smooth transition for spacing change */
     }
 </style>
