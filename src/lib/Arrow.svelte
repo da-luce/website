@@ -1,5 +1,6 @@
 <script>
-    import { onMount, onDestroy } from "svelte";
+    import { onMount } from "svelte";
+    import { throttle } from "../throttle";
 
     export let size = 100; // Default size
     let sizeVh;
@@ -38,6 +39,8 @@
         // FIXME: why 2*gap?
     }
 
+    const throttledScrollHandler = throttle(handleScroll, 10); // 10 ms
+
     function handleClick() {
         if (opacity < 0.3) {
             return;
@@ -59,10 +62,11 @@
     }
 
     onMount(() => {
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", throttledScrollHandler);
         handleScroll(); // Initial call to set the correct position
         sizeVh = (size * 100) / document.documentElement.clientHeight;
-        return () => window.removeEventListener("scroll", handleScroll);
+        return () =>
+            window.removeEventListener("scroll", throttledScrollHandler);
     });
 </script>
 

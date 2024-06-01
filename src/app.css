@@ -1,18 +1,17 @@
 :root {
+    /* Colors */
     --background-primary: #030c1d;
-    --background-secondary: #01344D;
+    --background-secondary: #01344d;
     --foreground: #c6c8d1;
     --highlight: #b6e4fc;
+
+    /* Fonts */
     --fancy-font: "Yeseva One", serif;
-    --mono-font: "Lucida Console", monospace;
-    --sans-font: "Rubik", sans-serif;
     --reddit-font: "Inconsolata", monospace;
-    --f-font: "Averia Serif Libre", serif;
 }
 
 html,
 body {
-    /* Remove default padding */
     margin: 0;
     padding: 0;
     background-color: rgba(0, 0, 0, 0);
@@ -20,62 +19,63 @@ body {
     scroll-behavior: smooth !important;
 }
 
-
 section {
-    /*position: relative; */
-    /* Needed to make sure sections stack on top of background */
     height: 100vh;
     width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.heading {
+/* A simple CSS reset */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+h1 {
     font-family: var(--fancy-font);
-    font-size: 4em;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: var(--foreground);
+    font-size: 6em;
 }
 
-.logos {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 100px;
-    justify-content: space-between;
+h2 {
+    font-family: var(--fancy-font);
+    color: var(--foreground);
+    font-size: 1.5em;
 }
 
-#projects {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100% padding: 40px 0;
-    gap: 30px;
+p {
+    font-family: var(--reddit-font);
+    color: var(--foreground);
+    font-size: 1em;
 }
 
-section {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+#subheading {
+    pointer-events: auto;
+    max-width: 40rem;
+    min-width: 20rem;
+    line-height: 2.5rem; /* Extra room for links */
 }
 
 #projects {
-    display: flex;
-    justify-content: center;
     gap: 50px;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
 }
 
-
-/* Timeline Container */
-.timeline {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+footer {
+    margin-bottom: 1em;
+    width: 100%;
+    text-align: center;
 }

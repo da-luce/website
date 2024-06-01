@@ -41,8 +41,8 @@
         </Hover>
     </div>
     <div class="content">
-        <ArrowLink {href}><div class="title">• {title}</div></ArrowLink>
-        <p class="description">{desc}</p>
+        <ArrowLink {href}><h2 class="title">• {title}</h2></ArrowLink>
+        <p>{desc}</p>
         <div class="tags">
             {#each tags as tag}
                 <span class="tag">{tag}</span>
@@ -106,19 +106,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: 10px;
-    }
-
-    .title {
-        font-family: var(--fancy-font);
-        font-size: 1.5em;
-        color: var(--foreground);
-    }
-
-    .description {
-        font-family: var(--reddit-font);
-        font-size: 1em;
-        color: var(--foreground);
+        gap: 20px;
     }
 
     .tags {
@@ -133,8 +121,9 @@
         color: var(--highlight);
         padding: 5px 10px;
         border-radius: 15px;
-        font-family: var(--mono-font);
-        font-size: 0.8em;
+        font-family: var(--reddit-font);
+        font-weight: bold;
+        font-size: 0.9em;
         backdrop-filter: blur(1000px);
     }
 </style>

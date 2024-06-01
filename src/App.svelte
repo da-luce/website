@@ -1,10 +1,10 @@
 <script lang="ts">
-    import Landing from "./lib/Landing.svelte";
     import Socials from "./lib/Socials.svelte";
     import Arrow from "./lib/Arrow.svelte";
     import Gradient from "./lib/Gradient.svelte";
     import Project from "./lib/Project.svelte";
-    import Footer from "./lib/Footer.svelte";
+    import Link from "./lib/Link.svelte";
+    import ArrowLink from "./lib/ArrowLink.svelte";
 </script>
 
 <head>
@@ -29,7 +29,30 @@
     <Gradient />
     <Socials />
     <Arrow />
-    <Landing />
+    <section id="landing">
+        <div>
+            <h1 style="color: var(--foreground);">Dalton</h1>
+            <h1 style="color: transparent;">Luce</h1>
+            <p id="subheading">
+                Electrical and Computer Engineering undergraduate at <Link
+                    text="Cornell"
+                    href="https://www.engineering.cornell.edu/"
+                />, actively engaged with the Cornell
+                <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter,
+                and contributing to innovations on the
+                <Link text="Autobike" href="https://www.cuautobike.org/" /> project
+                team. Currently, I'm expanding my software engineering expertise
+                as an intern at
+                <Link text="RTX" href="https://www.rtx.com/" />. Feel free to
+                read my
+                <ArrowLink href="eee"
+                    ><p style="text-decoration: underline;">
+                        full resume!
+                    </p></ArrowLink
+                >
+            </p>
+        </div>
+    </section>
 
     <section id="projects">
         <Project
@@ -54,5 +77,10 @@
             href="https://github.com/da-luce/"
         />
     </section>
-    <Footer />
+    <footer>
+        <p>
+            Designed and hand coded by me ✌️ <br />
+        </p>
+        <p style="opacity: 0.4;">© Dalton Luce 2024. All Rights Reserved.</p>
+    </footer>
 </body>
