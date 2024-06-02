@@ -11,6 +11,7 @@
 
     export let dampingCoeff = 0.02; // Damping coefficient
     export let returnCoeff = 0.1; // Return coefficient
+    export let enabled = true;
 
     function handleScroll(event) {
         cancelAnimationFrame(returnAnimationFrame); // Cancel any existing animation frame
@@ -52,6 +53,9 @@
     const throttledScrollHandler = throttle(handleScroll, 10); // 10 ms
 
     onMount(() => {
+        if (!enabled) {
+            return;
+        }
         window.addEventListener("scroll", throttledScrollHandler);
         return () => {
             window.removeEventListener("scroll", throttledScrollHandler);
@@ -66,10 +70,9 @@
 
 <style>
     #content {
+        gap: var(--icon-spacing);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: var(--icon-spacing);
         pointer-events: auto; /* Enable pointer events for the children */
     }
 </style>

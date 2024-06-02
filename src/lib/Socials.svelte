@@ -1,6 +1,8 @@
 <script>
     import Jelly from "./Jelly.svelte";
     import AnimatedIcon from "./AnimatedIcon.svelte";
+    import { onMount } from "svelte";
+    import { writable } from "svelte/store";
 
     const linkedinPath =
         "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z";
@@ -10,6 +12,21 @@
         "M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z";
     const mediumPath =
         "M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z";
+
+    const windowWidth = writable(window.innerWidth);
+
+    const handleResize = () => {
+        windowWidth.set(window.innerWidth);
+    };
+
+    onMount(() => {
+        window.addEventListener("resize", handleResize);
+        handleResize();
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    });
 </script>
 
 <div id="container">
@@ -39,7 +56,7 @@
             path={mailPath}
             viewBoxWidth={24}
             viewBoxHeight={24}
-            link="daltonluce42@gmail.com"
+            link="mailto:daltonluce42@gmail.com"
             title="Gmail"
         />
     </Jelly>
@@ -51,5 +68,12 @@
         top: 80px;
         right: 80px;
         pointer-events: none; /* Passes through the mouse events */
+    }
+
+    /* FIXME: this is janky */
+    @media (max-width: 1200px) {
+        #container {
+            position: absolute;
+        }
     }
 </style>

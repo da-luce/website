@@ -12,7 +12,7 @@
     let rotation = 0;
     let cursor = "pointer";
     let arrowGap = 2; // Initial position from bottom in vh
-    let arrowPosition = arrowGap;
+    // let arrowPosition = arrowGap;
 
     function handleScroll() {
         const y = window.scrollY;
@@ -34,8 +34,8 @@
         rotation = y > (documentHeight - windowHeight) / 2 ? 180 : 0;
 
         // Adjust arrow position
-        arrowPosition =
-            arrowGap + (y / scrollableDistance) * (100 - 2 * arrowGap - sizeVh);
+        // arrowPosition =
+        //     arrowGap + (y / scrollableDistance) * (100 - 2 * arrowGap - sizeVh);
         // FIXME: why 2*gap?
     }
 
@@ -77,7 +77,7 @@
     on:keydown={handleKeydown}
     aria-label="Scroll to top or bottom"
     on:click={handleClick}
-    style="bottom: {arrowPosition}vh; opacity: {opacity}; cursor: {cursor};"
+    style="bottom: 8vh; opacity: {opacity}; cursor: {cursor};"
 >
     <svg
         width={size}
