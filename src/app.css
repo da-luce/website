@@ -21,7 +21,8 @@ body {
 
 section {
     width: 100vw;
-    padding: 0 2em 0em 2em;
+    box-sizing: border-box;
+    padding: 0 1.5em 0em 1.5em; /* For small screens */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,7 +81,8 @@ p {
 }
 
 #projects {
-    margin-top: 5em; /* Add some room to breath */
+    margin-top: 5em;
+    /* Add some room to breath */
 }
 
 #projects-container {

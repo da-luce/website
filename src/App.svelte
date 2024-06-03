@@ -6,6 +6,7 @@
     import Link from "./lib/Link.svelte";
     import ArrowLink from "./lib/ArrowLink.svelte";
     import Jelly from "./lib/Jelly.svelte";
+    import Test from "./lib/Test.svelte";
 </script>
 
 <head>
@@ -29,7 +30,8 @@
 </head>
 
 <body>
-    <Gradient />
+    <!-- <Gradient /> -->
+    <Test />
     <Socials />
     <Arrow />
     <section id="landing">

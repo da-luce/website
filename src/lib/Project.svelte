@@ -118,7 +118,7 @@
     }
 
     .video-container {
-        flex: 2;
+        width: 50%;
     }
 
     .video-container:hover {
@@ -152,6 +152,7 @@
         );
         height: 0;
         padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+        backdrop-filter: blur(1000px);
     }
 
     .content {
@@ -177,6 +178,6 @@
         font-family: var(--reddit-font);
         font-weight: bold;
         font-size: 0.9em;
-        backdrop-filter: blur(1000px);
+        backdrop-filter: blur(100px);
     }
 </style>

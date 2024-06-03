@@ -65,15 +65,15 @@
 <style>
     #container {
         position: fixed;
-        top: 80px;
-        right: 80px;
+        top: 5em;
+        right: 5em;
         pointer-events: none; /* Passes through the mouse events */
     }
 
     /* FIXME: this is janky */
-    @media (max-width: 1200px) {
+    @media (max-width: 1100px) {
         #container {
-            position: absolute;
+            display: none;
         }
     }
 </style>
