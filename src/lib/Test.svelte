@@ -14,12 +14,15 @@
 
     let canvas: HTMLCanvasElement;
     let points: Array<Point> = [];
-    const numPoints: number = 5;
+    export const numPoints: number = 10; // Export so we can use in shader
 
     const colorPalletteRGB: Array<color> = [
-        [0, 0, 0],
-        [100, 100, 100],
-        [255, 255, 255],
+        [147, 235, 239],
+        [126, 194, 243],
+        [102, 149, 248],
+        [97, 140, 249],
+        [84, 115, 251],
+        [75, 98, 253],
     ];
 
     function normalizeColor(color: color): color {
@@ -59,8 +62,8 @@
             // Update position considering potential velocity reversal
             return {
                 ...point,
-                x: point.x + point.vx,
-                y: point.y + point.vy,
+                x: newX,
+                y: newY,
             };
         });
     }
@@ -70,6 +73,10 @@
         shaderProgram: WebGLProgram,
         resolutionLocation: WebGLUniformLocation,
     ) {
+        if (!canvas) {
+            return;
+        }
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -80,7 +87,7 @@
     }
 
     onMount(() => {
-        // Initialize webgl
+        // Initialize WebGL
         const gl = canvas.getContext("webgl");
         if (!gl) {
             alert(
@@ -93,7 +100,11 @@
         points = initializePoints();
 
         // Create shader program
-        const shaderProgram = createShaderProgram(gl, vsSource, fsSource);
+        const shaderProgram = createShaderProgram(
+            gl,
+            vsSource,
+            fsSource(numPoints),
+        );
         gl.useProgram(shaderProgram);
 
         // Handle vertex positions for fullscreen quad
@@ -126,8 +137,24 @@
         const greensLocation = gl.getUniformLocation(shaderProgram, "u_greens");
         const bluesLocation = gl.getUniformLocation(shaderProgram, "u_blues");
 
+        // Prepare color arrays
+        const reds = new Float32Array(numPoints);
+        const greens = new Float32Array(numPoints);
+        const blues = new Float32Array(numPoints);
+
+        points.forEach((point, index) => {
+            reds[index] = point.color[0];
+            greens[index] = point.color[1];
+            blues[index] = point.color[2];
+        });
+
+        // Pass color information once. This does not change
+        gl.uniform1fv(redsLocation, reds);
+        gl.uniform1fv(greensLocation, greens);
+        gl.uniform1fv(bluesLocation, blues);
+
         function render() {
-            // Cnavas may not exist when updating shaders. Avoid errors.
+            // Canvas may not exist when updating shaders. Avoid errors.
             if (!canvas) {
                 return;
             }
@@ -135,23 +162,12 @@
             // Update point locations
             updatePoints();
 
-            // Pass information to uniforms
+            // Pass new information to uniforms
+            // * Resolution only changes on resize
+            // * Color information is constant
             gl.uniform2fv(
                 pointsLocation,
                 new Float32Array(points.flatMap((p) => [p.x, p.y])),
-            );
-            gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-            gl.uniform1fv(
-                redsLocation,
-                new Float32Array(points.flatMap((p) => p.color[0])),
-            );
-            gl.uniform1fv(
-                greensLocation,
-                new Float32Array(points.flatMap((p) => p.color[1])),
-            );
-            gl.uniform1fv(
-                bluesLocation,
-                new Float32Array(points.flatMap((p) => p.color[2])),
             );
 
             // Clear the screen
