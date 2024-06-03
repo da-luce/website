@@ -1,4 +1,4 @@
-export const vsSource = `
+export const vsGradient = `
       attribute vec2 aVertexPosition;
       void main() {
           gl_Position = vec4(aVertexPosition, 0, 1.0);
@@ -7,7 +7,7 @@ export const vsSource = `
 
 /* Dynamically take number of points. If we buffer an array with more
 space than the number of points, we get a dark spot in the middle of zeroed points */
-export const fsSource = (numPoints: number) => `
+export const fsGradient = (numPoints: number) => `
       #define NUM_POINTS ${numPoints}
 
       precision mediump float;
@@ -37,7 +37,7 @@ export const fsSource = (numPoints: number) => `
       }
 
       void main() {
-          float p = 1.0;
+          float p = 4.0;
 
           // Convert fragment coordinates to normalized device coordinates
           vec2 ndc_frag = gl_FragCoord.xy / u_resolution * 2.0 - 1.0;
@@ -60,3 +60,36 @@ export const fsSource = (numPoints: number) => `
           gl_FragColor = vec4(color, 1.0);
       }
   `;
+
+export const vsNoise = `
+    attribute vec4 aVertexPosition;
+    varying vec2 v_texCoord;
+    void main() {
+        gl_Position = aVertexPosition;
+        v_texCoord = aVertexPosition.xy * 0.5 + 0.5; // Map from [-1, 1] to [0, 1]
+    }`;
+
+export const fsNoise = `
+    precision mediump float;
+    uniform sampler2D u_firstPassTexture;
+    varying vec2 v_texCoord;
+
+    // Function to create noise effect
+    float noise(vec2 coord) {
+        return fract(sin(dot(coord, vec2(12.9898, 78.233))) * 43758.5453);
+    }
+
+    void main() {
+        // Apply the noise effect to offset texture coordinates
+        float n = noise(v_texCoord * 10.0); // Adjust the multiplier to control the noise frequency
+        vec2 scatter = vec2(noise(v_texCoord + n), noise(v_texCoord - n)) * 0.025; // Offset magnitude
+
+        // Offset the texture coordinates
+        vec2 scatteredCoord = v_texCoord + scatter;
+
+        // Sample the texture at the scattered coordinates
+        vec4 scatteredColor = texture2D(u_firstPassTexture, scatteredCoord);
+
+        // Output the final color
+        gl_FragColor = scatteredColor;
+    }`;

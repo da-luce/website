@@ -1,12 +1,10 @@
 <script lang="ts">
     import Socials from "./lib/Socials.svelte";
     import Arrow from "./lib/Arrow.svelte";
-    import Gradient from "./lib/Gradient.svelte";
+    import GradientBackground from "./lib/GradientBackground.svelte";
     import Project from "./lib/Project.svelte";
     import Link from "./lib/Link.svelte";
     import ArrowLink from "./lib/ArrowLink.svelte";
-    import Jelly from "./lib/Jelly.svelte";
-    import Test from "./lib/Test.svelte";
 </script>
 
 <head>
@@ -30,8 +28,7 @@
 </head>
 
 <body>
-    <!-- <Gradient /> -->
-    <Test />
+    <GradientBackground />
     <Socials />
     <Arrow />
     <section id="landing">
