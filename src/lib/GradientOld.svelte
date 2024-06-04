@@ -63,7 +63,7 @@
         pointA,
         pointB,
         repulsionStrength,
-        repulsionDistance
+        repulsionDistance,
     ) {
         const dx = pointA.x - pointB.x;
         const dy = pointA.y - pointB.y;
@@ -120,7 +120,7 @@
 
     function applyFriction(point) {
         const currentSpeed = Math.sqrt(
-            point.vx * point.vx + point.vy * point.vy
+            point.vx * point.vx + point.vy * point.vy,
         );
 
         if (currentSpeed > baseVelocity) {
@@ -129,7 +129,7 @@
 
             // Recheck speed after applying friction
             const newSpeed = Math.sqrt(
-                point.vx * point.vx + point.vy * point.vy
+                point.vx * point.vx + point.vy * point.vy,
             );
             if (newSpeed < baseVelocity) {
                 // Scale velocity up to base velocity
@@ -141,7 +141,7 @@
     }
 
     const updateVelocitiesAndPositions = (
-        points: Array<Point>
+        points: Array<Point>,
     ): Array<Point> => {
         // for (let i = 0; i < points.length; i++) {
         //     for (let j = i + 1; j < points.length; j++) {
@@ -219,23 +219,24 @@
                 value_sum += w_i (x, u_points[i], p);
             }
             return weight_sum > 0.0 ? weight_sum / value_sum: 0.0; // Avoid division by zero
-        }  
+        }
 
         void main() {
-            
-            vec3 color = vec3(0.0, 0.0, 0.0); // Default to black
-            float radius = 0.01; // Radius for visualizing points
-
             float p = 4.0;
+            vec3 color = vec3(0.0, 0.0, 0.0); // Default to black
+            float radius = 0.1; // Radius for visualizing points
+
             vec2 ndc_frag = gl_FragCoord.xy / u_resolution * 2.0 - 1.0;
 
-            float r = u(ndc_frag, p, u_reds);
-            float g = u(ndc_frag, p, u_greens);
-            float b = u(ndc_frag, p, u_blues);
+            float aspectRatio = u_resolution.x / u_resolution.y;
+            vec2 adjustedCoord = vec2(ndc_frag.x * aspectRatio, ndc_frag.y);
 
-            color = vec3(r,g,b);
+            float r = u(adjustedCoord, p, u_reds);
+            float g = u(adjustedCoord, p, u_greens);
+            float b = u(adjustedCoord, p, u_blues);
 
-            gl_FragColor = vec4(color, 1.0); // -0.1 adds a cool effect
+            color = vec3(r, g, b);
+            gl_FragColor = vec4(color, 1.0);
         }`;
 
     // Second fragment shader (uses texture from first pass)
@@ -267,27 +268,48 @@
     // --- WebGL Initialization ---
     let gradientCanvas;
 
-    function resizeCanvas() {
+    function resizeCanvas(gl, spGradient) {
         if (gradientCanvas) {
             gradientCanvas.width = window.innerWidth;
             gradientCanvas.height = window.innerHeight;
 
-            // Update any WebGL settings or redraw as needed
+            // Update the WebGL viewport to match the new canvas size
+            if (gl) {
+                gl.viewport(0, 0, gradientCanvas.width, gradientCanvas.height);
+
+                // Update the resolution uniform after resizing
+                const resolutionLocation = gl.getUniformLocation(
+                    spGradient,
+                    "u_resolution",
+                );
+                gl.useProgram(spGradient);
+                gl.uniform2f(
+                    resolutionLocation,
+                    window.innerWidth,
+                    window.innerHeight,
+                );
+            }
+
+            // Redraw or re-render the scene as needed
         }
     }
 
+    // Convert screen coordinates to WebGL coordinates
+    function screenToWebGL(x, y, gradientCanvas) {
+        return {
+            x: (x / gradientCanvas.width) * 2 - 1,
+            y: -((y / gradientCanvas.height) * 2 - 1),
+        };
+    }
+
     onMount(() => {
-        resizeCanvas(); // Set initial size
+        const gl = gradientCanvas.getContext("webgl");
 
-        // Add window resize listener
-        window.addEventListener("resize", resizeCanvas);
-
-        // Convert screen coordinates to WebGL coordinates
-        function screenToWebGL(x, y, gradientCanvas) {
-            return {
-                x: (x / gradientCanvas.width) * 2 - 1,
-                y: -((y / gradientCanvas.height) * 2 - 1),
-            };
+        if (!gl) {
+            alert(
+                "Unable to initialize WebGL. Your browser may not support it.",
+            );
+            throw new Error("WebGL not supported");
         }
 
         // Mouse move event listener
@@ -296,20 +318,11 @@
             const pos = screenToWebGL(
                 event.clientX - rect.left,
                 event.clientY - rect.top,
-                gradientCanvas
+                gradientCanvas,
             );
             mouseX = pos.x;
             mouseY = pos.y;
         });
-
-        const gl = gradientCanvas.getContext("webgl");
-
-        if (!gl) {
-            alert(
-                "Unable to initialize WebGL. Your browser may not support it."
-            );
-            throw new Error("WebGL not supported");
-        }
 
         // --- Shader Compilation and Linking ---
         const spGradient = createShaderProgram(gl, vsGradient, fsGradient);
@@ -322,12 +335,12 @@
         gl.bufferData(
             gl.ARRAY_BUFFER,
             new Float32Array(positions),
-            gl.STATIC_DRAW
+            gl.STATIC_DRAW,
         );
 
         const positionAttributeLocation = gl.getAttribLocation(
             spGradient,
-            "aVertexPosition"
+            "aVertexPosition",
         );
         gl.enableVertexAttribArray(positionAttributeLocation);
         gl.vertexAttribPointer(
@@ -336,7 +349,7 @@
             gl.FLOAT,
             false,
             0,
-            0
+            0,
         );
 
         // --- Uniform Locations ---
@@ -346,7 +359,7 @@
         const blueLocation = gl.getUniformLocation(spGradient, "u_blues");
         const resolutionLocation = gl.getUniformLocation(
             spGradient,
-            "u_resolution"
+            "u_resolution",
         );
         const timeLocation = gl.getUniformLocation(spGradient, "u_time");
 
@@ -366,7 +379,7 @@
             0,
             gl.RGBA,
             gl.UNSIGNED_BYTE,
-            null
+            null,
         );
 
         // Set texture parameters for NPOT texture
@@ -383,7 +396,7 @@
             gl.COLOR_ATTACHMENT0,
             gl.TEXTURE_2D,
             texture,
-            0
+            0,
         );
 
         // --- Points and Colors Setup ---
@@ -423,7 +436,7 @@
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.uniform1i(
                 gl.getUniformLocation(spNoise, "u_firstPassTexture"),
-                0
+                0,
             );
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -438,6 +451,13 @@
             requestAnimationFrame(render);
         };
         console.log(gl.getError());
+
+        resizeCanvas(gl, spGradient); // Set initial size
+
+        // Add window resize listener
+        window.addEventListener("resize", () => {
+            resizeCanvas(gl, spGradient);
+        });
 
         render();
     });

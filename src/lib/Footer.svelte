@@ -37,26 +37,29 @@
             twemoji mozilla,
             segoe ui symbol;
         display: inline-block;
-        transition: transform 0.2s ease;
+        transition: transform 0.2s ease-in-out;
     }
 
     /* Apply animation only when #first-line is hovered */
     #first-line:hover .emoji {
-        animation: wave 1s infinite;
+        animation: wave 1.5s infinite;
     }
 
     @keyframes wave {
         0% {
             transform: rotate(0deg);
         }
-        25% {
+        20% {
             transform: rotate(-20deg);
         }
-        50% {
+        40% {
             transform: rotate(20deg);
         }
-        75% {
+        60% {
             transform: rotate(-10deg);
+        }
+        80% {
+            transform: rotate(0deg);
         }
         100% {
             transform: rotate(0deg);
