@@ -89,6 +89,7 @@
                         class="media-element"
                     ></video>
                 {:else}
+                    <!-- TODO: hovering is glitchy on Firefox -->
                     <div class="placeholder media-element"></div>
                 {/if}
             </Hover>
@@ -111,6 +112,7 @@
         gap: 20px;
         opacity: 0.8;
         transition: opacity 0.3s ease;
+        margin-bottom: 1em;
     }
 
     .project:hover {
@@ -152,7 +154,8 @@
         );
         height: 0;
         padding-bottom: 56.25%; /* Aspect ratio 16:9 */
-        backdrop-filter: blur(1000px);
+        /* Reduce the intensity of the blur to improve performance */
+        backdrop-filter: blur(5px);
     }
 
     .content {

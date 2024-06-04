@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { createShaderProgram } from "./gl_utils";
     import { vsGradient, fsGradient, vsNoise, fsNoise } from "./shaders";
+    import { throttle } from "../throttle";
 
     // Settings
     const numPoints = 5;
@@ -33,9 +34,9 @@
         [3, 12, 29],
     ];
 
-    function normalizeColor(color: color): color {
+    const normalizeColor = (color: color): color => {
         return color.map((c) => c / 255) as color;
-    }
+    };
 
     const colorPalletteNorm: Array<color> =
         colorPalletteRGB.map(normalizeColor);
@@ -46,7 +47,7 @@
      * @returns {Array<Point>} - An array of points with properties: x, y, vx, vy,
      * color.
      */
-    function initializePoints(): Array<Point> {
+    const initializePoints = (): Array<Point> => {
         let pointsLocal: Array<Point> = [];
         for (let i = 0; i < numPoints; i++) {
             // Generate a random speed within the range [minSpeed, maxSpeed]
@@ -72,10 +73,10 @@
         pointsLocal[0].color = colorPalletteNorm[0];
 
         return pointsLocal;
-    }
+    };
 
     // Update the positions of the points and handle boundary collisions
-    function updatePoints() {
+    const updatePoints = () => {
         points = points.map((point) => {
             let newX = point.x + point.vx;
             let newY = point.y + point.vy;
@@ -97,9 +98,9 @@
         const lerpFactor = 0.02; // Adjust this value for smoother or faster movement
         followPoint.x += (mouseX - followPoint.x) * lerpFactor;
         followPoint.y += (mouseY - followPoint.y) * lerpFactor;
-    }
+    };
 
-    function initTexture(gl: WebGLRenderingContext): WebGLTexture {
+    const initTexture = (gl: WebGLRenderingContext): WebGLTexture => {
         const texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
@@ -121,12 +122,12 @@
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
         return texture;
-    }
+    };
 
-    function initFramebuffer(
+    const initFramebuffer = (
         gl: WebGLRenderingContext,
         texture: WebGLTexture,
-    ): WebGLFramebuffer {
+    ): WebGLFramebuffer => {
         const framebuffer = gl.createFramebuffer();
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
         gl.framebufferTexture2D(
@@ -137,14 +138,14 @@
             0,
         );
         return framebuffer;
-    }
+    };
 
-    function resizeCanvas(
+    const resizeCanvas = (
         gl: WebGLRenderingContext,
         spGradient: WebGLProgram,
         texture,
         framebuffer,
-    ) {
+    ) => {
         if (!canvas) {
             return;
         }
@@ -187,7 +188,7 @@
             "u_resolution",
         );
         gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-    }
+    };
 
     const gradientPass = (
         gl: WebGLRenderingContext,
@@ -227,7 +228,7 @@
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
 
-    function initMesh(gl: WebGLRenderingContext, program: WebGLProgram) {
+    const initMesh = (gl: WebGLRenderingContext, program: WebGLProgram) => {
         // Handle vertex positions for fullscreen quad
         const vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -247,9 +248,9 @@
             0,
             0,
         );
-    }
+    };
 
-    function initGradient(gl: WebGLRenderingContext): WebGLProgram {
+    const initGradient = (gl: WebGLRenderingContext): WebGLProgram => {
         // Create shader program
         const spGradient = createShaderProgram(
             gl,
@@ -281,7 +282,7 @@
         gl.uniform1fv(bluesLocation, blues);
 
         return spGradient;
-    }
+    };
 
     onMount(() => {
         // Initialize WebGL
@@ -307,7 +308,7 @@
         const texture = initTexture(gl);
         const framebuffer = initFramebuffer(gl, texture);
 
-        function render() {
+        const render = () => {
             // Canvas may not exist when updating shaders. Avoid errors.
             if (!canvas) {
                 return;
@@ -327,7 +328,7 @@
 
             // Animate
             requestAnimationFrame(render);
-        }
+        };
 
         resizeCanvas(gl, spGradient, texture, framebuffer); // Set initial size
 
@@ -336,12 +337,17 @@
             resizeCanvas(gl, spGradient, texture, framebuffer);
         });
 
-        // Add window mousemove
-        window.addEventListener("mousemove", (event) => {
+        const mouseHandler = (event: MouseEvent) => {
             const rect = canvas.getBoundingClientRect();
             mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
             mouseY = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
-        });
+        };
+
+        const throttledMouseHandler = (event) =>
+            throttle(mouseHandler(event), 100);
+
+        // Add window mousemove
+        window.addEventListener("mousemove", throttledMouseHandler);
 
         render();
 

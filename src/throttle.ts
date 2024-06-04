@@ -1,29 +1,22 @@
-export function throttle<T extends (...args: any[]) => void>(
-  fn: T,
-  wait: number,
-): T {
-  let isThrottled = false;
-  let args: any[];
-  let context: any;
-
-  function wrapper(this: any, ...innerArgs: any[]) {
-    if (isThrottled) {
-      args = innerArgs;
-      context = this;
-      return;
+// throttle.ts
+export const throttle = (func: Function, limit: number) => {
+  let lastFunc: number;
+  let lastRan: number;
+  return function (...args: any[]) {
+    if (!lastRan) {
+      func(...args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = window.setTimeout(
+        () => {
+          if (Date.now() - lastRan >= limit) {
+            func(...args);
+            lastRan = Date.now();
+          }
+        },
+        limit - (Date.now() - lastRan),
+      );
     }
-
-    isThrottled = true;
-    fn.apply(this, innerArgs);
-
-    setTimeout(() => {
-      isThrottled = false;
-      if (args) {
-        wrapper.apply(context, args);
-        args = context = null;
-      }
-    }, wait);
-  }
-
-  return wrapper as T;
-}
+  };
+};

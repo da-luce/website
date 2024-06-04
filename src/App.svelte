@@ -5,6 +5,7 @@
     import Project from "./lib/Project.svelte";
     import Link from "./lib/Link.svelte";
     import ArrowLink from "./lib/ArrowLink.svelte";
+    import Footer from "./lib/Footer.svelte";
 </script>
 
 <head>
@@ -81,14 +82,5 @@
             />
         </div>
     </section>
-
-    <footer>
-        <p>
-            Designed and hand coded by me <span class="emoji">✌️</span>
-            <br />
-            <span style="opacity: 0.4;"
-                >© Dalton Luce 2024. All Rights Reserved.</span
-            >
-        </p>
-    </footer>
 </body>
+<Footer />
