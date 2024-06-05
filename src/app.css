@@ -66,13 +66,19 @@ h1 {
 h2 {
     font-family: var(--fancy-font);
     color: var(--foreground);
+    font-size: 3em;
+}
+
+h3 {
+    font-family: var(--fancy-font);
+    color: var(--foreground);
     font-size: 1.5em;
 }
 
 p {
     font-family: var(--reddit-font);
     color: var(--foreground);
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 #landing {
@@ -94,5 +100,5 @@ p {
     flex-direction: column;
     align-items: flex-start;
     display: flex;
-    gap: 5em;
+    gap: 4em;
 }

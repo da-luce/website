@@ -11,8 +11,8 @@
     let opacity = 1;
     let rotation = 0;
     let cursor = "pointer";
-    let arrowGap = 2; // Initial position from bottom in vh
-    // let arrowPosition = arrowGap;
+    let arrowGap = 8; // Initial position from bottom in vh
+    let arrowPosition = arrowGap;
 
     function handleScroll() {
         const y = window.scrollY;
@@ -22,7 +22,7 @@
 
         // Adjust opacity based on scroll position
         const halfHeight = scrollableDistance / 2;
-        opacity = (Math.abs(y - halfHeight) / halfHeight) ** 5;
+        opacity = (Math.abs(y - halfHeight) / halfHeight) ** 7;
 
         if (opacity < 0.3) {
             cursor = "default";
@@ -33,10 +33,15 @@
         // Calculate rotation angle
         rotation = y > (documentHeight - windowHeight) / 2 ? 180 : 0;
 
-        // Adjust arrow position
+        // Adjust arrow position (for different scrolling)
         // arrowPosition =
         //     arrowGap + (y / scrollableDistance) * (100 - 2 * arrowGap - sizeVh);
         // FIXME: why 2*gap?
+
+        const mag = 30;
+        const halfWay = scrollableDistance / 2;
+        const distNorm = Math.abs(y - halfWay) / halfWay;
+        arrowPosition = -(mag * distNorm - mag) + arrowGap;
     }
 
     const throttledScrollHandler = throttle(handleScroll, 10); // 10 ms
@@ -49,7 +54,10 @@
             window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
             window.scrollTo({
-                top: document.body.scrollHeight,
+                top: Math.max(
+                    document.documentElement.clientHeight || 0,
+                    window.innerHeight || 0,
+                ),
                 behavior: "smooth",
             });
         }
@@ -77,7 +85,7 @@
     on:keydown={handleKeydown}
     aria-label="Scroll to top or bottom"
     on:click={handleClick}
-    style="bottom: 8vh; opacity: {opacity}; cursor: {cursor};"
+    style="bottom: {arrowPosition}vh; opacity: {opacity}; cursor: {cursor};"
 >
     <svg
         width={size}

@@ -45,7 +45,7 @@
         </Hover>
     </div>
     <div class="content">
-        <ArrowLink {href}><h2 class="title">• {title}</h2></ArrowLink>
+        <ArrowLink {href}><h3 class="title">• {title}</h3></ArrowLink>
         <div class="video-container thin">
             <Hover>
                 {#if videoSrc}
@@ -57,6 +57,7 @@
                         class="media-element"
                     ></video>
                 {:else}
+                    <!-- FIXME: glitchy on hover sometimes -->
                     <div class="media-element placeholder"></div>
                 {/if}
             </Hover>
