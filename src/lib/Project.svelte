@@ -8,9 +8,6 @@
     export let tags: string[];
     export let href: string;
 
-    let wideVideoElement: HTMLVideoElement;
-    let thinVideoElement: HTMLVideoElement;
-
     const handleMouseEnter = (event: Event) => {
         const video = event.currentTarget as HTMLVideoElement;
         video.play();
@@ -27,7 +24,6 @@
         <Hover>
             {#if videoSrc}
                 <video
-                    bind:this={wideVideoElement}
                     src={videoSrc}
                     loop
                     muted
@@ -46,7 +42,6 @@
             <Hover>
                 {#if videoSrc}
                     <video
-                        bind:this={thinVideoElement}
                         src={videoSrc}
                         loop
                         muted
@@ -77,7 +72,7 @@
         gap: 20px;
         opacity: 0.8;
         transition: opacity 0.3s ease;
-        margin-bottom: 1em;
+        margin: 1em 0;
     }
 
     .project:hover {
@@ -91,10 +86,6 @@
     .thin {
         width: 100%;
         display: none;
-    }
-
-    .video-container:hover {
-        cursor: pointer;
     }
 
     .media-element {
@@ -124,6 +115,7 @@
         );
         padding-bottom: 56.25%; /* Aspect ratio 16:9 */
         backdrop-filter: blur(5px);
+        filter: none; /* Override grayscale filter */
     }
 
     .content {
@@ -142,11 +134,11 @@
     }
 
     .tag {
-        background-color: #b6e3fc3b;
+        background-color: #b6e3fc3b; /* TODO: calculate this using preprocessor */
         color: var(--highlight);
         padding: 5px 10px;
         border-radius: 15px;
-        font-family: var(--reddit-font);
+        font-family: var(--mono-font);
         font-weight: bold;
         font-size: 0.9em;
         backdrop-filter: blur(100px);

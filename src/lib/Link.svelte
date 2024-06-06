@@ -23,7 +23,7 @@
     }
 
     a:hover {
-        color: var(--background-primary); /* Static color */
+        color: var(--background-primary);
         background-color: var(--foreground);
     }
 </style>

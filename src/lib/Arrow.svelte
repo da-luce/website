@@ -1,16 +1,15 @@
 <script>
     import { onMount } from "svelte";
-    import { throttle } from "../throttle";
+    import { throttle } from "../../scripts/throttle";
 
     export let size = 100; // Default size
-    let sizeVh;
     let width = 3;
     const center = size / 2;
     const radius = center - 25; // Adjust the radius as needed
 
     let opacity = 1;
     let rotation = 0;
-    let arrowGap = 8; // Initial position from bottom in vh
+    let arrowGap = 2; // Initial position from bottom in vh
     let arrowPosition = arrowGap;
     let cursor = "default";
     let display = "block";

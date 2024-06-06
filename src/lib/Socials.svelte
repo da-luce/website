@@ -41,10 +41,9 @@
         position: fixed;
         top: 5em;
         right: 5em;
-        z-index: 1;
+        z-index: 1; /* FIXME: needed for hover to work */
     }
 
-    /* FIXME: this is janky */
     @media (max-width: 1100px) {
         #container {
             display: none;

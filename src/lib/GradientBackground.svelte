@@ -1,8 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { createShaderProgram } from "./gl_utils";
-    import { vsGradient, fsGradient, vsNoise, fsNoise } from "./shaders";
-    import { throttle } from "../throttle";
+    import { createShaderProgram } from "../../scripts/gl_utils";
+    import {
+        vsGradient,
+        fsGradient,
+        vsNoise,
+        fsNoise,
+    } from "../../scripts/shaders";
+    import { throttle } from "../../scripts/throttle";
 
     // Settings
     const numPoints = 5;
@@ -363,9 +368,8 @@
         position: fixed;
         top: 0;
         left: 0;
+        display: block;
         width: 100vw;
         height: 100vh;
-        z-index: 0; /* Above body background */
-        display: block;
     }
 </style>

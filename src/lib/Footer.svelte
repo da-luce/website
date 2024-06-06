@@ -24,7 +24,7 @@
         cursor: default;
     }
 
-    footer > #socials {
+    #socials {
         width: 100%;
         max-width: 20em;
     }

@@ -9,21 +9,11 @@
 </script>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="UTF-8" />
-    <!-- Fonts -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap"
-        rel="stylesheet"
-    />
-    <link
-        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap"
-        rel="stylesheet"
-    />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:wght@200..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Yeseva+One&display=swap"
         rel="stylesheet"
     />
 </head>
@@ -32,6 +22,7 @@
     <GradientBackground />
     <Socials />
     <Arrow />
+
     <section id="landing">
         <div>
             <h1 style="color: var(--foreground);">Dalton</h1>
@@ -56,6 +47,7 @@
             </p>
         </div>
     </section>
+
     <section id="projects">
         <div id="projects-container">
             <h2>Projects</h2>
@@ -82,5 +74,6 @@
             />
         </div>
     </section>
+
+    <Footer />
 </body>
-<Footer />

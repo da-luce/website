@@ -1,6 +1,6 @@
 <script lang="ts">
     let container: HTMLDivElement;
-    let scale = 10;
+    let scale = 5;
     let animationFrameId: number;
 
     function handleMouseMove(event: MouseEvent) {

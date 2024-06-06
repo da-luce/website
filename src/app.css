@@ -7,35 +7,7 @@
 
     /* Fonts */
     --fancy-font: "Yeseva One", serif;
-    --reddit-font: "Inconsolata", monospace;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--background-primary);
-    overflow-x: hidden;
-    scroll-behavior: smooth !important;
-    z-index: 1; /* Required for hover */
-}
-
-section {
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 0 1.5em 0em 1.5em;
-    /* For small screens */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-section > div:first-child {
-    max-width: 50em;
-    width: 100%;
-    margin: 0 auto;
+    --mono-font: "Inconsolata", monospace;
 }
 
 /* A simple CSS reset */
@@ -52,6 +24,33 @@ p {
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-primary);
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    scroll-behavior: smooth;
+}
+
+section {
+    width: 100vw;
+    box-sizing: border-box;
+    padding: 0 1.5em; /* For small screens */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+section > div:first-child {
+    max-width: 50em;
+    width: 100%;
+    margin: 0 auto;
 }
 
 h1 {
@@ -74,7 +73,7 @@ h3 {
 }
 
 p {
-    font-family: var(--reddit-font);
+    font-family: var(--mono-font);
     color: var(--foreground);
     font-size: 1.2em;
 }
@@ -84,14 +83,11 @@ p {
 }
 
 #subheading {
-    pointer-events: auto;
-    line-height: 2.5rem;
-    /* Extra room for links */
+    line-height: 2.5rem; /* Extra room for links */
 }
 
 #projects {
-    margin-top: 5em;
-    /* Add some room to breath */
+    margin-top: 5em; /* Add some room to breath */
 }
 
 #projects-container {

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { throttle } from "../throttle"; // Ensure this path is correct
+    import { throttle } from "../../scripts/throttle"; // Ensure this path is correct
 
     export let defaultGap = 1; // Default gap in rem
 
@@ -73,6 +73,5 @@
         gap: var(--icon-spacing);
         display: flex;
         flex-direction: column;
-        pointer-events: auto; /* Enable pointer events for the children */
     }
 </style>
