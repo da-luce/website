@@ -1,5 +1,4 @@
 <script>
-    import Jelly from "./Jelly.svelte";
     import AnimatedIcon from "./AnimatedIcon.svelte";
 
     const linkedinPath =
@@ -11,43 +10,45 @@
 </script>
 
 <div id="container">
-    <Jelly defaultGap={1}>
-        <AnimatedIcon
-            path={linkedinPath}
-            viewBoxWidth={24}
-            viewBoxHeight={24}
-            link="https://linkedin.com/in/dalton-luce"
-            title="LinkedIn"
-        />
-        <AnimatedIcon
-            path={githubPath}
-            viewBoxWidth={24}
-            viewBoxHeight={24}
-            link="https://github.com/da-luce"
-            title="GitHub"
-        />
-        <AnimatedIcon
-            path={mailPath}
-            viewBoxWidth={24}
-            viewBoxHeight={24}
-            link="mailto:daltonluce42@gmail.com"
-            title="Gmail"
-        />
-    </Jelly>
+    <AnimatedIcon
+        path={linkedinPath}
+        viewBoxWidth={24}
+        viewBoxHeight={24}
+        link="https://linkedin.com/in/dalton-luce"
+        title="LinkedIn"
+    />
+    <AnimatedIcon
+        path={githubPath}
+        viewBoxWidth={24}
+        viewBoxHeight={24}
+        link="https://github.com/da-luce"
+        title="GitHub"
+    />
+    <AnimatedIcon
+        path={mailPath}
+        viewBoxWidth={24}
+        viewBoxHeight={24}
+        link="mailto:daltonluce42@gmail.com"
+        title="Gmail"
+    />
 </div>
 
 <style>
     #container {
-        position: fixed;
-        top: 5em;
-        right: 5em;
-        pointer-events: none; /* Passes through the mouse events */
+        display: none; /* Hidden by default */
+        pointer-events: none;
     }
 
-    /* FIXME: this is janky */
+    /* Media query for small screens */
     @media (max-width: 1100px) {
         #container {
-            display: none;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            pointer-events: auto;
+            margin: 1em 0;
         }
     }
 </style>
