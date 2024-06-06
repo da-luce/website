@@ -12,6 +12,7 @@
 
 <style>
     footer {
+        position: relative;
         height: 20vh;
         width: 100%;
         display: flex;
@@ -19,18 +20,13 @@
         align-items: center;
         justify-content: flex-end;
         text-align: center;
-        margin-bottom: 1em;
+        margin: 2em 0;
         cursor: default;
-    }
-
-    footer > p:first-child {
-        z-index: 1;
     }
 
     footer > #socials {
         width: 100%;
-        max-width: 30em;
-        z-index: 1;
+        max-width: 20em;
     }
 
     .emoji {

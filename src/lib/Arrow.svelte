@@ -21,8 +21,9 @@
         const scrollableDistance = documentHeight - windowHeight;
 
         // Adjust opacity based on scroll position
+        // Don't show at bottom right now
         const halfHeight = scrollableDistance / 2;
-        opacity = (Math.abs(y - halfHeight) / halfHeight) ** 7;
+        opacity = (1 - y / scrollableDistance) ** 7;
 
         if (opacity < 0.3) {
             cursor = "default";

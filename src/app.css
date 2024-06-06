@@ -28,16 +28,13 @@ section {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    position: relative;
 }
 
 section > div:first-child {
     max-width: 50em;
     width: 100%;
     margin: 0 auto;
-    z-index: inherit;
-
-    /*Weird thing to make sure everything appears above canvas */
 }
 
 /* A simple CSS reset */
