@@ -1,12 +1,15 @@
 <script lang="ts">
     import Hover from "./Hover.svelte";
     import ArrowLink from "./ArrowLink.svelte";
+    import Loading from "./Loading.svelte";
 
     export let videoSrc: string;
     export let title: string;
     export let desc: string;
     export let tags: string[];
     export let href: string;
+
+    let videoLoading = true;
 
     const handleMouseEnter = (event: Event) => {
         const video = event.currentTarget as HTMLVideoElement;
@@ -17,21 +20,32 @@
         const video = event.currentTarget as HTMLVideoElement;
         video.pause();
     };
+
+    const handleLoadedData = () => {
+        videoLoading = false;
+    };
 </script>
 
 <div class="project" role="presentation">
     <div class="video-container wide">
         <Hover>
             {#if videoSrc}
-                <video
-                    src={videoSrc}
-                    loop
-                    muted
-                    class="media-element"
-                    on:mouseenter={handleMouseEnter}
-                    on:mouseleave={handleMouseLeave}
-                    type="video/mp4"
-                ></video>
+                <div class="video-wrapper">
+                    {#if videoLoading}
+                        <div class="loading-wrapper">
+                            <Loading size={50} />
+                        </div>
+                    {/if}
+                    <video
+                        src={videoSrc}
+                        loop
+                        muted
+                        class="media-element"
+                        on:mouseenter={handleMouseEnter}
+                        on:mouseleave={handleMouseLeave}
+                        on:loadeddata={handleLoadedData}
+                    ></video>
+                </div>
             {:else}
                 <div class="media-element placeholder"></div>
             {/if}
@@ -42,15 +56,22 @@
         <div class="video-container thin">
             <Hover>
                 {#if videoSrc}
-                    <video
-                        src={videoSrc}
-                        loop
-                        muted
-                        class="media-element"
-                        on:mouseenter={handleMouseEnter}
-                        on:mouseleave={handleMouseLeave}
-                        type="video/mp4"
-                    ></video>
+                    <div class="video-wrapper">
+                        {#if videoLoading}
+                            <div class="loading-wrapper">
+                                <Loading size={50} />
+                            </div>
+                        {/if}
+                        <video
+                            src={videoSrc}
+                            loop
+                            muted
+                            class="media-element"
+                            on:mouseenter={handleMouseEnter}
+                            on:mouseleave={handleMouseLeave}
+                            on:loadeddata={handleLoadedData}
+                        ></video>
+                    </div>
                 {:else}
                     <div class="media-element placeholder"></div>
                 {/if}
@@ -88,6 +109,21 @@
     .thin {
         width: 100%;
         display: none;
+    }
+
+    .video-wrapper {
+        position: relative;
+    }
+
+    .loading-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 
     .media-element {
