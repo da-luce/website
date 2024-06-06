@@ -1,5 +1,6 @@
 <script>
-    import { onMount, onDestroy } from "svelte";
+    import { onMount } from "svelte";
+    import { throttle } from "../../scripts/throttle";
 
     export let size = 100; // Default size
     let width = 3;
@@ -8,7 +9,10 @@
 
     let opacity = 1;
     let rotation = 0;
-    let cursor = "pointer";
+    let arrowGap = 2; // Initial position from bottom in vh
+    let arrowPosition = arrowGap;
+    let cursor = "default";
+    let display = "block";
 
     function handleScroll() {
         const y = window.scrollY;
@@ -17,8 +21,9 @@
         const scrollableDistance = documentHeight - windowHeight;
 
         // Adjust opacity based on scroll position
+        // Don't show at bottom right now
         const halfHeight = scrollableDistance / 2;
-        opacity = (Math.abs(scrollY - halfHeight) / halfHeight) ** 10;
+        opacity = (1 - y / scrollableDistance) ** 15;
 
         if (opacity < 0.3) {
             cursor = "default";
@@ -26,16 +31,36 @@
             cursor = "pointer";
         }
 
+        if (opacity < 0.01) {
+            display = "none";
+        } else {
+            display = "block";
+        }
+
         // Calculate rotation angle
         rotation = y > (documentHeight - windowHeight) / 2 ? 180 : 0;
+
+        // Adjust arrow position (for different scrolling)
+        const mag = 30;
+        const halfWay = scrollableDistance / 2;
+        const distNorm = Math.abs(y - halfWay) / halfWay;
+        arrowPosition = -(mag * distNorm - mag) + arrowGap;
     }
 
+    const throttledScrollHandler = throttle(handleScroll, 10); // 10 ms
+
     function handleClick() {
+        if (opacity < 0.3) {
+            return;
+        }
         if (rotation > 90) {
             window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
             window.scrollTo({
-                top: document.body.scrollHeight,
+                top: Math.max(
+                    document.documentElement.clientHeight || 0,
+                    window.innerHeight || 0,
+                ),
                 behavior: "smooth",
             });
         }
@@ -48,8 +73,11 @@
     }
 
     onMount(() => {
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", throttledScrollHandler);
+        handleScroll(); // Initial call to set the correct position
+        sizeVh = (size * 100) / document.documentElement.clientHeight;
+        return () =>
+            window.removeEventListener("scroll", throttledScrollHandler);
     });
 </script>
 
@@ -60,13 +88,14 @@
     on:keydown={handleKeydown}
     aria-label="Scroll to top or bottom"
     on:click={handleClick}
+    style="bottom: {arrowPosition}vh; opacity: {opacity}; cursor: {cursor}; display: {display};"
 >
     <svg
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         xmlns="http://www.w3.org/2000/svg"
-        style="opacity: {opacity}; transform: rotate({rotation}deg); cursor: {cursor}"
+        style="transform: rotate({rotation}deg);"
     >
         <defs>
             <!-- Define the mask -->
@@ -152,9 +181,9 @@
 
 <style>
     svg {
-        cursor: pointer;
-        transition: transform 0.5s ease-in-out;
-        opacity: 0.05s ease-in-out;
+        transition:
+            transform 0.5s ease-in-out,
+            opacity 0.5s ease-in-out;
     }
 
     /* Circle */
@@ -171,13 +200,13 @@
 
     /* Arrow */
     .arrow-container {
-        position: absolute;
-        bottom: 20px;
+        position: fixed;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
         flex-direction: column;
         align-items: center;
+        z-index: 1;
     }
 
     .middle {

@@ -1,74 +1,98 @@
 :root {
+    /* Colors */
     --background-primary: #030c1d;
-    --background-secondary: #030c1d;
+    --background-secondary: #01344d;
     --foreground: #c6c8d1;
+    --highlight: #b6e4fc;
+
+    /* Fonts */
     --fancy-font: "Yeseva One", serif;
-    --mono-font: "Lucida Console",monospace;
+    --mono-font: "Inconsolata", monospace;
 }
 
-html, body {
-    /* Remove default padding */
+/* A simple CSS reset */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
     margin: 0;
     padding: 0;
-    background-color: --var(background-primary);
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-primary);
     overflow-x: hidden;
+    overscroll-behavior-y: contain;
     scroll-behavior: smooth;
 }
 
-.wrapper {
-    max-width: 1170px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-.title {
-    font-family: var(--fancy-font);
-    font-size: 6em;
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: var(--foreground);
-}
-
-.landing-text {
-    position: relative;
-    left: 2em;
-    top: 2em;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    pointer-events: none;
-    /* Passes through the mouse events */
-}
-
-.subheading {
-    /* Enable pointer events for the name text */
-    pointer-events: auto;
-    width: 30rem;
-    font-family: var(--mono-font);
-    font-weight: normal;
-    font-size: 1rem;
-    color: var(--foreground);
-    /*Increase line height to avoid "link" borders overlapping */
-    line-height: 2.5rem;
-}
-
-.arrow-container {
-    position: fixed;
-    /* Changed from absolute to fixed */
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+section {
+    width: 100vw;
+    box-sizing: border-box;
+    padding: 0 1.5em; /* For small screens */
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
-    transition: opacity 0.5s ease-in-out;
+    justify-content: center;
+    position: relative;
 }
 
-section {
+section > div:first-child {
+    max-width: 50em;
+    width: 100%;
+    margin: 0 auto;
+}
+
+h1 {
+    font-family: var(--fancy-font);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: var(--foreground);
+    font-size: 6em;
+}
+
+h2 {
+    font-family: var(--fancy-font);
+    color: var(--foreground);
+    font-size: 3em;
+}
+
+h3 {
+    font-family: var(--fancy-font);
+    color: var(--foreground);
+    font-size: 1.5em;
+}
+
+p {
+    font-family: var(--mono-font);
+    color: var(--foreground);
+    font-size: 1.2em;
+}
+
+#landing {
     height: 100vh;
-    width: 100vw;
-    /* Each section takes up the entire viewport height */
 }
 
+#subheading {
+    line-height: 2.5rem; /* Extra room for links */
+}
+
+#projects {
+    margin-top: 5em; /* Add some room to breath */
+}
+
+#projects-container {
+    flex-direction: column;
+    align-items: flex-start;
+    display: flex;
+    gap: 4em;
+}

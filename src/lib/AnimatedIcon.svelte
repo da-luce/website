@@ -50,7 +50,7 @@
         stroke-width: 0px; /* no stroke width to avoid writing over fill in regular state */
         fill: var(--foreground);
         stroke: none;
-        transition: all 0.5s ease;
+        transition: all 0.8s ease;
     }
 
     .icon:hover path {
