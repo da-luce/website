@@ -44,7 +44,7 @@
 <style>
     div {
         perspective: 1000px;
-        transition: transform 0.3s ease;
+        transition: transform 0.2s ease;
         background-color: transparent;
         border-color: transparent;
         will-change: transform;

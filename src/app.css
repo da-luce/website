@@ -17,6 +17,7 @@ body {
     background-color: var(--background-primary);
     overflow-x: hidden;
     scroll-behavior: smooth !important;
+    z-index: 1; /* Required for hover */
 }
 
 section {

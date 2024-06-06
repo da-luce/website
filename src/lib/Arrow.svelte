@@ -10,9 +10,10 @@
 
     let opacity = 1;
     let rotation = 0;
-    let cursor = "pointer";
     let arrowGap = 8; // Initial position from bottom in vh
     let arrowPosition = arrowGap;
+    let cursor = "default";
+    let display = "block";
 
     function handleScroll() {
         const y = window.scrollY;
@@ -23,7 +24,7 @@
         // Adjust opacity based on scroll position
         // Don't show at bottom right now
         const halfHeight = scrollableDistance / 2;
-        opacity = (1 - y / scrollableDistance) ** 7;
+        opacity = (1 - y / scrollableDistance) ** 15;
 
         if (opacity < 0.3) {
             cursor = "default";
@@ -31,14 +32,16 @@
             cursor = "pointer";
         }
 
+        if (opacity < 0.01) {
+            display = "none";
+        } else {
+            display = "block";
+        }
+
         // Calculate rotation angle
         rotation = y > (documentHeight - windowHeight) / 2 ? 180 : 0;
 
         // Adjust arrow position (for different scrolling)
-        // arrowPosition =
-        //     arrowGap + (y / scrollableDistance) * (100 - 2 * arrowGap - sizeVh);
-        // FIXME: why 2*gap?
-
         const mag = 30;
         const halfWay = scrollableDistance / 2;
         const distNorm = Math.abs(y - halfWay) / halfWay;
@@ -86,7 +89,7 @@
     on:keydown={handleKeydown}
     aria-label="Scroll to top or bottom"
     on:click={handleClick}
-    style="bottom: {arrowPosition}vh; opacity: {opacity}; cursor: {cursor};"
+    style="bottom: {arrowPosition}vh; opacity: {opacity}; cursor: {cursor}; display: {display};"
 >
     <svg
         width={size}
@@ -179,7 +182,6 @@
 
 <style>
     svg {
-        cursor: pointer;
         transition:
             transform 0.5s ease-in-out,
             opacity 0.5s ease-in-out;
@@ -205,6 +207,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        z-index: 1;
     }
 
     .middle {

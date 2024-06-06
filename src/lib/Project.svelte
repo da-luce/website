@@ -8,36 +8,32 @@
     export let tags: string[];
     export let href: string;
 
-    let videoElement: HTMLVideoElement;
+    let wideVideoElement: HTMLVideoElement;
+    let thinVideoElement: HTMLVideoElement;
 
-    const handleMouseEnter = () => {
-        if (videoSrc) {
-            videoElement.play();
-        }
+    const handleMouseEnter = (event: Event) => {
+        const video = event.currentTarget as HTMLVideoElement;
+        video.play();
     };
 
-    const handleMouseLeave = () => {
-        if (videoSrc) {
-            videoElement.pause();
-        }
+    const handleMouseLeave = (event: Event) => {
+        const video = event.currentTarget as HTMLVideoElement;
+        video.pause();
     };
 </script>
 
-<div
-    class="project"
-    on:mouseenter={handleMouseEnter}
-    on:mouseleave={handleMouseLeave}
-    role="presentation"
->
+<div class="project" role="presentation">
     <div class="video-container wide">
         <Hover>
             {#if videoSrc}
                 <video
-                    bind:this={videoElement}
+                    bind:this={wideVideoElement}
                     src={videoSrc}
                     loop
                     muted
                     class="media-element"
+                    on:mouseenter={handleMouseEnter}
+                    on:mouseleave={handleMouseLeave}
                 ></video>
             {:else}
                 <div class="media-element placeholder"></div>
@@ -50,14 +46,15 @@
             <Hover>
                 {#if videoSrc}
                     <video
-                        bind:this={videoElement}
+                        bind:this={thinVideoElement}
                         src={videoSrc}
                         loop
                         muted
                         class="media-element"
+                        on:mouseenter={handleMouseEnter}
+                        on:mouseleave={handleMouseLeave}
                     ></video>
                 {:else}
-                    <!-- FIXME: glitchy on hover sometimes -->
                     <div class="media-element placeholder"></div>
                 {/if}
             </Hover>
@@ -126,7 +123,6 @@
             var(--foreground) 11px
         );
         padding-bottom: 56.25%; /* Aspect ratio 16:9 */
-        /* Reduce the intensity of the blur to improve performance */
         backdrop-filter: blur(5px);
     }
 

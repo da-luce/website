@@ -41,7 +41,7 @@
         position: fixed;
         top: 5em;
         right: 5em;
-        pointer-events: none; /* Passes through the mouse events */
+        z-index: 1;
     }
 
     /* FIXME: this is janky */

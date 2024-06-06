@@ -35,8 +35,8 @@
 
 <style>
     #container {
-        display: none; /* Hidden by default */
-        pointer-events: none;
+        display: none;
+        z-index: 1; /* Required for hover */
     }
 
     /* Media query for small screens */
