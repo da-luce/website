@@ -52,14 +52,14 @@
         <div id="projects-container">
             <h2>Projects</h2>
             <Project
-                videoSrc="src/assets/starsaver.mov"
+                videoSrc="/starsaver.mov"
                 title="Starsaver"
                 desc="I've always been interested in the command line—the power of ASCII characters and a limited selection of colors to portray more than just text. Starsaver enables users to display the positions of stars in real-time. This project allowed me to explore C programming deeply, combining my interests in astronomy and coding to create a compelling CLI tool. Through Starsaver, users can bring the beauty of the night sky right to their terminals."
                 tags={["C", "Meson", "ncurses"]}
                 href="https://github.com/da-luce/starsaver"
             />
             <Project
-                videoSrc="src/assets/website.mov"
+                videoSrc="/website.mov"
                 title="Personal Website"
                 desc="The website you're looking at right now! Though an engineer by study, I've always had a soft spot for clean, beautiful UIs. This is my crack at one using Svelte (my fav♡rite JS framework). Here, you'll find my projects as well as other works that highlight my journey in programming and design. Explore, enjoy, and get inspired!"
                 tags={["JavaScript", "TypeScript", "HTML & CSS", "Svelte 4.0"]}

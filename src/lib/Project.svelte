@@ -30,6 +30,7 @@
                     class="media-element"
                     on:mouseenter={handleMouseEnter}
                     on:mouseleave={handleMouseLeave}
+                    type="video/mp4"
                 ></video>
             {:else}
                 <div class="media-element placeholder"></div>
@@ -48,6 +49,7 @@
                         class="media-element"
                         on:mouseenter={handleMouseEnter}
                         on:mouseleave={handleMouseLeave}
+                        type="video/mp4"
                     ></video>
                 {:else}
                     <div class="media-element placeholder"></div>
