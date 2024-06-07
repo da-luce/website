@@ -1,9 +1,9 @@
-<!-- Loading.svelte -->
 <script lang="ts">
     export let size = 50;
 </script>
 
 <svg
+    class="loading-spinner"
     width={size}
     height={size}
     viewBox="0 0 50 50"
@@ -18,22 +18,33 @@
         stroke-width="5"
         stroke-linecap="round"
         stroke-dasharray="31.415, 31.415"
-        transform="rotate(72 25 25)"
-    >
-        <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 25 25"
-            to="360 25 25"
-            dur="1s"
-            repeatCount="indefinite"
-        />
-    </circle>
+    ></circle>
 </svg>
 
 <style>
-    svg {
+    .loading-spinner {
         display: block;
         margin: auto;
+        animation:
+            rotate 1s linear infinite,
+            fadeIn 0.5s ease-in-out forwards;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
     }
 </style>

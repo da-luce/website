@@ -29,8 +29,8 @@
 <div class="project" role="presentation">
     <div class="video-container wide">
         <Hover>
-            {#if videoSrc}
-                <div class="video-wrapper">
+            <div class="video-wrapper">
+                {#if videoSrc}
                     {#if videoLoading}
                         <div class="loading-wrapper">
                             <Loading size={50} />
@@ -45,18 +45,18 @@
                         on:mouseleave={handleMouseLeave}
                         on:loadeddata={handleLoadedData}
                     ></video>
-                </div>
-            {:else}
-                <div class="media-element placeholder"></div>
-            {/if}
+                {:else}
+                    <div class="media-element placeholder"></div>
+                {/if}
+            </div>
         </Hover>
     </div>
     <div class="content">
         <ArrowLink {href}><h3 class="title">• {title}</h3></ArrowLink>
         <div class="video-container thin">
             <Hover>
-                {#if videoSrc}
-                    <div class="video-wrapper">
+                <div class="video-wrapper">
+                    {#if videoSrc}
                         {#if videoLoading}
                             <div class="loading-wrapper">
                                 <Loading size={50} />
@@ -71,10 +71,10 @@
                             on:mouseleave={handleMouseLeave}
                             on:loadeddata={handleLoadedData}
                         ></video>
-                    </div>
-                {:else}
-                    <div class="media-element placeholder"></div>
-                {/if}
+                    {:else}
+                        <div class="media-element placeholder"></div>
+                    {/if}
+                </div>
             </Hover>
         </div>
         <p>{desc}</p>

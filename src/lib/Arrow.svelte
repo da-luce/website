@@ -75,7 +75,6 @@
     onMount(() => {
         window.addEventListener("scroll", throttledScrollHandler);
         handleScroll(); // Initial call to set the correct position
-        sizeVh = (size * 100) / document.documentElement.clientHeight;
         return () =>
             window.removeEventListener("scroll", throttledScrollHandler);
     });
