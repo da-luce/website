@@ -348,9 +348,9 @@
             mouseY = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
         };
 
-        const throttledMouseHandler = (event: MouseEvent) => {
-            throttle(mouseHandler(event), 100);
-        };
+        const throttledMouseHandler = throttle((event: MouseEvent) => {
+            mouseHandler(event);
+        }, 100);
 
         // Add window mousemove
         window.addEventListener("mousemove", throttledMouseHandler);

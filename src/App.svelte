@@ -52,7 +52,7 @@
         <div id="projects-container">
             <h2>Projects</h2>
             <Project
-                videoSrc="/starsaver.mov"
+                videoSrc="/starsaver_small.mov"
                 title="Starsaver"
                 desc="I've always been interested in the command line—the power of ASCII characters and a limited selection of colors to portray more than just text. Starsaver enables users to display the positions of stars in real-time. This project allowed me to explore C programming deeply, combining my interests in astronomy and coding to create a compelling CLI tool. Through Starsaver, users can bring the beauty of the night sky right to their terminals."
                 tags={["C", "Meson", "ncurses"]}
