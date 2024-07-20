@@ -40,6 +40,8 @@
                         src={videoSrc}
                         loop
                         muted
+                        playsinline
+                        preload="auto"
                         class="media-element"
                         on:mouseenter={handleMouseEnter}
                         on:mouseleave={handleMouseLeave}
@@ -66,6 +68,8 @@
                             src={videoSrc}
                             loop
                             muted
+                            playsinline
+                            preload="auto"
                             class="media-element"
                             on:mouseenter={handleMouseEnter}
                             on:mouseleave={handleMouseLeave}
