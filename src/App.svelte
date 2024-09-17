@@ -39,7 +39,8 @@
                 as an intern at
                 <Link text="RTX" href="https://www.rtx.com/" />. Feel free to
                 read my
-                <ArrowLink href="/resume.pdf"
+                <ArrowLink
+                    href="https://raw.githubusercontent.com/da-luce/cv/main/assets/dalton_luce_cv.pdf"
                     ><p style="text-decoration: underline;">
                         full resume!
                     </p></ArrowLink

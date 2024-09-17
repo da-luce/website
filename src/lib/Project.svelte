@@ -9,20 +9,47 @@
     export let tags: string[];
     export let href: string;
 
-    let videoLoading = true;
+    let videoElements = [];
+    let loadingElements = [];
 
-    const handleMouseEnter = (event: Event) => {
-        const video = event.currentTarget as HTMLVideoElement;
+    const handleMouseEnter = (event) => {
+        const video = event.currentTarget;
         video.play();
     };
 
-    const handleMouseLeave = (event: Event) => {
-        const video = event.currentTarget as HTMLVideoElement;
+    const handleMouseLeave = (event) => {
+        const video = event.currentTarget;
         video.pause();
     };
 
-    const handleLoadedData = () => {
-        videoLoading = false;
+    const handleLoadedData = (event) => {
+        const index = videoElements.indexOf(event.currentTarget);
+        if (index > -1) {
+            loadingElements[index].style.display = "none";
+        }
+    };
+
+    const handleWaiting = (event) => {
+        const index = videoElements.indexOf(event.currentTarget);
+        if (index > -1) {
+            loadingElements[index].style.display = "flex";
+        }
+    };
+
+    const handlePlaying = (event) => {
+        const index = videoElements.indexOf(event.currentTarget);
+        if (index > -1) {
+            loadingElements[index].style.display = "none";
+        }
+    };
+
+    const handleVideoClick = (event) => {
+        const video = event.currentTarget;
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
     };
 </script>
 
@@ -31,21 +58,23 @@
         <Hover>
             <div class="video-wrapper">
                 {#if videoSrc}
-                    {#if videoLoading}
-                        <div class="loading-wrapper">
-                            <Loading size={50} />
-                        </div>
-                    {/if}
+                    <div class="loading-wrapper" bind:this={loadingElements[0]}>
+                        <Loading size={50} />
+                    </div>
                     <video
+                        bind:this={videoElements[0]}
                         src={videoSrc}
                         loop
                         muted
-                        playsinline
                         preload="auto"
                         class="media-element"
                         on:mouseenter={handleMouseEnter}
                         on:mouseleave={handleMouseLeave}
+                        on:click={handleVideoClick}
                         on:loadeddata={handleLoadedData}
+                        on:waiting={handleWaiting}
+                        on:playing={handlePlaying}
+                        playsinline
                     ></video>
                 {:else}
                     <div class="media-element placeholder"></div>
@@ -59,21 +88,26 @@
             <Hover>
                 <div class="video-wrapper">
                     {#if videoSrc}
-                        {#if videoLoading}
-                            <div class="loading-wrapper">
-                                <Loading size={50} />
-                            </div>
-                        {/if}
+                        <div
+                            class="loading-wrapper"
+                            bind:this={loadingElements[1]}
+                        >
+                            <Loading size={50} />
+                        </div>
                         <video
+                            bind:this={videoElements[1]}
                             src={videoSrc}
                             loop
                             muted
-                            playsinline
                             preload="auto"
                             class="media-element"
                             on:mouseenter={handleMouseEnter}
                             on:mouseleave={handleMouseLeave}
+                            on:click={handleVideoClick}
                             on:loadeddata={handleLoadedData}
+                            on:waiting={handleWaiting}
+                            on:playing={handlePlaying}
+                            playsinline
                         ></video>
                     {:else}
                         <div class="media-element placeholder"></div>
@@ -128,6 +162,7 @@
         left: 0;
         right: 0;
         bottom: 0;
+        display: flex; /* Hide by default */
     }
 
     .media-element {
