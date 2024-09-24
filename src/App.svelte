@@ -33,13 +33,14 @@
                     href="https://www.engineering.cornell.edu/"
                 />, actively engaged with the Cornell
                 <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter,
-                and contributing to innovations on the
+                and software subteam lead of the
                 <Link text="Autobike" href="https://www.cuautobike.org/" /> project
                 team. Currently, I'm expanding my software engineering expertise
                 as an intern at
                 <Link text="RTX" href="https://www.rtx.com/" />. Feel free to
                 read my
-                <ArrowLink href="/resume.pdf"
+                <ArrowLink
+                    href="https://raw.githubusercontent.com/da-luce/cv/main/assets/dalton_luce_cv.pdf"
                     ><p style="text-decoration: underline;">
                         full resume!
                     </p></ArrowLink
@@ -52,7 +53,7 @@
         <div id="projects-container">
             <h2>Projects</h2>
             <Project
-                videoSrc="/starsaver.mov"
+                videoSrc="/starsaver_small.mov"
                 title="Starsaver"
                 desc="I've always been interested in the command line—the power of ASCII characters and a limited selection of colors to portray more than just text. Starsaver enables users to display the positions of stars in real-time. This project allowed me to explore C programming deeply, combining my interests in astronomy and coding to create a compelling CLI tool. Through Starsaver, users can bring the beauty of the night sky right to their terminals."
                 tags={["C", "Meson", "ncurses"]}

@@ -50,7 +50,7 @@
         returnAnimationFrame = requestAnimationFrame(animate);
     }
 
-    const throttledScrollHandler = throttle(handleScroll, 10); // 10 ms
+    const throttledScrollHandler = throttle(handleScroll, 17); // 10 ms
 
     onMount(() => {
         if (!enabled) {
