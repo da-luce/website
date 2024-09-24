@@ -33,7 +33,7 @@
                     href="https://www.engineering.cornell.edu/"
                 />, actively engaged with the Cornell
                 <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter,
-                and contributing to innovations on the
+                and software subteam lead of the
                 <Link text="Autobike" href="https://www.cuautobike.org/" /> project
                 team. Currently, I'm expanding my software engineering expertise
                 as an intern at
