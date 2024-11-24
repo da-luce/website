@@ -37,8 +37,8 @@
                 <Link text="Autobike" href="https://www.cuautobike.org/" /> project
                 team. Currently, I'm expanding my software engineering expertise
                 as an intern at
-                <Link text="RTX" href="https://www.rtx.com/" />. Feel free to
-                read my
+                <Link text="Raytheon" href="https://www.rtx.com/raytheon" />.
+                Feel free to read my
                 <ArrowLink
                     href="https://raw.githubusercontent.com/da-luce/cv/main/assets/dalton_luce_cv.pdf"
                     ><p style="text-decoration: underline;">

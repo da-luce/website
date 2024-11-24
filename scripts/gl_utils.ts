@@ -8,7 +8,7 @@ function loadShader(
     const shader = gl.createShader(type);
     if (!shader) {
         alert("Cannot create shader.");
-        throw new Error("WebGL internall error");
+        throw new Error("WebGL internal error");
     }
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
