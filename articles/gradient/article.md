@@ -1,31 +1,27 @@
-# Beautiful (and Performant) Blurred Gradients--WebGL shaders from Scratch
+# Beautiful (and Performant) Blurred Gradients with WebGL Shaders
 
-_Building a noisy, blurred gradient with a WebGL shader from scratch._
+_Building a grainy, blurred gradient from scratch with WebGL shaders._
 
 > [!NOTE]
 > This tutorial uses the older, more widely supported [WebGL](https://caniuse.com/webgl) over the newer [WebGL2](https://caniuse.com/webgl2).
 
-Now adays, blurred gradients are a prominient UI design feature. Particuluarly inspired
-by [Stripe's homepage](https://web.archive.org/web/20241101005257/https://stripe.com/en-fi)
-and Apple intellignce background. I wanted a similar effect for [my website](https://www.daltonluce.com/).
+It seems like every website incorporates some form of a gradient nowadays--from [Stripe's homepage](https://web.archive.org/web/20241101005257/https://stripe.com/en-fi) to the background animation for Apple's new and upgraded Siri. And for good reason--these gradients can be a both a flashy and subtle way to draw user's attention. Wanting to hop on the hype train, I built my own grainy gradient for [my own website](https://www.daltonluce.com/).
 
 ![A Blurred Gradient](./gradient.png)
 _<p style="text-align: center;">A nice blurred gradient</p>_
 
-This tutorial is broken into two primary sections:
+I explored several approaches to achieve the dreamy, blobby gradient effect. The simplest approach seemed to be drawing on an HTML [Canvas](https://www.w3schools.com/html/html5_canvas.asp) element. The beloved canvas provides a ton of upfront tools for drawing lines, shapes, and other post processing effects. I created a proof of concept inspired by [this tutorial](https://www.youtube.com/watch?v=D6EiRSRhsbQ), but the effect wasn't exactly what I was looking for, and the performance was... well, not great. It seemed drawing directly onto the canvas was not going to be good solution for a full page gradient.
 
-1. Creating a simple WebGL shader
-2. Creating a beautiful, blurred gradient
+Shaders to the rescue! I started to look into [shaders](https://www.shadertoy.com/), a way to utilize the graphics processing power of computer to efficiently push pixels to the screen in parallel. This tutorial brushes over some of the more technical details. This is not intended to be an in-depth tutorial on shaders, for that, [The Book of Shaders](https://thebookofshaders.com/) is a _superb_ resource on the topic. [Learn OpenGL](https://learnopengl.com/) is also an invaluable resource on the topic. Instead, I choose to highlight the unique ideas and easier something.
 
-## Starting with WebGL
+There are many great libraries out there that enable the easy construction of 3D and 2D JavsScript objects, [three.js](https://threejs.org/) and [more](https://gist.github.com/dmnsgn/76878ba6903cf15789b712464875cfdc) included. However, I wasn't too inclined to introduce a large dependency (> 500 KB in the case of three.js), for a simple 2D shader. Indeed, adding the code we need for a simple shader isn't that much, but definitely involves quite a few steps. This is why I have broken this tutorial into two parts.
 
-There were severy possible approaches. Initially, tried an HTML Canvas, primarily insipired by [this tutorial](https://www.youtube.com/watch?v=D6EiRSRhsbQ). Ultimately, the effect wasn't exactly what I was looking for, and the performance was... well, not great. Defintiely not good enough for a full page web background.
+1. Creating a basic 2D WebGL shader program from scratch
+2. Implementing a blurred gradient
 
-I started to look into [shaders](https://www.shadertoy.com/), a way to utilize the graphics processing power of computer to efficiently push pixels to the screen in parallel. This tutorial brushes over some of the more technical details. This is not intended to be an in-depth tutorial on shaders, for that, [The Book of Shaders](https://thebookofshaders.com/) is a _superb_ resource on the topic. [Learn OpenGL](https://learnopengl.com/) is also an invaluable resource on the topic. Instead, I choose to highlight the unique ideas and easier something.
+## 1. Shader Shenanigans: Painting Pixels with WebGL
 
-### Starting a Shader
-
-There are many great libraries out there that enable the easy construction of 3D and 2D JavsScript objects, [three.js](https://threejs.org/) and [more](https://gist.github.com/dmnsgn/76878ba6903cf15789b712464875cfdc) included. However, I wasn't too inclined to introduce a large dependency (> 500 KB in the case of three.js), for a simple 2D shader. Indeed, adding the code we need for a simple shader isn't that much. To start, we need a canvas to which we can draw our gradient:
+Before we can play Picasso, we need a canvas to which we can draw our gradient:
 
 ```html
 <!-- Define a full screen canvas -->
@@ -155,4 +151,10 @@ if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
 }
 ```
 
-Fwheeeh. That was a lot of work. 
+Fwheeeh. That was a lot of work. Here's a red gradient
+
+TODO: embed code?
+
+## 2. Gradients: Shading with Style
+
+
