@@ -1,0 +1,1 @@
+export const prerender = true; // Prerenders all pages in this layout (and its sub-pages)
