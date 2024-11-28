@@ -14,8 +14,8 @@
 
 <section id="landing">
 	<div>
-		<h1 style="color: var(--foreground);">Dalton</h1>
-		<h1 style="color: transparent;">Luce</h1>
+		<h1 id="first-name">Dalton</h1>
+		<h1 id="last-name">Luce</h1>
 		<p id="subheading">
 			Electrical and Computer Engineering undergraduate at <Link
 				text="Cornell"
@@ -66,3 +66,51 @@
 </section>
 
 <Footer />
+
+<style>
+
+    #last-name {
+        color: transparent;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: var(--foreground);
+    }
+
+	section {
+		width: 100vw;
+		box-sizing: border-box;
+		padding: 0 1.5em;
+		/* For small screens */
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+
+	section>div:first-child {
+		max-width: 50em;
+		width: 100%;
+		margin: 0 auto;
+	}
+
+    #landing {
+        height: 100vh;
+    }
+
+    #subheading {
+        line-height: 2.5rem;
+        /* Extra room for links */
+    }
+
+    #projects {
+        margin-top: 5em;
+        /* Add some room to breath */
+    }
+
+    #projects-container {
+        flex-direction: column;
+        align-items: flex-start;
+        display: flex;
+        gap: 4em;
+    }
+</style>

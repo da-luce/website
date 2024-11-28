@@ -6,8 +6,15 @@
     --highlight: #b6e4fc;
 
     /* Fonts */
-    --fancy-font: "Yeseva One", serif;
+    --serif-font: "Yeseva One", serif;
     --mono-font: "Inconsolata", monospace;
+
+    /* Sizes */
+    --size-1: 6rem;
+    --size-2: 3rem;
+    --size-3: 1.5rem;
+    --size-4: 1.2rem;
+    --size-5: 0.75rem;
 }
 
 /* A simple CSS reset */
@@ -36,66 +43,99 @@ body {
     scroll-behavior: smooth;
 }
 
-section {
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 0 1.5em;
-    /* For small screens */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-section>div:first-child {
-    max-width: 50em;
-    width: 100%;
-    margin: 0 auto;
-}
-
 h1 {
-    font-family: var(--fancy-font);
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: var(--foreground);
-    font-size: 6em;
+    font-family: var(--serif-font);
+    color: var(--foreground);
+    font-size: var(--size-1);
 }
 
 h2 {
-    font-family: var(--fancy-font);
+    font-family: var(--serif-font);
     color: var(--foreground);
-    font-size: 3em;
+    font-size: var(--size-2);
 }
 
 h3 {
-    font-family: var(--fancy-font);
+    font-family: var(--serif-font);
     color: var(--foreground);
-    font-size: 1.5em;
+    font-size: var(--size-3);
 }
 
 p {
     font-family: var(--mono-font);
     color: var(--foreground);
-    font-size: 1.2em;
+    font-size: var(--size-4);
 }
 
-#landing {
-    height: 100vh;
+/* FIXME: add blog styling here, as dynamically loading stuff doesn't apply css */
+.prose {
+
+    h1 {
+        font-size: var(--size-2);
+    }
+
+    h2 {
+        font-size: var(--size-3);
+    }
+
+    /* Links */
+    a {
+        color: var(--highlight);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    a:hover {
+        color: var(--foreground);
+    }
+
+    /* Lists */
+    ul,
+    ol {
+        margin-left: var(--size-3);
+    }
+
+    /* Code blocks */
+    pre {
+        background-color: var(--background-secondary);
+        color: var(--foreground);
+        padding: 1em;
+        border-radius: 1em;
+        overflow-x: auto;
+    }
+
+    code {
+        font-family: var(--mono-font);
+        font-size: 1rem;
+        color: var(--highlight);
+    }
+
+    /* Images */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: var(--spacing-medium) 0;
+    }
+
+    /* Blockquote */
+    blockquote {
+        background-color: var(--background-secondary);
+        color: var(--highlight);
+        padding: 1em;
+        border-left: 0.25em solid var(--highlight);
+        font-style: italic;
+    }
+
+    /* Footer / Small print */
+    footer {
+        margin-top: var(--spacing-large);
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--foreground);
+    }
 }
 
-#subheading {
-    line-height: 2.5rem;
-    /* Extra room for links */
-}
-
-#projects {
-    margin-top: 5em;
-    /* Add some room to breath */
-}
-
-#projects-container {
-    flex-direction: column;
-    align-items: flex-start;
-    display: flex;
-    gap: 4em;
+.prose > * {
+    margin-bottom: var(--size-3);
 }
