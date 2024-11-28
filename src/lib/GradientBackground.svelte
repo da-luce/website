@@ -1,13 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { createShaderProgram } from "../../scripts/gl_utils";
+    import { createShaderProgram } from "$scripts/gl_utils";
     import {
         vsGradient,
         fsGradient,
         vsNoise,
         fsNoise,
-    } from "../../scripts/shaders";
-    import { throttle } from "../../scripts/throttle";
+    } from "../scripts/shaders";
+    import { throttle } from "../scripts/throttle";
 
     // Settings
     const numPoints = 5;

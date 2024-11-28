@@ -39,7 +39,8 @@ body {
 section {
     width: 100vw;
     box-sizing: border-box;
-    padding: 0 1.5em; /* For small screens */
+    padding: 0 1.5em;
+    /* For small screens */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,7 +48,7 @@ section {
     position: relative;
 }
 
-section > div:first-child {
+section>div:first-child {
     max-width: 50em;
     width: 100%;
     margin: 0 auto;
@@ -83,11 +84,13 @@ p {
 }
 
 #subheading {
-    line-height: 2.5rem; /* Extra room for links */
+    line-height: 2.5rem;
+    /* Extra room for links */
 }
 
 #projects {
-    margin-top: 5em; /* Add some room to breath */
+    margin-top: 5em;
+    /* Add some room to breath */
 }
 
 #projects-container {

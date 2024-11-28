@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { throttle } from "../../scripts/throttle";
+    import { throttle } from "$scripts/throttle";
 
     export let size = 100; // Default size
     let width = 3;

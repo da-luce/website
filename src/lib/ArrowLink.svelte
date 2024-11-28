@@ -18,6 +18,7 @@
         gap: 5px;
         text-decoration: none;
         font-size: 1rem; /* FIXME: why??? */
+        color: inherit; /* Keep normal text color */
     }
 
     svg {

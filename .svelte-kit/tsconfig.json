@@ -1,6 +1,12 @@
 {
 	"compilerOptions": {
 		"paths": {
+			"$scripts": [
+				"../src/scripts"
+			],
+			"$scripts/*": [
+				"../src/scripts/*"
+			],
 			"$lib": [
 				"../src/lib"
 			],

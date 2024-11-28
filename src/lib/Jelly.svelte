@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { throttle } from "../../scripts/throttle"; // Ensure this path is correct
+    import { throttle } from "../scripts/throttle"; // Ensure this path is correct
 
     export let defaultGap = 1; // Default gap in rem
 
