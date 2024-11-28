@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-static';
 import path from "path";
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
@@ -16,7 +16,7 @@ const config = {
         alias: {
               $scripts: path.resolve('./src/scripts'),  // Ensure $src points to the src/ directory
         },
-    }
+    },
 };
 
 export default config;
