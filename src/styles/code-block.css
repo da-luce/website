@@ -1,0 +1,74 @@
+:root {
+    --black: var(--background-primary);
+    --red: #fcb6b6;
+    --green: #eafcb6;
+    --yellow: #fceab6;
+    --blue: #b6eafc;
+    --magenta: #fcb6fc;
+    --cyan: #b6fcfc;
+    --white: var(--foreground);
+}
+
+/* Syntax element styles */
+
+/* Comment */
+.hljs-comment,
+.hljs-quote {
+    color: var(--white);
+}
+
+/* Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+    color: var(--red);
+}
+
+/* Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+    color: var(--yellow);
+}
+
+/* Yellow */
+.hljs-attribute {
+    color: var(--yellow);
+}
+
+/* Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+    color: var(--green);
+}
+
+/* Blue */
+.hljs-title,
+.hljs-section {
+    color: var(--blue);
+}
+
+/* Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+    color: var(--magenta);
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}

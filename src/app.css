@@ -1,3 +1,6 @@
+@import './styles/code-block.css';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
+
 :root {
     /* Colors */
     --background-primary: #030c1d;
@@ -86,7 +89,9 @@ p {
     }
 
     a:hover {
-        color: var(--foreground);
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
     }
 
     /* Lists */
@@ -97,17 +102,18 @@ p {
 
     /* Code blocks */
     pre {
-        background-color: var(--background-secondary);
-        color: var(--foreground);
+        background-color: var(--background-primary);
+        border: 2px solid var(--foreground);
         padding: 1em;
         border-radius: 1em;
         overflow-x: auto;
+        color: var(--foreground);
+        font-family: 'Courier New', monospace;
     }
 
     code {
         font-family: var(--mono-font);
         font-size: 1rem;
-        color: var(--highlight);
     }
 
     /* Images */
@@ -120,10 +126,12 @@ p {
 
     /* Blockquote */
     blockquote {
+        --blockquote-left: 0.25em;
         background-color: var(--background-secondary);
         color: var(--highlight);
         padding: 1em;
-        border-left: 0.25em solid var(--highlight);
+        border-radius: var(--blockquote-left);
+        border-left: var(--blockquote-left) solid var(--highlight);
         font-style: italic;
     }
 

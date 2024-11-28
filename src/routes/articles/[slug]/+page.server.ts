@@ -1,32 +1,41 @@
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import fs from 'fs';
-import { marked } from 'marked';
+import hljs from 'highlight.js';
+import markdownit from 'markdown-it';
+import markdownitKatex from 'markdown-it-katex';
 import path from 'path';
 
-export const load: PageServerLoad = async ({ params }) => {
-  // Extract the slug from the URL
-  const slug = params.slug;
+// Create an instance of markdown-it with custom highlight function
+const md = markdownit({
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(str, { language: lang }).value;
+      } catch (__) {}
+    }
+    return ''; // Use default escaping if no highlighting is available
+  }
+}).use(markdownitKatex);
 
-  // Define the path to the markdown file (adjust if you have a different directory structure)
+export const load: PageServerLoad = async ({ params }) => {
+  const slug = params.slug;
   const articlePath = path.resolve('src/articles', slug, 'index.md');
 
   try {
     // Read the markdown file content
     const articleContent = fs.readFileSync(articlePath, 'utf-8');
 
-    // Convert markdown to HTML using `marked`
-    const htmlContent = marked(articleContent);
+    // Convert markdown to HTML using markdown-it with syntax highlighting
+    const htmlContent = md.render(articleContent);
 
-    // Return the title (you can format it based on the slug) and content
+    // Return the title and content
     return {
-      title: slug.replace(/-/g, ' ').toUpperCase(),  // You can adjust this logic for the title
-
+      title: slug.replace(/-/g, ' ').toUpperCase(),
       content: htmlContent
     };
   } catch (err) {
     console.error('Error loading article:', err);
-    // Return a 404 error if the article is not found
     throw error(404, 'Article not found');
   }
 };
