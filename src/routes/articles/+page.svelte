@@ -1,34 +1,19 @@
-<script context="module" lang="ts">
-  import fs from 'fs';
-  import path from 'path';
-
-  export async function load() {
-    const articlesDir = path.resolve('src/routes/articles');
-
-    // Get all files in the articles directory
-    const files = fs.readdirSync(articlesDir);
-
-    // Filter out non-markdown files and get the filenames without extensions
-    const slugs = files
-      .filter(file => file.endsWith('.md')) // Filter markdown files
-      .map(file => file.replace('.md', '')); // Remove .md extension to get the slug
-
-    return {
-      props: {
-        slugs, // Return the slugs as a prop
-      },
-    };
-  }
-</script>
-
+// src/routes/articles/+page.svelte
 <script lang="ts">
-  // Receiving the slugs passed from the load function
-  export let slugs: string[];
+    import type { PageData } from './$types';
+    let { data }: { data: PageData } = $props();
 </script>
 
-<!-- Rendering the list of articles -->
+<h1>Articles</h1>
+
 <ul>
-  {#each slugs as slug}
-    <li><a href={`/articles/${slug}`}>{slug}</a></li>
-  {/each}
+  {#if data.articles && data.articles.length > 0}
+    {#each data.articles as article}
+      <li>
+        <a href={`/articles/${article}`}>{article}</a>
+      </li>
+    {/each}
+  {:else}
+    <li>No articles found</li>
+  {/if}
 </ul>

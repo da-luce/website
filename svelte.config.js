@@ -1,4 +1,5 @@
 import adapter from '@sveltejs/adapter-static';
+import { globSync } from 'glob';
 import path from "path";
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 

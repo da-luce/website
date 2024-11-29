@@ -49,13 +49,13 @@ body {
 h1 {
     font-family: var(--serif-font);
     color: var(--foreground);
-    font-size: var(--size-1);
+    font-size: var(--size-2);
 }
 
 h2 {
     font-family: var(--serif-font);
     color: var(--foreground);
-    font-size: var(--size-2);
+    font-size: var(--size-3);
 }
 
 h3 {
@@ -72,14 +72,6 @@ p {
 
 /* FIXME: add blog styling here, as dynamically loading stuff doesn't apply css */
 .prose {
-
-    h1 {
-        font-size: var(--size-2);
-    }
-
-    h2 {
-        font-size: var(--size-3);
-    }
 
     /* Links */
     a {
@@ -141,6 +133,48 @@ p {
         text-align: center;
         font-size: 0.875rem;
         color: var(--foreground);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            font-size: 1rem;
+        }
+
+        article {
+            padding: var(--spacing-small);
+        }
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+
+        p li {
+            font-size: 0.95rem;
+        }
     }
 }
 
