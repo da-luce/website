@@ -1,11 +1,11 @@
 :root {
     --black: var(--background-primary);
-    --red: #fcb6b6;
-    --green: #eafcb6;
-    --yellow: #fceab6;
-    --blue: #b6eafc;
-    --magenta: #fcb6fc;
-    --cyan: #b6fcfc;
+    --red: #fab7b7;
+    --green: #b7fac8;
+    --yellow: #b7b7fa;
+    --blue: #b7cffa;
+    --magenta: #fab7fa;
+    --cyan: #b7fae9;
     --white: var(--foreground);
 }
 

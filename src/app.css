@@ -11,6 +11,7 @@
     /* Fonts */
     --serif-font: "Yeseva One", serif;
     --mono-font: "Inconsolata", monospace;
+    --sans-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
     /* Sizes */
     --size-1: 6rem;
@@ -73,6 +74,12 @@ p {
 /* FIXME: add blog styling here, as dynamically loading stuff doesn't apply css */
 .prose {
 
+    --rounding: 0.5em;
+
+    p {
+        font-family: var(--sans-font);
+    }
+
     /* Links */
     a {
         color: var(--highlight);
@@ -97,15 +104,15 @@ p {
         background-color: var(--background-primary);
         border: 2px solid var(--foreground);
         padding: 1em;
-        border-radius: 1em;
+        border-radius: var(--rounding);
         overflow-x: auto;
         color: var(--foreground);
-        font-family: 'Courier New', monospace;
+        /* font-family: 'Courier New', monospace; */
     }
 
     code {
         font-family: var(--mono-font);
-        font-size: 1rem;
+        font-size: var(--size-4);
     }
 
     /* Images */
@@ -113,6 +120,7 @@ p {
         max-width: 100%;
         height: auto;
         display: block;
+        border-radius: var(--rounding);
         margin: var(--spacing-medium) 0;
     }
 

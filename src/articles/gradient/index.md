@@ -2,12 +2,11 @@
 
 _Building a grainy, blurred gradient from scratch with WebGL shaders._
 
-> [!NOTE]
 > This tutorial uses the older, more widely supported [WebGL](https://caniuse.com/webgl) over the newer [WebGL2](https://caniuse.com/webgl2).
 
 It seems like every website incorporates some form of a gradient nowadays--from [Stripe's homepage](https://web.archive.org/web/20241101005257/https://stripe.com/en-fi) to the background animation for Apple's new and upgraded Siri. And for good reason--these gradients can be a both a flashy and subtle way to draw user's attention. Wanting to hop on the hype train, I built my own grainy gradient for [my own website](https://www.daltonluce.com/).
 
-<!-- ![A Blurred Gradient](./gradient/gradient.png) -->
+![A Blurred Gradient](/articles/gradient/gradient.png)
 
 _<p style="text-align: center;">A nice blurred gradient</p>_
 

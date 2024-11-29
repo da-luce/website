@@ -42,7 +42,6 @@ declare module '$env/static/private' {
 	export const MallocNanoZone: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const COLOR: string;
-	export const TERM_SESSION_ID: string;
 	export const OPAM_SWITCH_PREFIX: string;
 	export const npm_config_noproxy: string;
 	export const OS: string;
@@ -56,11 +55,9 @@ declare module '$env/static/private' {
 	export const __CF_USER_TEXT_ENCODING: string;
 	export const npm_execpath: string;
 	export const BASH_SILENCE_DEPRECATION_WARNING: string;
-	export const TERM_FEATURES: string;
 	export const DOTFILES: string;
 	export const MACH: string;
 	export const PATH: string;
-	export const TERMINFO_DIRS: string;
 	export const npm_package_json: string;
 	export const npm_config_engine_strict: string;
 	export const _: string;
@@ -73,7 +70,6 @@ declare module '$env/static/private' {
 	export const EDITOR: string;
 	export const npm_package_name: string;
 	export const LANG: string;
-	export const ITERM_PROFILE: string;
 	export const npm_config_npm_version: string;
 	export const XPC_FLAGS: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
@@ -82,11 +78,8 @@ declare module '$env/static/private' {
 	export const XPC_SERVICE_NAME: string;
 	export const HOME: string;
 	export const SHLVL: string;
-	export const COLORFGBG: string;
 	export const XDG_CONFIG_HOME: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
-	export const LC_TERMINAL_VERSION: string;
-	export const ITERM_SESSION_ID: string;
 	export const npm_config_cache: string;
 	export const LOGNAME: string;
 	export const STARSHIP_SESSION_KEY: string;
@@ -97,7 +90,6 @@ declare module '$env/static/private' {
 	export const GIT_ASKPASS: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const DISPLAY: string;
-	export const LC_TERMINAL: string;
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
@@ -149,7 +141,6 @@ declare module '$env/dynamic/private' {
 		MallocNanoZone: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		COLOR: string;
-		TERM_SESSION_ID: string;
 		OPAM_SWITCH_PREFIX: string;
 		npm_config_noproxy: string;
 		OS: string;
@@ -163,11 +154,9 @@ declare module '$env/dynamic/private' {
 		__CF_USER_TEXT_ENCODING: string;
 		npm_execpath: string;
 		BASH_SILENCE_DEPRECATION_WARNING: string;
-		TERM_FEATURES: string;
 		DOTFILES: string;
 		MACH: string;
 		PATH: string;
-		TERMINFO_DIRS: string;
 		npm_package_json: string;
 		npm_config_engine_strict: string;
 		_: string;
@@ -180,7 +169,6 @@ declare module '$env/dynamic/private' {
 		EDITOR: string;
 		npm_package_name: string;
 		LANG: string;
-		ITERM_PROFILE: string;
 		npm_config_npm_version: string;
 		XPC_FLAGS: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
@@ -189,11 +177,8 @@ declare module '$env/dynamic/private' {
 		XPC_SERVICE_NAME: string;
 		HOME: string;
 		SHLVL: string;
-		COLORFGBG: string;
 		XDG_CONFIG_HOME: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
-		LC_TERMINAL_VERSION: string;
-		ITERM_SESSION_ID: string;
 		npm_config_cache: string;
 		LOGNAME: string;
 		STARSHIP_SESSION_KEY: string;
@@ -204,7 +189,6 @@ declare module '$env/dynamic/private' {
 		GIT_ASKPASS: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
 		DISPLAY: string;
-		LC_TERMINAL: string;
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;
