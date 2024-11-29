@@ -15,7 +15,8 @@ const config = {
         // See https://svelte.dev/docs/kit/adapters for more information about adapters.
         adapter: adapter(),
         alias: {
-              $scripts: path.resolve('./src/scripts'),  // Ensure $src points to the src/ directory
+              $scripts: path.resolve('./src/scripts'),
+              $types: path.resolve('./src/types')
         },
     },
 };

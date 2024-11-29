@@ -4,6 +4,7 @@
     import Loading from "./Loading.svelte";
 
     export let videoSrc: string;
+    export let imageSrc: string;  // Add this to accept image source
     export let title: string;
     export let desc: string;
     export let tags: string[];
@@ -76,22 +77,27 @@
                         on:playing={handlePlaying}
                         playsinline
                     ></video>
+                {:else if imageSrc}
+                    <img
+                        bind:this={loadingElements[0]}
+                        src={imageSrc}
+                        alt={title}
+                        class="media-element"
+                    />
                 {:else}
                     <div class="media-element placeholder"></div>
                 {/if}
             </div>
         </Hover>
     </div>
+
     <div class="content">
         <ArrowLink {href}><h3 class="title">• {title}</h3></ArrowLink>
         <div class="video-container thin">
             <Hover>
                 <div class="video-wrapper">
                     {#if videoSrc}
-                        <div
-                            class="loading-wrapper"
-                            bind:this={loadingElements[1]}
-                        >
+                        <div class="loading-wrapper" bind:this={loadingElements[1]}>
                             <Loading size={50} />
                         </div>
                         <video
@@ -109,6 +115,13 @@
                             on:playing={handlePlaying}
                             playsinline
                         ></video>
+                    {:else if imageSrc}
+                        <img
+                            bind:this={loadingElements[1]}
+                            src={imageSrc}
+                            alt={title}
+                            class="media-element"
+                        />
                     {:else}
                         <div class="media-element placeholder"></div>
                     {/if}
@@ -170,14 +183,11 @@
         height: auto;
         border-radius: 10px;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
-        filter: grayscale(1);
         transition:
-            filter 0.3s ease,
             box-shadow 0.3s ease;
     }
 
     .media-element:hover {
-        filter: grayscale(0);
         box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
     }
 

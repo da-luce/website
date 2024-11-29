@@ -1,6 +1,8 @@
 <script lang="ts">
     import type { PageData } from './$types';
     let { data }: { data: PageData } = $props();
+
+    import Socials from '$lib/Socials.svelte';
 </script>
 
 <article>
@@ -8,7 +10,7 @@
         {@html data.content}
     </div>
 </article>
-
+<Socials />
 <style>
 
     /* FIXME: need global to get dynamically loaded markdown to style

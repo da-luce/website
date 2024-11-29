@@ -4,6 +4,7 @@ import fs from 'fs';
 import hljs from 'highlight.js';
 import markdownit from 'markdown-it';
 import markdownitKatex from 'markdown-it-katex';
+import matter from 'gray-matter';
 import path from 'path';
 
 export const prerender = true;
@@ -34,8 +35,11 @@ export const load: PageServerLoad = async ({ params }) => {
         // Read the markdown file content
         const articleContent = fs.readFileSync(articlePath, 'utf-8');
 
+        // Extract front matter
+        const { content, data } = matter(articleContent);
+
         // Convert markdown to HTML using markdown-it with syntax highlighting
-        const htmlContent = md.render(articleContent);
+        const htmlContent = md.render(content);
 
         // Return the title and content
         return {

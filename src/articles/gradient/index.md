@@ -1,3 +1,14 @@
+---
+title: "Beautiful Blurred Gradients with WebGL Shaders"
+description: "WebGL without the bloat."
+author: "Dalton Luce"
+date: "2024-11-29"
+tags:
+
+- "webgl"
+- "svelte"
+---
+
 # Beautiful Blurred Gradients with WebGL Shaders
 
 _Building a grainy, blurred gradient from scratch with WebGL shaders._

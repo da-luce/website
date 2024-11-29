@@ -27,7 +27,9 @@
             team. Currently, I'm expanding my software engineering expertise
             as an intern at
             <Link text="Raytheon" href="https://www.rtx.com/raytheon" />.
-            Feel free to read my
+            Feel free to read what I've been
+            <a href="/articles" style="color: inherit;">writing </a>
+            or my
             <ArrowLink
                 href="https://raw.githubusercontent.com/da-luce/cv/main/assets/dalton_luce_cv.pdf"
                 ><span style="text-decoration: underline;">
@@ -41,6 +43,13 @@
 <section id="projects">
     <div id="projects-container">
         <h2>Projects</h2>
+        <Project
+            imageSrc="/blog.jpeg"
+            title="Blog"
+            desc="Welcome to my corner of the web, where I dive into the world of tech, programming, and engineering. As I work on new projects and explore the latest in software development, I document my experiences, tools, and insights."
+            tags={["UI/UX Design", "Writing", "SvelteKit"]}
+            href="/articles"
+        />
         <Project
             videoSrc="/starsaver_small.mov"
             title="Starsaver"
