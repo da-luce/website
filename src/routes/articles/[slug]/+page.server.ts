@@ -26,6 +26,37 @@ const md = markdownit({
     highlight: highlightCode, // Code syntax highlighting
 }).use(markdownitKatex) // KaTeX support
 
+// Open links in a new tab
+
+var defaultRender =
+    md.renderer.rules.link_open ||
+    function (tokens, idx, options, env, self) {
+        return self.renderToken(tokens, idx, options)
+    }
+
+md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    // Add a new `target` attribute, or replace the value of the existing one.
+    tokens[idx].attrSet('target', '_blank')
+
+    // Pass the token to the default renderer.
+    return defaultRender(tokens, idx, options, env, self)
+}
+
+// Replace "--" with em dash
+
+md.core.ruler.push('replace_dashes', function (state) {
+    state.tokens.forEach(function (token) {
+        if (token.type === 'inline' && token.children) {
+            token.children.forEach(function (child) {
+                if (child.type === 'text') {
+                    // Replace `--` with `—` in the text content
+                    child.content = child.content.replace(/--/g, '—')
+                }
+            })
+        }
+    })
+})
+
 export const load: PageServerLoad = async ({ params }) => {
     const slug = params.slug
     const articlePath = path.resolve('src/articles', slug, 'index.md')

@@ -14,15 +14,15 @@ _Building a grainy, blurred gradient from scratch with WebGL shaders._
 
 > This tutorial uses the older, more widely supported [WebGL](https://caniuse.com/webgl) over the newer [WebGL2](https://caniuse.com/webgl2).
 
-It seems like every website incorporates some form of a gradient nowadays--from [Stripe's homepage](https://web.archive.org/web/20241101005257/https://stripe.com/en-fi) to the background animation for Apple's new and upgraded Siri. And for good reason--these gradients can be a both a flashy and subtle way to draw user's attention. Wanting to hop on the hype train, I built my own grainy gradient for [my own website](https://www.daltonluce.com/).
+Blurred gradients--a staple in modern UI trends. From [Stripe's homepage](https://web.archive.org/web/20241101005257/https://stripe.com/en-fi) to the background animation to the Apple Intelligence, companies and designers everywhere are using this trend. And for good reason--these gradients can be a both a flashy and subtle way to draw user's attention. Wanting to hop on the hype train, I looked in to creating my own grainy gradient for [my website](https://www.daltonluce.com/).
 
 ![A Blurred Gradient](/articles/gradient/gradient.png)
 
-_<p style="text-align: center;">A nice blurred gradient</p>_
+_<p style="text-align: center;">A nice blurred gradient we'll produce with WebGL (and it moves!)</p>_
 
 <img src="/articles/gradient/test.svg" class="svg-filter"/>
 
-I explored several approaches to achieve the dreamy, blobby gradient effect. The simplest approach seemed to be drawing on an HTML [Canvas](https://www.w3schools.com/html/html5_canvas.asp) element. The beloved canvas provides a ton of upfront tools for drawing lines, shapes, and other post processing effects. I created a proof of concept inspired by [this tutorial](https://www.youtube.com/watch?v=D6EiRSRhsbQ), but the effect wasn't exactly what I was looking for, and the performance was... well, not great. It seemed drawing directly onto the canvas was not going to be good solution for a full page gradient.
+My journey to creating my dream gradient began where many UI experiments begin--I explored several approaches to achieve the dreamy, blobby gradient effect. The simplest approach seemed to be drawing on an HTML [Canvas](https://www.w3schools.com/html/html5_canvas.asp) element. The beloved canvas provides a ton of upfront tools for drawing lines, shapes, and other post processing effects. I created a proof of concept inspired by [this tutorial](https://www.youtube.com/watch?v=D6EiRSRhsbQ), but the effect wasn't exactly what I was looking for, and the performance was... well, not great. It seemed drawing directly onto the canvas was not going to be good solution for a full page gradient.
 
 Shaders to the rescue! I started to look into [shaders](https://www.shadertoy.com/), a way to utilize the graphics processing power of computer to efficiently push pixels to the screen in parallel. This tutorial brushes over some of the more technical details. This is not intended to be an in-depth tutorial on shaders, for that, [The Book of Shaders](https://thebookofshaders.com/) is a _superb_ resource on the topic. [Learn OpenGL](https://learnopengl.com/) is also an invaluable resource on the topic. Instead, I choose to highlight the unique ideas and easier something.
 
