@@ -39,6 +39,7 @@ declare module '$env/static/private' {
 	export const HOME: string;
 	export const KERNEL: string;
 	export const LOGNAME: string;
+	export const LaunchInstanceID: string;
 	export const MACH: string;
 	export const MallocNanoZone: string;
 	export const OCAML_TOPLEVEL_PATH: string;
@@ -47,6 +48,7 @@ declare module '$env/static/private' {
 	export const OS: string;
 	export const PATH: string;
 	export const PWD: string;
+	export const SECURITYSESSIONID: string;
 	export const SHELL: string;
 	export const SHLVL: string;
 	export const SSH_AUTH_SOCK: string;
@@ -70,10 +72,10 @@ declare module '$env/static/private' {
 	export const _: string;
 	export const __CFBundleIdentifier: string;
 	export const __CF_USER_TEXT_ENCODING: string;
+	export const VSCODE_L10N_BUNDLE_LOCATION: string;
 	export const VSCODE_DOTNET_INSTALL_TOOL_ORIGINAL_HOME: string;
 	export const APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL: string;
 	export const APPLICATIONINSIGHTS_CONFIGURATION_CONTENT: string;
-	export const VSCODE_L10N_BUNDLE_LOCATION: string;
 	export const ELECTRON_NO_ASAR: string;
 	export const NODE_ENV: string;
 }
@@ -120,6 +122,7 @@ declare module '$env/dynamic/private' {
 		HOME: string;
 		KERNEL: string;
 		LOGNAME: string;
+		LaunchInstanceID: string;
 		MACH: string;
 		MallocNanoZone: string;
 		OCAML_TOPLEVEL_PATH: string;
@@ -128,6 +131,7 @@ declare module '$env/dynamic/private' {
 		OS: string;
 		PATH: string;
 		PWD: string;
+		SECURITYSESSIONID: string;
 		SHELL: string;
 		SHLVL: string;
 		SSH_AUTH_SOCK: string;
@@ -151,10 +155,10 @@ declare module '$env/dynamic/private' {
 		_: string;
 		__CFBundleIdentifier: string;
 		__CF_USER_TEXT_ENCODING: string;
+		VSCODE_L10N_BUNDLE_LOCATION: string;
 		VSCODE_DOTNET_INSTALL_TOOL_ORIGINAL_HOME: string;
 		APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL: string;
 		APPLICATIONINSIGHTS_CONFIGURATION_CONTENT: string;
-		VSCODE_L10N_BUNDLE_LOCATION: string;
 		ELECTRON_NO_ASAR: string;
 		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;

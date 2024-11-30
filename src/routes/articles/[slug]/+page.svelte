@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { PageData } from './$types';
-    let { data }: { data: PageData } = $props();
+    import type { PageData } from './$types'
+    let { data }: { data: PageData } = $props()
 
-    import Socials from '$lib/Socials.svelte';
+    import Socials from '$lib/Socials.svelte'
 </script>
 
 <article>
@@ -11,8 +11,8 @@
     </div>
 </article>
 <Socials />
-<style>
 
+<style>
     /* FIXME: need global to get dynamically loaded markdown to style
     https://stackoverflow.com/questions/76550980/markdown-generated-html-is-not-styled-by-the-styles-specified-by-css
     */

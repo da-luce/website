@@ -1,12 +1,11 @@
 ---
-title: "Beautiful Blurred Gradients with WebGL Shaders"
-description: "WebGL without the bloat."
-author: "Dalton Luce"
-date: "2024-11-29"
+title: 'Beautiful Blurred Gradients with WebGL Shaders'
+description: 'WebGL without the bloat.'
+author: 'Dalton Luce'
+date: '2024-11-29'
 tags:
-
-- "webgl"
-- "svelte"
+    - 'webgl'
+    - 'svelte'
 ---
 
 # Beautiful Blurred Gradients with WebGL Shaders
@@ -20,6 +19,8 @@ It seems like every website incorporates some form of a gradient nowadays--from 
 ![A Blurred Gradient](/articles/gradient/gradient.png)
 
 _<p style="text-align: center;">A nice blurred gradient</p>_
+
+<img src="/articles/gradient/test.svg" class="svg-filter"/>
 
 I explored several approaches to achieve the dreamy, blobby gradient effect. The simplest approach seemed to be drawing on an HTML [Canvas](https://www.w3schools.com/html/html5_canvas.asp) element. The beloved canvas provides a ton of upfront tools for drawing lines, shapes, and other post processing effects. I created a proof of concept inspired by [this tutorial](https://www.youtube.com/watch?v=D6EiRSRhsbQ), but the effect wasn't exactly what I was looking for, and the performance was... well, not great. It seemed drawing directly onto the canvas was not going to be good solution for a full page gradient.
 
@@ -54,17 +55,15 @@ Before we can play Picasso, we need a canvas to which we can draw our gradient:
 
 _Pretty boring so far_
 
-Now, we hook up a WbGL instance to this. We'll start by initializing WebGL. 
+Now, we hook up a WbGL instance to this. We'll start by initializing WebGL.
 
 ```ts
 // Initialize WebGL
-const canvas = document.getElementById("gradient_canvas");
-const gl = canvas.getContext("webgl");
+const canvas = document.getElementById('gradient_canvas')
+const gl = canvas.getContext('webgl')
 if (!gl) {
-    alert(
-        "Unable to initialize WebGL. Your browser may not support it.",
-    );
-    return;
+    alert('Unable to initialize WebGL. Your browser may not support it.')
+    return
 }
 ```
 
@@ -78,14 +77,14 @@ Putting this into code:
 
 ```ts
 // Define our coordinates
-const vertexBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+const vertexBuffer = gl.createBuffer()
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
 gl.bufferData(
     gl.ARRAY_BUFFER,
     // We pass out coordinates as a single array
     new Float32Array([1, 1, -1, 1, -1, -1, 1, -1]),
-    gl.STATIC_DRAW,
-);
+    gl.STATIC_DRAW
+)
 ```
 
 ### Time to Draw
@@ -126,38 +125,30 @@ void main() {
 To use these shaders, we combine them into a _program_. WebGL takes the shader content as a string (_eww_). With the vertex and fragment shader strings defined as `vertexShaderSource` and `fragmentShaderSource` respectively, we create the program as so:
 
 ```ts
-const vertexShader = loadShader(
-    gl,
-    gl.VERTEX_SHADER,
-    vertexShaderSource
-);
-const fragmentShader = loadShader(
-    gl,
-    gl.FRAGMENT_SHADER,
-    fragmentShaderSource
-);
+const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource)
+const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)
 
 if (!fragmentShader || !vertexShader) {
-    alert("Cannot create shader program.");
-    throw new Error("WebGL internal error");
+    alert('Cannot create shader program.')
+    throw new Error('WebGL internal error')
 }
 
 // Create shader program
-const shaderProgram = gl.createProgram();
+const shaderProgram = gl.createProgram()
 if (!shaderProgram) {
-    alert("Cannot create shader program.");
-    throw new Error("WebGL internal error");
+    alert('Cannot create shader program.')
+    throw new Error('WebGL internal error')
 }
 
 // Attach and link shaders
-gl.attachShader(shaderProgram, vertexShader);
-gl.attachShader(shaderProgram, fragmentShader);
-gl.linkProgram(shaderProgram);
+gl.attachShader(shaderProgram, vertexShader)
+gl.attachShader(shaderProgram, fragmentShader)
+gl.linkProgram(shaderProgram)
 if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
     console.error(
-        "Unable to link the shader program:",
+        'Unable to link the shader program:',
         gl.getProgramInfoLog(shaderProgram)
-    );
+    )
     // Handle the error, e.g., by returning or throwing an error
 }
 ```
@@ -167,5 +158,3 @@ Fwheeeh. That was a lot of work. Here's a red gradient
 TODO: embed code?
 
 ## 2. Gradients: Shading with Style
-
-

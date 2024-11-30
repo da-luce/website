@@ -1,11 +1,11 @@
 <script lang="ts">
-    import Socials from "$lib/Socials.svelte";
-    import Arrow from "$lib/Arrow.svelte";
-    import GradientBackground from "$lib/GradientBackground.svelte";
-    import Project from "$lib/Project.svelte";
-    import Link from "$lib/Link.svelte";
-    import ArrowLink from "$lib/ArrowLink.svelte";
-    import Footer from "$lib/Footer.svelte";
+    import Socials from '$lib/Socials.svelte'
+    import Arrow from '$lib/Arrow.svelte'
+    import GradientBackground from '$lib/GradientBackground.svelte'
+    import Project from '$lib/Project.svelte'
+    import Link from '$lib/Link.svelte'
+    import ArrowLink from '$lib/ArrowLink.svelte'
+    import Footer from '$lib/Footer.svelte'
 </script>
 
 <GradientBackground />
@@ -21,13 +21,13 @@
                 text="Cornell"
                 href="https://www.engineering.cornell.edu/"
             />, actively engaged with the Cornell
-            <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter,
-            and software subteam lead of the
-            <Link text="Autobike" href="https://www.cuautobike.org/" /> project
-            team. Currently, I'm expanding my software engineering expertise
-            as an intern at
-            <Link text="Raytheon" href="https://www.rtx.com/raytheon" />.
-            Feel free to read what I've been
+            <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter, and
+            software subteam lead of the
+            <Link text="Autobike" href="https://www.cuautobike.org/" /> project team.
+            Currently, I'm expanding my software engineering expertise as an intern
+            at
+            <Link text="Raytheon" href="https://www.rtx.com/raytheon" />. Feel
+            free to read what I've been
             <a href="/articles" style="color: inherit;">writing </a>
             or my
             <ArrowLink
@@ -47,21 +47,21 @@
             imageSrc="/blog.jpeg"
             title="Blog"
             desc="Welcome to my corner of the web, where I dive into the world of tech, programming, and engineering. As I work on new projects and explore the latest in software development, I document my experiences, tools, and insights."
-            tags={["UI/UX Design", "Writing", "SvelteKit"]}
+            tags={['UI/UX Design', 'Writing', 'SvelteKit']}
             href="/articles"
         />
         <Project
             videoSrc="/starsaver_small.mov"
             title="Starsaver"
             desc="I've always been interested in the command line—the power of ASCII characters and a limited selection of colors to portray more than just text. Starsaver enables users to display the positions of stars in real-time. This project allowed me to explore C programming deeply, combining my interests in astronomy and coding to create a compelling CLI tool. Through Starsaver, users can bring the beauty of the night sky right to their terminals."
-            tags={["C", "Meson", "ncurses"]}
+            tags={['C', 'Meson', 'ncurses']}
             href="https://github.com/da-luce/starsaver"
         />
         <Project
             videoSrc="/website.mov"
             title="Personal Website"
             desc="The website you're looking at right now! Though an engineer by study, I've always had a soft spot for clean, beautiful UIs. This is my crack at one using Svelte (my fav♡rite JS framework). Here, you'll find my projects as well as other works that highlight my journey in programming and design. Explore, enjoy, and get inspired!"
-            tags={["JavaScript", "TypeScript", "HTML & CSS", "Svelte 4.0"]}
+            tags={['JavaScript', 'TypeScript', 'HTML & CSS', 'Svelte 4.0']}
             href=""
         />
         <Project
@@ -77,8 +77,8 @@
 <Footer />
 
 <style>
-
-    #last-name, #first-name {
+    #last-name,
+    #first-name {
         font-size: var(--size-1);
     }
 
@@ -100,7 +100,7 @@
         position: relative;
     }
 
-    section>div:first-child {
+    section > div:first-child {
         max-width: 50em;
         width: 100%;
         margin: 0 auto;

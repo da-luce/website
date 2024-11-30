@@ -1,57 +1,57 @@
 <script lang="ts">
-    import Hover from "./Hover.svelte";
-    import ArrowLink from "./ArrowLink.svelte";
-    import Loading from "./Loading.svelte";
+    import Hover from './Hover.svelte'
+    import ArrowLink from './ArrowLink.svelte'
+    import Loading from './Loading.svelte'
 
-    export let videoSrc: string;
-    export let imageSrc: string;  // Add this to accept image source
-    export let title: string;
-    export let desc: string;
-    export let tags: string[];
-    export let href: string;
+    export let videoSrc: string
+    export let imageSrc: string // Add this to accept image source
+    export let title: string
+    export let desc: string
+    export let tags: string[]
+    export let href: string
 
-    let videoElements = [];
-    let loadingElements = [];
+    let videoElements = []
+    let loadingElements = []
 
     const handleMouseEnter = (event) => {
-        const video = event.currentTarget;
-        video.play();
-    };
+        const video = event.currentTarget
+        video.play()
+    }
 
     const handleMouseLeave = (event) => {
-        const video = event.currentTarget;
-        video.pause();
-    };
+        const video = event.currentTarget
+        video.pause()
+    }
 
     const handleLoadedData = (event) => {
-        const index = videoElements.indexOf(event.currentTarget);
+        const index = videoElements.indexOf(event.currentTarget)
         if (index > -1) {
-            loadingElements[index].style.display = "none";
+            loadingElements[index].style.display = 'none'
         }
-    };
+    }
 
     const handleWaiting = (event) => {
-        const index = videoElements.indexOf(event.currentTarget);
+        const index = videoElements.indexOf(event.currentTarget)
         if (index > -1) {
-            loadingElements[index].style.display = "flex";
+            loadingElements[index].style.display = 'flex'
         }
-    };
+    }
 
     const handlePlaying = (event) => {
-        const index = videoElements.indexOf(event.currentTarget);
+        const index = videoElements.indexOf(event.currentTarget)
         if (index > -1) {
-            loadingElements[index].style.display = "none";
+            loadingElements[index].style.display = 'none'
         }
-    };
+    }
 
     const handleVideoClick = (event) => {
-        const video = event.currentTarget;
+        const video = event.currentTarget
         if (video.paused) {
-            video.play();
+            video.play()
         } else {
-            video.pause();
+            video.pause()
         }
-    };
+    }
 </script>
 
 <div class="project" role="presentation">
@@ -97,7 +97,10 @@
             <Hover>
                 <div class="video-wrapper">
                     {#if videoSrc}
-                        <div class="loading-wrapper" bind:this={loadingElements[1]}>
+                        <div
+                            class="loading-wrapper"
+                            bind:this={loadingElements[1]}
+                        >
                             <Loading size={50} />
                         </div>
                         <video
@@ -183,8 +186,7 @@
         height: auto;
         border-radius: 10px;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
-        transition:
-            box-shadow 0.3s ease;
+        transition: box-shadow 0.3s ease;
     }
 
     .media-element:hover {

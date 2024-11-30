@@ -3,7 +3,7 @@ export const vsGradient = `
       void main() {
           gl_Position = vec4(aVertexPosition, 0, 1.0);
       }
-  `;
+  `
 
 /* Dynamically take number of points. If we buffer an array with more
 space than the number of points, we get a dark spot in the middle of zeroed points */
@@ -59,7 +59,7 @@ export const fsGradient = (numPoints: number) => `
           vec3 color = vec3(r, g, b);
           gl_FragColor = vec4(color, 1.0);
       }
-  `;
+  `
 
 export const vsNoise = `
     attribute vec4 aVertexPosition;
@@ -67,7 +67,7 @@ export const vsNoise = `
     void main() {
         gl_Position = aVertexPosition;
         v_texCoord = aVertexPosition.xy * 0.5 + 0.5; // Map from [-1, 1] to [0, 1]
-    }`;
+    }`
 
 export const fsNoise = `
     precision mediump float;
@@ -92,4 +92,4 @@ export const fsNoise = `
 
         // Output the final color
         gl_FragColor = scatteredColor;
-    }`;
+    }`

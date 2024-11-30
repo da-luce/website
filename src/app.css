@@ -9,9 +9,9 @@
     --highlight: #b6e4fc;
 
     /* Fonts */
-    --serif-font: "Yeseva One", serif;
-    --mono-font: "Inconsolata", monospace;
-    --sans-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif-font: 'Yeseva One', serif;
+    --mono-font: 'Inconsolata', monospace;
+    --sans-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
     /* Sizes */
     --size-1: 6rem;
@@ -73,8 +73,13 @@ p {
 
 /* FIXME: add blog styling here, as dynamically loading stuff doesn't apply css */
 .prose {
-
     --rounding: 0.5em;
+
+    /* Created using: https: //codepen.io/sosuke/pen/Pjoqqp */
+    .svg-filter {
+        filter: invert(92%) sepia(6%) saturate(274%) hue-rotate(190deg)
+            brightness(90%) contrast(83%);
+    }
 
     p {
         font-family: var(--sans-font);
