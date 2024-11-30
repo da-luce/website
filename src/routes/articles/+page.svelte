@@ -13,6 +13,7 @@
             {#each articles as article}
                 <ArticleCard {article} />
             {/each}
+            <ArticleCard />
         </div>
     {:else}
         <p>No articles found</p>
