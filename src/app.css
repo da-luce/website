@@ -148,7 +148,7 @@ p {
         color: var(--foreground);
     }
 
-    /* Responsive Design */
+    /* Responsive Design -- TODO: change size-1 and others here */
     @media (max-width: 768px) {
         h1 {
             font-size: 2.5rem;

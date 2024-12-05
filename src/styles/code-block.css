@@ -1,12 +1,14 @@
 :root {
     --black: var(--background-primary);
-    --red: #fab7b7;
-    --green: #b7fac8;
-    --yellow: #b7b7fa;
-    --blue: #b7cffa;
-    --magenta: #fab7fa;
-    --cyan: #b7fae9;
+    --red: #f07178;
+    --orange: #fe9270;
+    --green: #c0e58b;
+    --yellow: #fdcb6b;
+    --blue: #80a8fc;
+    --magenta: #c792e9;
+    --cyan: #8be4ff;
     --white: var(--foreground);
+    --grey: #464b5c;
 }
 
 /* Syntax element styles */
@@ -14,36 +16,35 @@
 /* Comment */
 .hljs-comment,
 .hljs-quote {
-    color: var(--white);
+    color: var(--grey);
 }
 
 /* Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
+
+/* .hljs-variable, */
+/* .hljs-template-variable, */
+
 .hljs-name,
-.hljs-selector-id,
 .hljs-selector-class,
 .hljs-regexp,
+.hljs-built_in,
 .hljs-deletion {
     color: var(--red);
 }
 
 /* Orange */
 .hljs-number,
-.hljs-built_in,
 .hljs-literal,
-.hljs-type,
 .hljs-params,
 .hljs-meta,
+.hljs-selector-id,
 .hljs-link {
-    color: var(--yellow);
+    color: var(--orange);
 }
 
 /* Yellow */
-.hljs-attribute {
-    color: var(--yellow);
-}
+/* .hljs-attribute */
+/* None right now */
 
 /* Green */
 .hljs-string,
@@ -61,8 +62,14 @@
 
 /* Purple */
 .hljs-keyword,
+.hljs-type,
 .hljs-selector-tag {
     color: var(--magenta);
+}
+
+/* Cyan */
+.hljs-tag {
+    color: var(--cyan);
 }
 
 .hljs-emphasis {

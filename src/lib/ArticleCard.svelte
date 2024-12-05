@@ -28,7 +28,7 @@
     }
 
     h4 {
-        font-family: var(--sans-font);
+        font-family: var(--mono-font);
         font-weight: bolder;
     }
 
@@ -74,8 +74,8 @@
     }
 
     .hover:hover {
-        /* border-left: var(--radius) solid var(--foreground); */
-        transform: translateX(var(--radius));
+        border-bottom: 5px solid var(--foreground);
+        transform: translateY(-5px);
         background-size: 200% 200%;
         background-position: 50% 0%;
     }
