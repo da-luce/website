@@ -28,7 +28,7 @@
             at
             <Link text="Raytheon" href="https://www.rtx.com/raytheon" />. Feel
             free to read what I've been
-            <a href="/articles" style="color: inherit;">writing </a>
+            <a href="/posts" style="color: inherit;">writing </a>
             or my
             <ArrowLink
                 href="https://raw.githubusercontent.com/da-luce/cv/main/assets/dalton_luce_cv.pdf"
@@ -48,7 +48,7 @@
             title="Blog"
             desc="Welcome to my corner of the web, where I dive into the world of tech, programming, and engineering. As I work on new projects and explore the latest in software development, I document my experiences, tools, and insights."
             tags={['UI/UX Design', 'Writing', 'SvelteKit']}
-            href="/articles"
+            href="/posts"
         />
         <Project
             videoSrc="/starsaver_small.mov"

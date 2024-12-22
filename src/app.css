@@ -19,6 +19,14 @@
     --size-3: 2rem;
     --size-4: 1.2rem;
     --size-5: 0.75rem;
+
+    @media (max-width: 768px) {
+        --size-1: 4rem;
+        --size-2: 3rem;
+        --size-3: 2rem;
+        --size-4: 1rem;
+        --size-5: 0.5rem;
+    }
 }
 
 /* A simple CSS reset */
@@ -63,6 +71,12 @@ h3 {
     font-family: var(--serif-font);
     color: var(--foreground);
     font-size: var(--size-3);
+}
+
+h4 {
+    font-family: var(--mono-font);
+    color: var(--foreground);
+    font-size: var(--size-4);
 }
 
 p {
@@ -150,24 +164,7 @@ p {
 
     /* Responsive Design -- TODO: change size-1 and others here */
     @media (max-width: 768px) {
-        h1 {
-            font-size: 2.5rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-        }
-
-        p,
-        li {
-            font-size: 1rem;
-        }
-
-        article {
+        post {
             padding: var(--spacing-small);
         }
     }

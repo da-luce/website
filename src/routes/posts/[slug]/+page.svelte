@@ -17,10 +17,11 @@
     https://stackoverflow.com/questions/76550980/markdown-generated-html-is-not-styled-by-the-styles-specified-by-css
     */
 
-    /* Main container for the article */
+    /* Main container for the post */
     article {
-        max-width: 40em;
+        max-width: 50em;
         margin: var(--size-1) auto;
+        padding: 0 var(--size-4); /*comes into play on small screens*/
         box-sizing: border-box;
     }
 </style>

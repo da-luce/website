@@ -59,14 +59,14 @@ md.core.ruler.push('replace_dashes', function (state) {
 
 export const load: PageServerLoad = async ({ params }) => {
     const slug = params.slug
-    const articlePath = path.resolve('src/articles', slug, 'index.md')
+    const postPath = path.resolve('src/posts', slug, 'index.md')
 
     try {
         // Read the markdown file content
-        const articleContent = fs.readFileSync(articlePath, 'utf-8')
+        const postContent = fs.readFileSync(postPath, 'utf-8')
 
         // Extract front matter
-        const { content, data } = matter(articleContent)
+        const { content, data } = matter(postContent)
 
         // Convert markdown to HTML using markdown-it with syntax highlighting
         const htmlContent = md.render(content)
@@ -77,7 +77,7 @@ export const load: PageServerLoad = async ({ params }) => {
             content: htmlContent,
         }
     } catch (err) {
-        console.error('Error loading article:', err)
-        throw error(404, 'Article not found')
+        console.error('Error loading post:', err)
+        throw error(404, 'post not found')
     }
 }

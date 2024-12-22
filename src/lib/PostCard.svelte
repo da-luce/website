@@ -1,18 +1,18 @@
 <script lang="ts">
-    import type { Article } from '$types/shared'
-    export let article: Article | null = null
+    import type { Post } from '$types/shared'
+    export let post: Post | null = null
 </script>
 
-<div class="card-container" class:masked={!article}>
-    <div class="article-card" class:hover={article}>
-        {#if !article}
+<div class="card-container" class:masked={!post}>
+    <div class="post-card" class:hover={post}>
+        {#if !post}
             <!-- If isComingSoon is true, show "More Coming Soon" -->
             <h4 class="coming-soon">More Coming Soon</h4>
         {:else}
-            <a href={`/articles/${article.slug}`}>
-                <h4>{article.title}</h4>
-                <p>{article.description}</p>
-                <p class="date">// {article.date} // {article.slug}</p>
+            <a href={`/posts/${post.slug}`}>
+                <h4>{post.title}</h4>
+                <p>{post.description}</p>
+                <p class="date">// {post.date} // {post.slug}</p>
             </a>
         {/if}
     </div>
@@ -37,7 +37,7 @@
     }
     /* https://stackoverflow.com/questions/57218443/how-to-animate-a-radial-gradient-using-css 
     is super helpful in understanding background animation */
-    .article-card {
+    .post-card {
         padding: 3em;
         font-size: var(--size-3);
         font-family: var(--serif-font);

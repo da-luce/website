@@ -1,5 +1,5 @@
 // src/types/shared.ts
-export interface Article {
+export interface Post {
     title: string
     description: string
     date: string
