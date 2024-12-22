@@ -15,6 +15,7 @@
     <p id="pre-text">&gt;&gt;</p>
     <a href="/posts" class="return-to-stack">return;</a>
 </div>
+<footer></footer>
 
 <style>
     /* FIXME: need global to get dynamically loaded markdown to style
@@ -27,6 +28,10 @@
         margin: var(--size-1) auto;
         padding: 0 var(--size-4); /*comes into play on small screens*/
         box-sizing: border-box;
+    }
+
+    footer {
+        min-height: 5rem;
     }
 
     .return-to-stack {
@@ -60,8 +65,9 @@
     }
 
     #pre-text {
+        font-weight: 900;
         opacity: 0; /* Start with the text hidden */
-        transition: opacity 0.5s ease; /* Add a smooth transition for opacity */
+        transition: opacity 0.3s ease; /* Add a smooth transition for opacity */
     }
 
     #return-container:hover #pre-text {

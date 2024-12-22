@@ -23,7 +23,7 @@
 <style>
     p {
         font-family: var(--sans-font);
-        font-size: var(--size-4);
+        font-size: var(--size-5);
     }
     .date {
         color: rgba(255, 255, 255, 0.5);
