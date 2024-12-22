@@ -133,6 +133,13 @@ p {
         font-family: var(--mono-font);
         font-size: var(--size-4);
     }
+    /* Inline code */
+    code:not(pre code) {
+        padding: 0.1em 0.2em;
+        margin: 0.1em;
+        border-radius: 0.25em; /* Rounded corners for a subtle effect */
+        background-color: var(--background-secondary);
+    }
 
     /* Images */
     img {
