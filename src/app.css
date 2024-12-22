@@ -17,8 +17,9 @@
     --size-1: 6rem;
     --size-2: 3rem;
     --size-3: 2rem;
-    --size-4: 1.2rem;
-    --size-5: 0.75rem;
+    --size-4: 1.5rem;
+    --size-5: 1.2rem;
+    --size-6: 0.75rem;
 
     @media (max-width: 768px) {
         --size-1: 4rem;
@@ -70,7 +71,7 @@ h2 {
 h3 {
     font-family: var(--serif-font);
     color: var(--foreground);
-    font-size: var(--size-3);
+    font-size: var(--size-4);
 }
 
 h4 {
@@ -82,7 +83,7 @@ h4 {
 p {
     font-family: var(--mono-font);
     color: var(--foreground);
-    font-size: var(--size-4);
+    font-size: var(--size-5);
 }
 
 /* FIXME: add blog styling here, as dynamically loading stuff doesn't apply css */
@@ -131,7 +132,7 @@ p {
 
     code {
         font-family: var(--mono-font);
-        font-size: var(--size-4);
+        font-size: var(--size-5);
     }
     /* Inline code */
     code:not(pre code) {

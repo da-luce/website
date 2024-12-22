@@ -34,6 +34,14 @@ export const load: PageServerLoad = async () => {
         }
     })
 
+    // Sort posts by date (latest first)
+    posts.sort((a, b) => {
+        const dateA = new Date(a.date).getTime()
+        const dateB = new Date(b.date).getTime()
+
+        return dateB - dateA // Sorting descending (latest first)
+    })
+
     // Return the posts for rendering in the front end
     return {
         posts,

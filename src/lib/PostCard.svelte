@@ -6,8 +6,10 @@
 <div class="card-container" class:masked={!post}>
     <div class="post-card" class:hover={post}>
         {#if !post}
-            <!-- If isComingSoon is true, show "More Coming Soon" -->
-            <h4 class="coming-soon">More Coming Soon</h4>
+            <!-- If no post is provided, show "More Coming Soon" -->
+            <h4 class="coming-soon">Bottom of the Stack</h4>
+            <p>Memory allocated—more posts on the way!</p>
+            <p class="date">// ???? // ????</p>
         {:else}
             <a href={`/posts/${post.slug}`}>
                 <h4>{post.title}</h4>
@@ -21,6 +23,7 @@
 <style>
     p {
         font-family: var(--sans-font);
+        font-size: var(--size-4);
     }
     .date {
         color: rgba(255, 255, 255, 0.5);
@@ -28,6 +31,7 @@
     }
 
     h4 {
+        font-size: 1.5rem;
         font-family: var(--mono-font);
         font-weight: bolder;
     }
@@ -74,7 +78,7 @@
     }
 
     .hover:hover {
-        border-bottom: 5px solid var(--foreground);
+        border-bottom: 10px solid var(--foreground);
         transform: translateY(-5px);
         background-size: 200% 200%;
         background-position: 50% 0%;

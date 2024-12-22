@@ -5,6 +5,8 @@
     let { data }: { data: PageData } = $props()
     let posts = data.posts
 
+    const postCount = posts.length
+
     function formatHexAddress(index: number): string {
         const hex = index.toString(16).toUpperCase()
         return `0x${hex.padStart(4, '0')}`
@@ -19,14 +21,14 @@
             {#each posts as post, index}
                 <div class="post-card">
                     <div class="hex-address">
-                        {formatHexAddress(index)}
+                        {formatHexAddress(postCount - index)}
                     </div>
                     <PostCard {post} />
                 </div>
             {/each}
             <div class="post-card">
                 <div class="hex-address">
-                    {'0xFFFF'}
+                    {'0x0000'}
                 </div>
                 <PostCard />
             </div>
