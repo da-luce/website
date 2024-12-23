@@ -9,7 +9,7 @@
     <h1>{data.title}</h1>
     <div class="meta">
         <p>
-            <a href="/">{data.author}</a> // {data.date} // {data.readTime} min read
+            <a href="/">{data.author}</a> • {data.date} • {data.readTime} min read
         </p>
         <div class="icons">
             <a href="/" title="home" class="icon-container">
