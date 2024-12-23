@@ -21,7 +21,7 @@ tags:
   width: 100%;
 "/>
 
-_<p style="text-align: center;">[DALL·E's]([goog.com](https://openai.com/index/dall-e-3/)) interpretation of "embedding data within an executable"</p>_
+_<p style="text-align: center;">[DALL·E's](https://openai.com/index/dall-e-3/) interpretation of "embedding data within an executable"</p>_
 
 ## The Problem
 
