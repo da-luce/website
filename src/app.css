@@ -1,3 +1,6 @@
+@import './styles/code-block.css';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
+
 :root {
     /* Colors */
     --background-primary: #030c1d;
@@ -6,8 +9,26 @@
     --highlight: #b6e4fc;
 
     /* Fonts */
-    --fancy-font: "Yeseva One", serif;
-    --mono-font: "Inconsolata", monospace;
+    --title-font: 'Yeseva One', serif;
+    --mono-font: 'Inconsolata', monospace;
+    --sans-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --serif-font: Georgia, serif;
+
+    /* Sizes */
+    --size-1: 6rem;
+    --size-2: 3rem;
+    --size-3: 2rem;
+    --size-4: 1.5rem;
+    --size-5: 1.2rem;
+    --size-6: 0.75rem;
+
+    @media (max-width: 768px) {
+        --size-1: 4rem;
+        --size-2: 2.5rem;
+        --size-3: 2rem;
+        --size-4: 1.5rem;
+        --size-5: 1rem;
+    }
 }
 
 /* A simple CSS reset */
@@ -36,63 +57,128 @@ body {
     scroll-behavior: smooth;
 }
 
-section {
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 0 1.5em; /* For small screens */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-section > div:first-child {
-    max-width: 50em;
-    width: 100%;
-    margin: 0 auto;
-}
-
 h1 {
-    font-family: var(--fancy-font);
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: var(--foreground);
-    font-size: 6em;
+    font-family: var(--title-font);
+    color: var(--foreground);
+    font-size: var(--size-2);
 }
 
 h2 {
-    font-family: var(--fancy-font);
+    font-family: var(--title-font);
     color: var(--foreground);
-    font-size: 3em;
+    font-size: var(--size-3);
 }
 
 h3 {
-    font-family: var(--fancy-font);
+    font-family: var(--title-font);
     color: var(--foreground);
-    font-size: 1.5em;
+    font-size: var(--size-4);
+}
+
+h4 {
+    font-family: var(--mono-font);
+    color: var(--foreground);
+    font-size: var(--size-4);
 }
 
 p {
     font-family: var(--mono-font);
     color: var(--foreground);
-    font-size: 1.2em;
+    font-size: var(--size-5);
 }
 
-#landing {
-    height: 100vh;
+/* FIXME: add blog styling here, as dynamically loading stuff doesn't apply css */
+.prose {
+    --rounding: 0.5em;
+
+    /* Created using: https: //codepen.io/sosuke/pen/Pjoqqp */
+    .svg-filter {
+        filter: invert(92%) sepia(6%) saturate(274%) hue-rotate(190deg)
+            brightness(90%) contrast(83%);
+    }
+
+    p {
+        font-family: var(--serif-font);
+    }
+
+    /* Links */
+    a {
+        color: var(--highlight);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+    }
+
+    /* Lists */
+    ul,
+    ol {
+        margin-left: var(--size-3);
+    }
+
+    /* Code blocks */
+    pre {
+        background-color: var(--background-primary);
+        border: 2px solid var(--foreground);
+        padding: 1em;
+        border-radius: var(--rounding);
+        overflow-x: auto;
+        color: var(--foreground);
+        /* font-family: 'Courier New', monospace; */
+    }
+
+    code {
+        font-family: var(--mono-font);
+        font-size: var(--size-5);
+    }
+    /* Inline code */
+    code:not(pre code) {
+        padding: 0.1em 0.2em;
+        margin: 0.1em;
+        border-radius: 0.25em; /* Rounded corners for a subtle effect */
+        background-color: var(--background-secondary);
+    }
+
+    /* Images */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--rounding);
+        margin: var(--spacing-medium) 0;
+    }
+
+    /* Blockquote */
+    blockquote {
+        --blockquote-left: 0.25em;
+        background-color: var(--background-secondary);
+        color: var(--highlight);
+        padding: 1em;
+        border-radius: var(--blockquote-left);
+        border-left: var(--blockquote-left) solid var(--highlight);
+        font-style: italic;
+    }
+
+    /* Footer / Small print */
+    footer {
+        margin-top: var(--spacing-large);
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--foreground);
+    }
+
+    /* Responsive Design -- TODO: change size-1 and others here */
+    @media (max-width: 768px) {
+        post {
+            padding: var(--spacing-small);
+        }
+    }
 }
 
-#subheading {
-    line-height: 2.5rem; /* Extra room for links */
-}
-
-#projects {
-    margin-top: 5em; /* Add some room to breath */
-}
-
-#projects-container {
-    flex-direction: column;
-    align-items: flex-start;
-    display: flex;
-    gap: 4em;
+.prose > * {
+    margin-bottom: var(--size-3);
 }
