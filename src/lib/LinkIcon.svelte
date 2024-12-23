@@ -26,7 +26,6 @@
 </a>
 
 <style>
-    /* Doesn't work in chrome! */
     .icon {
         height: 2.5rem;
     }

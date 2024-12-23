@@ -24,14 +24,14 @@
 
 <div id="post-container">
     <h1>The Post Stack.</h1>
-    <h4>Push, Pop, and Learn!</h4>
+    <h4>Push, pop, and read!</h4>
     <div class="icons">
         <a href="/" title="home" class="icon-container">
             <img src="/icons/home.svg" alt="Home" class="icon" />
         </a>
         <button
             type="button"
-            title="random"
+            title="random post"
             class="icon-container"
             onclick={navigateToRandomPost}
         >
