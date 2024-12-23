@@ -6,6 +6,21 @@
 </script>
 
 <article>
+    <h1>{data.title}</h1>
+    <div class="meta">
+        <p>
+            <a href="/">{data.author}</a> // {data.date} // {data.readTime} min read
+        </p>
+        <div class="icons">
+            <a href="/" title="home" class="icon-container">
+                <img src="/icons/home.svg" alt="Home" class="icon" />
+            </a>
+            <a href="/posts" title="posts" class="icon-container">
+                <img src="/icons/stack.svg" alt="Posts" class="icon" />
+            </a>
+        </div>
+    </div>
+
     <div class="prose">
         {@html data.content}
     </div>
@@ -32,6 +47,52 @@
 
     footer {
         min-height: 5rem;
+    }
+
+    .meta {
+        margin-top: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--highlight);
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: var(--highlight);
+    }
+
+    .icons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .icon-container {
+        background-color: var(--highlight);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px; /* Adjust size as needed */
+        height: 40px; /* Make it a perfect square */
+        border-radius: 50%; /* Make it a circle */
+        transition:
+            background-color 0.3s ease,
+            transform 0.3s ease;
+    }
+
+    .icon-container:hover {
+        background-color: var(--highlight); /* Change color on hover */
+        transform: scale(1.1); /* Slight zoom effect on hover */
+    }
+
+    .icon {
+        width: 24px; /* Icon size */
+        height: 24px;
+        vertical-align: middle;
+        color: var(--foreground); /* Adjust icon color if using inline SVGs */
     }
 
     .return-to-stack {

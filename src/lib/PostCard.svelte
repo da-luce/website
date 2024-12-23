@@ -8,12 +8,12 @@
         {#if !post}
             <!-- If no post is provided, show "More Coming Soon" -->
             <h4 class="coming-soon">Bottom of the Stack</h4>
-            <p>Memory allocated—more posts on the way!</p>
+            <p class="desc">Memory allocated...more posts on the way!</p>
             <p class="date">// ???? // ????</p>
         {:else}
             <a href={`/posts/${post.slug}`}>
                 <h4>{post.title}</h4>
-                <p>{post.description}</p>
+                <p class="desc">{post.description}</p>
                 <p class="date">// {post.date} // {post.slug}</p>
             </a>
         {/if}
@@ -26,10 +26,14 @@
         font-size: var(--size-5);
     }
     .date {
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.3);
         font-family: var(--mono-font);
     }
 
+    .desc {
+        color: rgba(255, 255, 255, 0.5);
+        font-family: var(--mono-font);
+    }
     h4 {
         font-size: 1.5rem;
         font-family: var(--mono-font);
@@ -44,7 +48,7 @@
     .post-card {
         padding: 3em;
         font-size: var(--size-3);
-        font-family: var(--serif-font);
+        font-family: var(--title-font);
         --radius: 0.5em;
         border-radius: var(--radius);
         padding: var(--radius);

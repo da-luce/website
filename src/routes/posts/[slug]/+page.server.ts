@@ -57,6 +57,26 @@ md.core.ruler.push('replace_dashes', function (state) {
     })
 })
 
+const removeTitle = (input: string): string => {
+    let titleRemoved = false
+    return input
+        .split('\n') // Split the input into lines
+        .filter((line) => {
+            if (!titleRemoved && line.startsWith('# ')) {
+                titleRemoved = true // Skip the first occurrence
+                return false
+            }
+            return true // Keep all other lines
+        })
+        .join('\n') // Join the remaining lines back together
+}
+
+const calculateReadTime = (text: string): number => {
+    const words = text.split(/\s+/).filter((word) => word.length > 0).length
+    const readingSpeed = 200 // Average words per minute
+    return Math.ceil(words / readingSpeed)
+}
+
 export const load: PageServerLoad = async ({ params }) => {
     const slug = params.slug
     const postPath = path.resolve('src/posts', slug, 'index.md')
@@ -68,13 +88,21 @@ export const load: PageServerLoad = async ({ params }) => {
         // Extract front matter
         const { content, data } = matter(postContent)
 
+        // Strip the first-level heading (title) from the content
+        const strippedContent = removeTitle(content)
+
         // Convert markdown to HTML using markdown-it with syntax highlighting
-        const htmlContent = md.render(content)
+        const htmlContent = md.render(strippedContent)
+
+        const readTime = calculateReadTime(strippedContent)
 
         // Return the title and content
         return {
-            title: slug.replace(/-/g, ' ').toUpperCase(),
+            title: data.title || slug.replace(/-/g, ' ').toUpperCase(),
             content: htmlContent,
+            author: data.author || 'Unknown Author',
+            date: data.date || 'Unknown Date',
+            readTime: readTime,
         }
     } catch (err) {
         console.error('Error loading post:', err)

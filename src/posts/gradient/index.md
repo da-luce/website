@@ -3,6 +3,7 @@ title: 'Beautiful Blurred Gradients with WebGL Shaders'
 description: 'WebGL without the bloat.'
 author: 'Dalton Luce'
 date: '2024-11-29'
+hidden: 'true'
 tags:
     - 'webgl'
     - 'svelte'

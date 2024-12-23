@@ -31,11 +31,15 @@ export const load: PageServerLoad = async () => {
             title: data.title || 'Untitled',
             description: data.description || 'No description',
             date: data.date || 'Unknown Date',
+            hidden: data.hidden || false,
         }
     })
 
+    // Filter out hidden posts
+    const visiblePosts = posts.filter((post) => !post.hidden)
+
     // Sort posts by date (latest first)
-    posts.sort((a, b) => {
+    visiblePosts.sort((a, b) => {
         const dateA = new Date(a.date).getTime()
         const dateB = new Date(b.date).getTime()
 
@@ -44,6 +48,6 @@ export const load: PageServerLoad = async () => {
 
     // Return the posts for rendering in the front end
     return {
-        posts,
+        visiblePosts,
     }
 }

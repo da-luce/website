@@ -1,5 +1,5 @@
 ---
-title: 'Embedding Data within C'
+title: 'Embedding Static Data Directly Into C Executables'
 description: 'Simplifying the surprisingly tricky task of embedding data in C using xxd.'
 author: 'Dalton Luce'
 date: '2024-12-21'
@@ -12,7 +12,16 @@ tags:
     - 'cli'
 ---
 
-# Embedding Data within C
+# Embedding Static Data Directly Into C Executables
+
+<img src="/posts/embed/embed.webp" alt="An abstract depiction of embedding data in an executable" style="
+ display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+"/>
+
+_<p style="text-align: center;">[DALL·E's]([goog.com](https://openai.com/index/dall-e-3/)) interpretation of "embedding data within an executable"</p>_
 
 ## The Problem
 
@@ -31,7 +40,7 @@ Abort trap: 6
 
 How could I use the data file without relying on the executable being run from a single, specific directory? As potentially given away by the title of this post, it's to embed the data directly _within_ the executable.
 
-## A Solution
+## A Cross-platform Solution
 
 Embedding data in a C program simply means turning a static file into a C array, filled with the exact same data as the original file. This allows the file to be compiled directly into the executable, effectively bundling it together with the application. The result is a self-contained executable that can run anywhere, without relying on external files, making distribution and portability much easier.
 
@@ -76,7 +85,6 @@ This will produce a file with name `$OUTPUT` from the `$INPUT` file, with the ar
 We don't want to have users do run all these commands manually. Ideally, it should be built directly into our build system and run automatically. First, I usually silo these commands into a single scrip, say `embed.sh`:
 
 ```bash
-
 # Usage: embed.sh [infile [outfile]] 
 # The array will have the same name as the outfile, minus the extension
 

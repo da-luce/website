@@ -1,9 +1,10 @@
 <script lang="ts">
     import type { PageData } from './$types'
     import PostCard from '$lib/PostCard.svelte'
+    import { goto } from '$app/navigation'
 
     let { data }: { data: PageData } = $props()
-    let posts = data.posts
+    let posts = data.visiblePosts
 
     const postCount = posts.length
 
@@ -11,11 +12,32 @@
         const hex = index.toString(16).toUpperCase()
         return `0x${hex.padStart(4, '0')}`
     }
+
+    function navigateToRandomPost(): void {
+        if (posts && posts.length > 0) {
+            const randomIndex = Math.floor(Math.random() * posts.length)
+            const randomPost = posts[randomIndex]
+            goto(`/posts/${randomPost.slug}`) // Assuming posts have a `slug` field for URLs
+        }
+    }
 </script>
 
 <div id="post-container">
     <h1>The Post Stack.</h1>
     <h4>Push, Pop, and Learn!</h4>
+    <div class="icons">
+        <a href="/" title="home" class="icon-container">
+            <img src="/icons/home.svg" alt="Home" class="icon" />
+        </a>
+        <button
+            type="button"
+            title="random"
+            class="icon-container"
+            onclick={navigateToRandomPost}
+        >
+            <img src="/icons/shuffle.svg" alt="Random" class="icon" />
+        </button>
+    </div>
     {#if posts && posts.length > 0}
         <div class="posts-grid">
             {#each posts as post, index}
@@ -44,8 +66,7 @@
     }
 
     h4 {
-        font-family: var(--mono-font);
-        margin-bottom: 4rem;
+        font-family: var(--serif-font);
     }
     #post-container {
         max-width: 40em;
@@ -66,8 +87,41 @@
     .hex-address {
         color: var(--foreground);
         font-family: var(--mono-font);
-        font-weight: bold;
+        font-weight: 300;
         font-size: var(--size-4);
         text-align: center;
+    }
+    .icons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 4rem;
+        margin-top: 1rem;
+    }
+
+    .icon-container {
+        background-color: var(--highlight);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px; /* Adjust size as needed */
+        height: 40px; /* Make it a perfect square */
+        border-radius: 50%; /* Make it a circle */
+        transition:
+            background-color 0.3s ease,
+            transform 0.3s ease;
+        border: none;
+    }
+
+    .icon-container:hover {
+        background-color: var(--highlight); /* Change color on hover */
+        transform: scale(1.1); /* Slight zoom effect on hover */
+        cursor: pointer;
+    }
+
+    .icon {
+        width: 24px; /* Icon size */
+        height: 24px;
+        vertical-align: middle;
+        color: var(--foreground); /* Adjust icon color if using inline SVGs */
     }
 </style>
