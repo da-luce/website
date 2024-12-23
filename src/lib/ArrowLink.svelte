@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let href: string;
+    export let href: string
 </script>
 
 <a {href} target="_blank">
@@ -17,7 +17,7 @@
         align-items: center;
         gap: 5px;
         text-decoration: none;
-        font-size: 1rem; /* FIXME: why??? */
+        color: inherit; /* Keep normal text color */
     }
 
     svg {

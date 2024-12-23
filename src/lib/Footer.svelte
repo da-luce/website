@@ -1,5 +1,5 @@
 <script>
-    import SocialsMobile from "./SocialsMobile.svelte";
+    import SocialsMobile from './SocialsMobile.svelte'
 </script>
 
 <footer>

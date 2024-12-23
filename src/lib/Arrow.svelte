@@ -1,83 +1,83 @@
 <script>
-    import { onMount } from "svelte";
-    import { throttle } from "../../scripts/throttle";
+    import { onMount } from 'svelte'
+    import { throttle } from '$scripts/throttle'
 
-    export let size = 100; // Default size
-    let width = 3;
-    const center = size / 2;
-    const radius = center - 25; // Adjust the radius as needed
+    export let size = 100 // Default size
+    let width = 3
+    const center = size / 2
+    const radius = center - 25 // Adjust the radius as needed
 
-    let opacity = 1;
-    let rotation = 0;
-    let arrowGap = 2; // Initial position from bottom in vh
-    let arrowPosition = arrowGap;
-    let cursor = "default";
-    let display = "block";
+    let opacity = 1
+    let rotation = 0
+    let arrowGap = 2 // Initial position from bottom in vh
+    let arrowPosition = arrowGap
+    let cursor = 'default'
+    let display = 'block'
 
     function handleScroll() {
-        const y = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.body.scrollHeight;
-        const scrollableDistance = documentHeight - windowHeight;
+        const y = window.scrollY
+        const windowHeight = window.innerHeight
+        const documentHeight = document.body.scrollHeight
+        const scrollableDistance = documentHeight - windowHeight
 
         // Adjust opacity based on scroll position
         // Don't show at bottom right now
-        const halfHeight = scrollableDistance / 2;
-        opacity = (1 - y / scrollableDistance) ** 15;
+        const halfHeight = scrollableDistance / 2
+        opacity = (1 - y / scrollableDistance) ** 15
 
         if (opacity < 0.3) {
-            cursor = "default";
+            cursor = 'default'
         } else {
-            cursor = "pointer";
+            cursor = 'pointer'
         }
 
         if (opacity < 0.01) {
-            display = "none";
+            display = 'none'
         } else {
-            display = "block";
+            display = 'block'
         }
 
         // Calculate rotation angle
-        rotation = y > (documentHeight - windowHeight) / 2 ? 180 : 0;
+        rotation = y > (documentHeight - windowHeight) / 2 ? 180 : 0
 
         // Adjust arrow position (for different scrolling)
-        const mag = 30;
-        const halfWay = scrollableDistance / 2;
-        const distNorm = Math.abs(y - halfWay) / halfWay;
-        arrowPosition = -(mag * distNorm - mag) + arrowGap;
+        const mag = 30
+        const halfWay = scrollableDistance / 2
+        const distNorm = Math.abs(y - halfWay) / halfWay
+        arrowPosition = -(mag * distNorm - mag) + arrowGap
     }
 
-    const throttledScrollHandler = throttle(handleScroll, 10); // 10 ms
+    const throttledScrollHandler = throttle(handleScroll, 10) // 10 ms
 
     function handleClick() {
         if (opacity < 0.3) {
-            return;
+            return
         }
         if (rotation > 90) {
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } else {
             window.scrollTo({
                 top: Math.max(
                     document.documentElement.clientHeight || 0,
-                    window.innerHeight || 0,
+                    window.innerHeight || 0
                 ),
-                behavior: "smooth",
-            });
+                behavior: 'smooth',
+            })
         }
     }
 
     function handleKeydown(event) {
-        if (event.key === "Enter" || event.key === " ") {
-            handleClick();
+        if (event.key === 'Enter' || event.key === ' ') {
+            handleClick()
         }
     }
 
     onMount(() => {
-        window.addEventListener("scroll", throttledScrollHandler);
-        handleScroll(); // Initial call to set the correct position
+        window.addEventListener('scroll', throttledScrollHandler)
+        handleScroll() // Initial call to set the correct position
         return () =>
-            window.removeEventListener("scroll", throttledScrollHandler);
-    });
+            window.removeEventListener('scroll', throttledScrollHandler)
+    })
 </script>
 
 <div
