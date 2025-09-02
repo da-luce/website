@@ -31,7 +31,7 @@
             <a href="/posts" style="color: inherit;">writing </a>
             or my
             <ArrowLink
-                href="https://raw.githubusercontent.com/da-luce/cv/main/assets/dalton_luce_cv.pdf"
+                href="https://dalton-cv-artifacts.s3.us-east-1.amazonaws.com/pdfs/dalton_luce_cv.pdf"
                 ><span style="text-decoration: underline;">
                     full resume!
                 </span></ArrowLink
