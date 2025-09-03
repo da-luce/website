@@ -21,13 +21,10 @@
                 text="Cornell"
                 href="https://www.engineering.cornell.edu/"
             />, actively engaged with the Cornell
-            <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter, and
-            software subteam lead of the
-            <Link text="Autobike" href="https://www.cuautobike.org/" /> project team.
-            Currently, I'm expanding my software engineering expertise as an intern
-            at
-            <Link text="Raytheon" href="https://www.rtx.com/raytheon" />. Feel
-            free to read what I've been
+            <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter. I recently
+            completed a software engineering internship with
+            <Link text="AWS" href="https://aws.amazon.com/" />. Feel free to
+            read what I've been
             <a href="/posts" style="color: inherit;">writing </a>
             or my
             <ArrowLink
