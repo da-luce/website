@@ -30,11 +30,7 @@
     .icon {
         height: 2.5rem;
         stroke-linecap: round;
-        animation-name: draw;
-        animation-duration: 3s;
-        animation-timing-function: ease;
-        animation-iteration-count: infinite;
-        animation-play-state: paused;
+        animation-name: none;
     }
 
     svg {
@@ -43,17 +39,15 @@
     }
 
     .icon:hover {
-        animation-play-state: running;
+        /* draw as long as we want */
+        animation: draw 3s ease forwards;
     }
 
     .icon path {
-        stroke-width: 0px; /* no stroke width to avoid writing over fill in regular state */
-        fill: var(--foreground);
-        stroke: none;
         transition: all 0.8s ease;
     }
 
-    .icon:hover path {
+    .icon path {
         stroke-width: 1px;
         fill: none;
         stroke: var(--foreground);

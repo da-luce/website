@@ -1,16 +1,17 @@
 @import './styles/code-block.css';
 @import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 :root {
     /* Colors */
-    --background-primary: #030c1d;
-    --background-secondary: #01344d;
-    --foreground: #c6c8d1;
+    --background-primary: #f7f7f2;
+    --background-secondary: #f7f7f2;
+    --foreground: #1f1f1f;
     --highlight: #b6e4fc;
 
     /* Fonts */
-    --title-font: 'Yeseva One', serif;
-    --mono-font: 'Inconsolata', monospace;
+    --title-font: 'Funnel Sans', sans-serif;
+    --mono-font: 'Funnel Sans', monospace;
     --sans-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --serif-font: Georgia, serif;
 
@@ -23,7 +24,7 @@
     --size-6: 0.75rem;
 
     @media (max-width: 768px) {
-        --size-1: 4rem;
+        --size-1: 5rem;
         --size-2: 2.5rem;
         --size-3: 2rem;
         --size-4: 1.5rem;

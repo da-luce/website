@@ -10,13 +10,29 @@
     import { throttle } from '../scripts/throttle'
 
     // Settings
-    const numPoints = 5
-    const minSpeed = 0.002
+    const numPoints = 3
+    const minSpeed = 0.0005
     const maxSpeed = 0.001
 
     // Existing global variables for mouse position
     let mouseX = 0
     let mouseY = 0
+
+    let shaderMouseX = 0
+    let shaderMouseY = 0
+
+    const leftBarrier = 0.2
+    const rightBarrier = 1
+    const topBarrier = 1
+    const bottomBarrier = 0.0
+
+    const lerpFactor = 0.05 // adjust for smoothness
+
+    const updateMouseUniform = () => {
+        // Interpolate for smooth movement
+        shaderMouseX += (mouseX - shaderMouseX) * lerpFactor
+        shaderMouseY += (mouseY - shaderMouseY) * lerpFactor
+    }
 
     type color = [number, number, number]
     interface Point {
@@ -31,12 +47,14 @@
     let points: Array<Point> = []
 
     const colorPalletteRGB: Array<color> = [
-        [1, 52, 77],
-        [3, 12, 29],
-        [3, 12, 29],
-        [3, 12, 29],
-        [3, 12, 29],
-        [3, 12, 29],
+        // In RGB
+        // #fc88e7,
+        // #fa4882,
+        // #fba834
+        // convert to RGB here
+        [252, 136, 231],
+        [250, 72, 130],
+        [251, 168, 52],
     ]
 
     const normalizeColor = (color: color): color => {
@@ -62,13 +80,17 @@
             speedX *= Math.random() < 0.5 ? -1 : 1
             speedY *= Math.random() < 0.5 ? -1 : 1
 
+            // Make x and y inside the barriers
+            let x = Math.random() * (rightBarrier - leftBarrier) + leftBarrier
+            let y = Math.random() * (topBarrier - bottomBarrier) + bottomBarrier
+
             pointsLocal.push({
-                x: Math.random() * 2 - 1,
-                y: Math.random() * 2 - 1,
+                x: x,
+                y: y,
                 vx: speedX,
                 vy: speedY,
                 color: colorPalletteNorm[
-                    Math.floor(Math.random() * colorPalletteNorm.length)
+                    Math.floor(i % colorPalletteNorm.length)
                 ],
             })
         }
@@ -81,27 +103,42 @@
 
     // Update the positions of the points and handle boundary collisions
     const updatePoints = () => {
-        points = points.map((point) => {
+        const repulsionStrength = 0.00002 // Adjust for stronger/weaker repulsion
+        const repulsionRadius = 1.0 // Only repel if points are closer than this
+
+        points = points.map((point, i) => {
             let newX = point.x + point.vx
             let newY = point.y + point.vy
 
-            // Reverse the velocity if the point hits the boundary
-            if (newX <= -1 || newX >= 1) point.vx *= -1
-            if (newY <= -1 || newY >= 1) point.vy *= -1
+            // Apply repulsion from other points
+            for (let j = 0; j < points.length; j++) {
+                if (i === j) continue
+                const other = points[j]
+                let dx = newX - other.x
+                let dy = newY - other.y
+                let distSq = dx * dx + dy * dy
 
-            // Update position considering potential velocity reversal
+                if (distSq < repulsionRadius * repulsionRadius && distSq > 0) {
+                    let dist = Math.sqrt(distSq)
+                    // repulsion vector magnitude inversely proportional to distance
+                    let force = repulsionStrength / dist
+                    dx /= dist // normalize
+                    dy /= dist
+                    newX += dx * force
+                    newY += dy * force
+                }
+            }
+
+            // Reverse velocity if hitting the barrier
+            if (newX <= leftBarrier || newX >= rightBarrier) point.vx *= -1
+            if (newY <= bottomBarrier || newY >= topBarrier) point.vy *= -1
+
             return {
                 ...point,
                 x: newX,
                 y: newY,
             }
         })
-
-        // Make the first point follow the mouse smoothly
-        let followPoint = points[0]
-        const lerpFactor = 0.02 // Adjust this value for smoother or faster movement
-        followPoint.x += (mouseX - followPoint.x) * lerpFactor
-        followPoint.y += (mouseY - followPoint.y) * lerpFactor
     }
 
     const initTexture = (gl: WebGLRenderingContext): WebGLTexture => {
@@ -207,11 +244,15 @@
         // * Resolution only changes on resize
         // * Color information is constant
         const pointsLocation = gl.getUniformLocation(program, 'u_points')
+        const mouseLocation = gl.getUniformLocation(program, 'u_mouse')
 
         gl.uniform2fv(
             pointsLocation,
             new Float32Array(points.flatMap((p) => [p.x, p.y]))
         )
+
+        updateMouseUniform()
+        gl.uniform2f(mouseLocation, shaderMouseX, shaderMouseY)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -270,20 +311,23 @@
         const redsLocation = gl.getUniformLocation(spGradient, 'u_reds')
         const greensLocation = gl.getUniformLocation(spGradient, 'u_greens')
         const bluesLocation = gl.getUniformLocation(spGradient, 'u_blues')
+        const alphasLocation = gl.getUniformLocation(spGradient, 'u_alphas')
 
         const reds = new Float32Array(numPoints)
         const greens = new Float32Array(numPoints)
         const blues = new Float32Array(numPoints)
-
+        const alphas = new Float32Array(numPoints)
         points.forEach((point, index) => {
             reds[index] = point.color[0]
             greens[index] = point.color[1]
             blues[index] = point.color[2]
+            alphas[index] = 1.0 // Set alpha to fully opaque for all points
         })
 
         gl.uniform1fv(redsLocation, reds)
         gl.uniform1fv(greensLocation, greens)
         gl.uniform1fv(bluesLocation, blues)
+        gl.uniform1fv(alphasLocation, alphas)
 
         return spGradient
     }
@@ -308,9 +352,14 @@
         // ???
         initMesh(gl, spGradient)
 
+        const mouseLocation = gl.getUniformLocation(spGradient, 'u_mouse')
+
         // Create texture
         const texture = initTexture(gl)
         const framebuffer = initFramebuffer(gl, texture)
+
+        gl.clearColor(0, 0, 0, 0) // RGBA, alpha = 0 for transparency
+        gl.clear(gl.COLOR_BUFFER_BIT)
 
         const render = () => {
             // Canvas may not exist when updating shaders. Avoid errors.
@@ -364,9 +413,9 @@
 
 <style>
     canvas {
-        position: fixed;
+        position: absolute;
         top: 0;
-        left: 0;
+        right: 0;
         display: block;
         width: 100vw;
         height: 100vh;

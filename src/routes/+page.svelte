@@ -14,8 +14,12 @@
 
 <section id="landing">
     <div>
-        <h1 id="first-name">Dalton</h1>
-        <h1 id="last-name">Luce</h1>
+        <h1><span class="last-name">Hi,</span> I'm</h1>
+        <h1>
+            Dalton <span style="font-size: 0.5em; vertical-align: middle;"
+                >👋</span
+            >
+        </h1>
         <p id="subheading">
             Electrical and Computer Engineering undergraduate at <Link
                 text="Cornell"
@@ -75,14 +79,15 @@
 
 <style>
     #last-name,
-    #first-name {
+    h1 {
         font-size: var(--size-1);
+        font-weight: 800;
     }
-
-    #last-name {
-        color: transparent;
-        -webkit-text-stroke-width: 1px;
-        -webkit-text-stroke-color: var(--foreground);
+    .last-name {
+        color: transparent; /* or any visible color; mix-blend-mode will invert it */
+        -webkit-text-stroke-width: 3px;
+        -webkit-text-stroke-color: var(--foreground); /* optional outline */
+        mix-blend-mode: color-burn;
     }
 
     section {
