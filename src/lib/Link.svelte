@@ -9,10 +9,11 @@
 
 <style>
     a {
-        border: 0.1rem solid var(--foreground);
+        position: relative; /* needed for pseudo-element */
+        overflow: hidden; /* clip the bubble */
+        border: 3px solid var(--foreground);
         border-radius: 0.75rem;
-        padding: 0.4rem;
-        transition-duration: 250ms;
+        padding: 0.4rem 1rem;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
@@ -20,10 +21,37 @@
         line-height: 1;
         color: var(--foreground);
         background-color: transparent;
+        transition: color 0.35s ease-in-out;
     }
 
-    a:hover {
-        color: var(--background-primary);
+    a::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -200%; /* offscreen to the left */
+        width: 200%;
+        height: 200%;
         background-color: var(--foreground);
+        border-radius: 20rem;
+        z-index: 0;
+        transform: translateX(
+            0
+        ); /* starting position relative to left: -100% */
+        transition: transform 0.35s ease-in-out;
+    }
+
+    a span {
+        position: relative;
+        z-index: 1;
+        transition: color 0.35s ease-in-out;
+    }
+
+    /* On hover: bubble moves to cover button */
+    a:hover::before {
+        transform: translateX(90%); /* moves bubble from left to center */
+    }
+
+    a:hover span {
+        color: var(--background-primary);
     }
 </style>

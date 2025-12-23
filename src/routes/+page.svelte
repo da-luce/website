@@ -6,6 +6,59 @@
     import Link from '$lib/Link.svelte'
     import ArrowLink from '$lib/ArrowLink.svelte'
     import Footer from '$lib/Footer.svelte'
+    import Timeline from '$lib/Timeline.svelte'
+    import type { TimelineItem } from '$types/shared'
+
+    // Timeline data for About Me section
+    const timelineItems: TimelineItem[] = [
+        {
+            title: 'My Story',
+            image: '/profile.png',
+            imageSize: '16rem',
+            date: null,
+            showDot: false,
+            imageStyle:
+                'border-radius: 50%; box-shadow: 0 0 10px var(--background-primary);',
+            description:
+                "I'm a student and software engineer who loves automating everyday life with tech. I enjoy building tools that make tasks easier, and I also tinker with cool side projects like Astroterm--just for the fun of it. Lately, I've been diving into cloud technologies and exploring how they can power larger ideas. When I'm not coding, you can usually find me skiing, mountain biking, or making pickles!",
+        },
+        {
+            title: 'Cornell University B.S. ECE',
+            image: '/icons/cornell.svg',
+            imageSize: '4rem',
+            date: 'Class of 2026',
+            description:
+                'Graduated from Cornell University with a Bachelor of Science in Electrical and Computer Engineering with a minor in Computer Science.',
+        },
+        {
+            title: 'Databricks SWE Intern',
+            image: '/icons/databricks.svg',
+            date: 'Summer 2026',
+            description: '...',
+        },
+        {
+            title: 'AWS SDE Intern',
+            image: '/icons/amazon.svg',
+            date: 'Summer 2025',
+            description: '...',
+        },
+        {
+            title: 'Raytheon Technologies SWE Intern',
+            image: '/icons/rtx.svg',
+            imageSize: '6rem',
+            date: 'Summer 2024',
+            description:
+                'Began my programming journey learning Python and fell in love with problem-solving.',
+        },
+        {
+            title: 'Raytheon Technologies SWE Intern',
+            image: '/icons/rtx.svg',
+            imageSize: '6rem',
+            date: 'Summer 2024',
+            description:
+                'Began my programming journey learning Python and fell in love with problem-solving.',
+        },
+    ]
 </script>
 
 <GradientBackground />
@@ -16,28 +69,24 @@
     <div>
         <h1><span class="last-name">Hi,</span> I'm</h1>
         <h1>
-            Dalton <span style="font-size: 0.5em; vertical-align: middle;"
-                >👋</span
+            Dalton <span
+                class="hand"
+                style="font-size: 0.5em; vertical-align: middle;">👋</span
             >
         </h1>
-        <p id="subheading">
-            Electrical and Computer Engineering undergraduate at <Link
-                text="Cornell"
-                href="https://www.engineering.cornell.edu/"
-            />, actively engaged with the Cornell
-            <Link text="IEEE" href="https://www.cornellieee.com/" /> chapter. I recently
-            completed a software engineering internship with
-            <Link text="AWS" href="https://aws.amazon.com/" />. Feel free to
-            read what I've been
-            <a href="/posts" style="color: inherit;">writing </a>
-            or my
-            <ArrowLink
-                href="https://dalton-cv-artifacts.s3.us-east-1.amazonaws.com/pdfs/dalton_luce_cv.pdf"
-                ><span style="text-decoration: underline;">
-                    full resume!
-                </span></ArrowLink
-            >
+        <p id="subheading" class="link">
+            <Link text="About" href="/about" />
+            <Link text="Experience" href="/experience" />
+            <Link text="Resume" href="/Dalton_Luce_Resume.pdf" />
+            <Link text="Projects" href="/projects" />
+            <Link text="Contact" href="/contact" />
         </p>
+    </div>
+</section>
+
+<section id="about">
+    <div class="timeline-wrapper">
+        <Timeline items={timelineItems} />
     </div>
 </section>
 
@@ -83,11 +132,47 @@
         font-size: var(--size-1);
         font-weight: 800;
     }
+
+    h2 {
+        font-family: var(--title-font);
+        font-weight: bold;
+    }
+    p {
+        font-weight: 100;
+    }
     .last-name {
         color: transparent; /* or any visible color; mix-blend-mode will invert it */
         -webkit-text-stroke-width: 3px;
         -webkit-text-stroke-color: var(--foreground); /* optional outline */
-        mix-blend-mode: color-burn;
+        mix-blend-mode: var(--blend-mode);
+    }
+
+    .hand {
+        /* Wave on hover */
+        display: inline-block;
+        transition: transform 0.3s linear;
+    }
+
+    .hand:hover {
+        animation: wave 1s infinite;
+    }
+
+    @keyframes wave {
+        0% {
+            transform: rotate(0deg);
+        }
+        20% {
+            transform: rotate(-20deg);
+        }
+        40% {
+            transform: rotate(20deg);
+        }
+        60% {
+            transform: rotate(-20deg);
+        }
+        100% {
+            transform: rotate(0deg);
+        }
     }
 
     section {
@@ -108,13 +193,48 @@
         margin: 0 auto;
     }
 
+    #about {
+        height: auto;
+        min-height: 35rem;
+        margin-top: 10rem;
+        padding-bottom: 3rem;
+        margin-left: -5rem; /* Slight offset since center looks weird */
+    }
+
+    .link {
+        margin: 0 0.5em;
+        mix-blend-mode: var(--blend-mode);
+    }
+
+    .about-container {
+        display: flex;
+        align-items: center; /* aligns items to top */
+        gap: 40px; /* space between image and text */
+        max-width: 1000px;
+        margin: 0 auto;
+        margin-bottom: 4rem;
+    }
+
+    .about-image img {
+        width: 300px; /* adjust size */
+        border-radius: 10px; /* optional rounded corners */
+        object-fit: cover;
+    }
+
     #landing {
         height: 100vh;
     }
 
     #subheading {
         line-height: 2.5rem;
-        /* Extra room for links */
+        /*Align text left */
+        text-align: left;
+        color: var(--foreground-secondary);
+        /* Take entire space of div, evenly spaced */
+        display: flex;
+        justify-content: left;
+        gap: 1.5em;
+        margin-top: 0.5em;
     }
 
     #projects {

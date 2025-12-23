@@ -6,13 +6,18 @@
         fsGradient,
         vsNoise,
         fsNoise,
+        vsWarp,
+        fsWarp,
+        vsPresent,
+        fsPresent,
     } from '../scripts/shaders'
     import { throttle } from '../scripts/throttle'
 
     // Settings
-    const numPoints = 3
-    const minSpeed = 0.0005
-    const maxSpeed = 0.001
+    const numPoints = 4
+    const minSpeed = 0.00002
+    const maxSpeed = 0.0005
+    const PIXEL_SCALE = 2 // 2 = chunky pixels, 4 = very chunky
 
     // Existing global variables for mouse position
     let mouseX = 0
@@ -21,10 +26,10 @@
     let shaderMouseX = 0
     let shaderMouseY = 0
 
-    const leftBarrier = 0.2
+    const leftBarrier = 0.8
     const rightBarrier = 1
     const topBarrier = 1
-    const bottomBarrier = 0.0
+    const bottomBarrier = 0.6
 
     const lerpFactor = 0.05 // adjust for smoothness
 
@@ -52,9 +57,13 @@
         // #fa4882,
         // #fba834
         // convert to RGB here
-        [252, 136, 231],
-        [250, 72, 130],
-        [251, 168, 52],
+        // [252, 136, 231],
+        // [250, 72, 130],
+        // [251, 168, 52],
+        [102, 255, 217],
+        [102, 217, 255],
+        [102, 140, 255],
+        [140, 102, 255],
     ]
 
     const normalizeColor = (color: color): color => {
@@ -129,6 +138,15 @@
                 }
             }
 
+            // Fix first and second points to corners
+            if (i === 0) {
+                newX = rightBarrier
+                newY = topBarrier
+            } else if (i === 1) {
+                newX = rightBarrier
+                newY = bottomBarrier
+            }
+
             // Reverse velocity if hitting the barrier
             if (newX <= leftBarrier || newX >= rightBarrier) point.vx *= -1
             if (newY <= bottomBarrier || newY >= topBarrier) point.vy *= -1
@@ -159,8 +177,15 @@
         // Set texture parameters for NPOT texture
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+
+        gl.disable(gl.DITHER)
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false)
+
+        // Use NEAREST for pixelated look -- don't blur?
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 
         return texture
     }
@@ -191,9 +216,19 @@
             return
         }
 
-        // Resize canvas
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
+        // Resize canvas (accounting for device pixel ratio-works on Retina)
+        const dpr = window.devicePixelRatio || 1
+        const scale = PIXEL_SCALE
+        const rect = canvas.getBoundingClientRect()
+        const cssWidth = rect.width
+        const cssHeight = rect.height
+
+        canvas.style.width = cssWidth + 'px'
+        canvas.style.height = cssHeight + 'px'
+
+        // 🔥 intentionally lower internal resolution
+        canvas.width = Math.floor((cssWidth * dpr) / scale)
+        canvas.height = Math.floor((cssHeight * dpr) / scale)
 
         // Set viewport
         gl.viewport(0, 0, canvas.width, canvas.height)
@@ -234,10 +269,11 @@
     const gradientPass = (
         gl: WebGLRenderingContext,
         program: WebGLProgram,
-        framebuffer: WebGLFramebuffer
+        inputTexture: WebGLTexture,
+        outputFramebuffer: WebGLFramebuffer
     ) => {
         // Render to the custom framebuffer
-        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer)
+        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
         gl.useProgram(program)
 
         // Pass new information to uniforms
@@ -260,15 +296,49 @@
     const noisePass = (
         gl: WebGLRenderingContext,
         program: WebGLProgram,
+        inputTexture: WebGLTexture,
+        outputFramebuffer: WebGLFramebuffer
+    ) => {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
+        gl.useProgram(program)
+
+        gl.activeTexture(gl.TEXTURE0)
+        gl.bindTexture(gl.TEXTURE_2D, inputTexture)
+        gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+    }
+
+    const warpPass = (
+        gl: WebGLRenderingContext,
+        program: WebGLProgram,
+        inputTexture: WebGLTexture,
+        outputFramebuffer: WebGLFramebuffer
+    ) => {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
+        gl.useProgram(program)
+
+        gl.activeTexture(gl.TEXTURE0)
+        gl.bindTexture(gl.TEXTURE_2D, inputTexture)
+        gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
+
+        const mouseLocation = gl.getUniformLocation(program, 'u_mouse')
+        gl.uniform2f(mouseLocation, shaderMouseX, shaderMouseY)
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+    }
+
+    const presentPass = (
+        gl: WebGLRenderingContext,
+        program: WebGLProgram,
         texture: WebGLTexture
     ) => {
-        // Render to the default framebuffer (screen)
         gl.bindFramebuffer(gl.FRAMEBUFFER, null)
         gl.useProgram(program)
 
         gl.activeTexture(gl.TEXTURE0)
         gl.bindTexture(gl.TEXTURE_2D, texture)
-        gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
+        gl.uniform1i(gl.getUniformLocation(program, 'u_texture'), 0)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -348,15 +418,24 @@
         // Create shader programs
         const spGradient = initGradient(gl)
         const spNoise = createShaderProgram(gl, vsNoise, fsNoise)
+        const spWarp = createShaderProgram(gl, vsWarp, fsWarp)
+        const spPresent = createShaderProgram(gl, vsPresent, fsPresent)
 
         // ???
         initMesh(gl, spGradient)
+        initMesh(gl, spNoise)
+        initMesh(gl, spWarp)
+        initMesh(gl, spPresent)
 
-        const mouseLocation = gl.getUniformLocation(spGradient, 'u_mouse')
+        // Create textures
+        const textureA = initTexture(gl)
+        const textureB = initTexture(gl)
+        const textureC = initTexture(gl)
 
-        // Create texture
-        const texture = initTexture(gl)
-        const framebuffer = initFramebuffer(gl, texture)
+        // Create framebuffers
+        const framebufferA = initFramebuffer(gl, textureA)
+        const framebufferB = initFramebuffer(gl, textureB)
+        const framebufferC = initFramebuffer(gl, textureC)
 
         gl.clearColor(0, 0, 0, 0) // RGBA, alpha = 0 for transparency
         gl.clear(gl.COLOR_BUFFER_BIT)
@@ -370,24 +449,27 @@
             // Update point locations
             updatePoints()
 
-            gradientPass(gl, spGradient, framebuffer)
-
-            noisePass(gl, spNoise, texture)
+            // Gradient
+            gradientPass(gl, spGradient, null, framebufferA)
+            noisePass(gl, spNoise, textureA, framebufferB)
+            presentPass(gl, spPresent, textureB, null)
 
             // Clear the screen
-            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-            gl.clear(gl.COLOR_BUFFER_BIT)
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+            // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+            // gl.clear(gl.COLOR_BUFFER_BIT)
+            // gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 
             // Animate
             requestAnimationFrame(render)
         }
 
-        resizeCanvas(gl, spGradient, texture, framebuffer) // Set initial size
+        resizeCanvas(gl, spGradient, textureA, framebufferA) // Set initial size
+        resizeCanvas(gl, spGradient, textureB, framebufferB)
+        resizeCanvas(gl, spGradient, textureC, framebufferC)
 
         // Add window resize listener
         window.addEventListener('resize', () => {
-            resizeCanvas(gl, spGradient, texture, framebuffer)
+            resizeCanvas(gl, spGradient, textureA, framebufferA)
         })
 
         const mouseHandler = (event: MouseEvent) => {
@@ -418,6 +500,6 @@
         right: 0;
         display: block;
         width: 100vw;
-        height: 100vh;
+        height: 200vh;
     }
 </style>

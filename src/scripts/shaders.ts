@@ -27,32 +27,36 @@ export const fsGradient = (numPoints: number) => `
         return exp(- (dist * dist) / (radius * radius));
     }
 
-void main() {
-    // Map pixel to [-1,1] with aspect correction
-    vec2 ndc = gl_FragCoord.xy / u_resolution * 2.0 - 1.0;
-    float aspect = u_resolution.x / u_resolution.y;
-    vec2 aspect_frag = vec2(ndc.x * aspect, ndc.y);
+    void main() {
+        // Map pixel to [-1,1] with aspect correction
+        vec2 ndc = gl_FragCoord.xy / u_resolution * 2.0 - 1.0;
+        float aspect = u_resolution.x / u_resolution.y;
+        vec2 aspect_frag = vec2(ndc.x * aspect, ndc.y);
 
-    // Parameters must be declared before the loop
-    float radius = 0.9; // how wide the blobs spread
-    float pointStrength = 1.0; // overall multiplier
-vec3 color = vec3(0.0);
-float alpha = 0.0;
+        // Parameters must be declared before the loop
+        float radius = 0.5; // how wide the blobs spread
+        float pointStrength = 1.0; // overall multiplier
 
-for (int i = 0; i < NUM_POINTS; ++i) {
-    vec2 p = vec2(u_points[i].x * aspect, u_points[i].y);
-    float d = length(aspect_frag - p);
+        vec3 color = vec3(0.0);
+        float alpha = 0.0;
 
-    float influence = falloff(d, radius) * pointStrength;
-    vec3 pointColor = vec3(u_reds[i], u_greens[i], u_blues[i]);
-    float pointAlpha = u_alphas[i] * influence;
+        for (int i = 0; i < NUM_POINTS; ++i) {
+            vec2 p = u_points[i] * 2.0 - 1.0;
+            p.x *= aspect; // correct for aspect ratio
+            float d = length(aspect_frag - p);
 
-    // Standard "over" blending
-    color = color * (1.0 - pointAlpha) + pointColor * pointAlpha;
-    alpha = alpha + pointAlpha * (1.0 - alpha); // cumulative alpha
-}
-gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0));
-}
+            float influence = falloff(d, radius) * pointStrength;
+
+            vec3 pointColor = vec3(u_reds[i], u_greens[i], u_blues[i]);
+            float pointAlpha = u_alphas[i] * influence;
+
+            // Standard "over" blending
+            color = color * (1.0 - pointAlpha) + pointColor * pointAlpha;
+            alpha = alpha + pointAlpha * (1.0 - alpha); // cumulative alpha
+        }
+
+        gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0));
+    }
 `
 
 
@@ -87,4 +91,61 @@ export const fsNoise = `
 
         // Output the final color
         gl_FragColor = scatteredColor;
+    }`
+
+export const vsWarp = `
+    attribute vec4 aVertexPosition;
+    varying vec2 v_texCoord;
+    void main() {
+        gl_Position = aVertexPosition;
+        v_texCoord = aVertexPosition.xy * 0.5 + 0.5; // Map from [-1, 1] to [0, 1]
+    }`
+
+export const fsWarp = `
+precision mediump float;
+
+uniform sampler2D u_firstPassTexture;
+uniform vec2 u_mouse;
+
+varying vec2 v_texCoord;
+
+void main() {
+    vec2 mouseUV = u_mouse * 0.5 + 0.5;
+    vec2 delta = v_texCoord - mouseUV;
+    float dist = length(delta);
+
+    float radius = 0.15;
+    float strength = 0.5;
+    float falloff = smoothstep(radius, 0.0, dist);
+
+    vec2 dir = delta / (dist + 1e-5);
+    
+    // Sample previous frame and accumulate
+    vec4 previous = texture2D(u_firstPassTexture, v_texCoord);
+    vec2 warpedCoord = v_texCoord + dir * strength * falloff;
+
+    vec4 newColor = texture2D(u_firstPassTexture, warpedCoord);
+
+    // Blend the new warp with the previous frame
+    gl_FragColor = mix(previous, newColor, 0.8); // adjust 0.0–1.0 for persistence
+}
+`
+
+export const fsPresent = `
+    precision mediump float;
+
+    uniform sampler2D u_texture;
+    varying vec2 v_texCoord;
+
+    void main() {
+        gl_FragColor = texture2D(u_texture, v_texCoord);
+    }
+`
+
+export const vsPresent = `
+    attribute vec4 aVertexPosition;
+    varying vec2 v_texCoord;
+    void main() {
+        gl_Position = aVertexPosition;
+        v_texCoord = aVertexPosition.xy * 0.5 + 0.5; // Map from [-1, 1] to [0, 1]
     }`
