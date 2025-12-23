@@ -47,7 +47,7 @@
 
     .icon path {
         stroke-width: 1px;
-        fill: none;
+        fill: var(--foreground);
         stroke: var(--foreground);
     }
 

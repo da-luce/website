@@ -4,6 +4,8 @@
     let activeSection = $state('landing')
     let isVisible = $state(true)
     let scrollTimeout: number | undefined
+    let lastScrollY = 0
+    const SCROLL_THRESHOLD = 300 // px - minimum scroll distance to show nav
 
     const sections = [
         { id: 'landing', label: 'Home' },
@@ -65,25 +67,35 @@
 
         // Mobile scroll behavior - show on scroll, hide after inactivity
         const handleScroll = () => {
-            // Show navigation when scrolling
-            isVisible = true
+            const currentScrollY = window.scrollY
+            const scrollDelta = Math.abs(currentScrollY - lastScrollY)
 
-            // Clear existing timeout
-            if (scrollTimeout) {
-                clearTimeout(scrollTimeout)
-            }
-
-            // Hide after 2 seconds of no scrolling (only on mobile)
+            // Only show navigation on mobile if scroll exceeds threshold
             if (window.innerWidth <= 768) {
-                scrollTimeout = window.setTimeout(() => {
-                    isVisible = false
-                }, 2000)
+                if (scrollDelta >= SCROLL_THRESHOLD) {
+                    isVisible = true
+                    lastScrollY = currentScrollY
+
+                    // Clear existing timeout
+                    if (scrollTimeout) {
+                        clearTimeout(scrollTimeout)
+                    }
+
+                    // Hide after 2 seconds of no scrolling
+                    scrollTimeout = window.setTimeout(() => {
+                        isVisible = false
+                    }, 2000)
+                }
+            } else {
+                // On desktop, always show
+                isVisible = true
             }
         }
 
         // Check if mobile on mount
         if (window.innerWidth <= 768) {
             isVisible = false
+            lastScrollY = window.scrollY
         }
 
         window.addEventListener('scroll', handleScroll, { passive: true })
@@ -139,15 +151,22 @@
 
     @media (max-width: 768px) {
         .side-navigation {
-            right: 1rem;
+            right: 0;
+            top: 0;
+            transform: translateX(100%);
             opacity: 0;
-            transform: translateY(-50%) translateX(20px);
             pointer-events: none;
+            background: var(--background-primary);
+            padding: 2rem 1.5rem;
+            height: 100vh;
+            justify-content: center;
+            border-radius: 0;
+            /* box-shadow: -10px 0 20px var(--background-primary); */
         }
 
         .side-navigation.visible {
             opacity: 1;
-            transform: translateY(-50%) translateX(0);
+            transform: translateX(0);
             pointer-events: auto;
         }
     }
@@ -206,6 +225,18 @@
     @media (max-width: 768px) {
         .label {
             font-size: 0.9rem;
+            color: var(--foreground-primary);
+            mix-blend-mode: normal;
+        }
+
+        .nav-item .label {
+            color: var(--foreground-primary);
+            mix-blend-mode: normal;
+        }
+
+        .nav-item.active .label {
+            color: var(--foreground-primary);
+            mix-blend-mode: normal;
         }
 
         .side-navigation {

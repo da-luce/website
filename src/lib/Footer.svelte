@@ -6,7 +6,6 @@
     <p id="first-line">
         Designed and hand coded by me <span class="emoji">✌️</span>
     </p>
-    <div id="socials"><SocialsMobile /></div>
     <p style="opacity: 0.4; mix-blend-mode: var(--blend-mode);">
         © Dalton Luce {new Date().getFullYear()}. All Rights Reserved.
     </p>

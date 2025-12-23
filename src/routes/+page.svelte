@@ -29,7 +29,7 @@
                 "I'm a student and software engineer who loves automating everyday life with tech. I enjoy building tools that make tasks easier, and I also tinker with cool side projects like astroterm. Lately, I've been diving into cloud technologies and exploring how they can power larger ideas. When I'm not coding, you can usually find me skiing, mountain biking, or making pickles!",
         },
         {
-            title: 'Cornell University M.Eng CS',
+            title: 'Cornell University M.Eng. CS',
             image: '/icons/cornell.svg',
             imageSize: '4rem',
             opacity: 0.6,
@@ -112,11 +112,11 @@
         numPoints={4}
         leftBarrier={0.0}
         rightBarrier={0.3}
-        topBarrier={0.5}
+        topBarrier={0.7}
         bottomBarrier={0.0}
         fixedPoints={[
             { index: 0, x: 0.0, y: 0.0 },
-            { index: 1, x: 0.0, y: 0.5 },
+            { index: 1, x: 0.0, y: 0.7 },
             { index: 2, x: 0.3, y: 0.0 },
         ]}
         canvasPosition="absolute"
@@ -165,7 +165,11 @@
     <section id="projects">
         <div id="projects-container">
             <h2 style="mix-blend-mode: var(--blend-mode);">
-                Selected Projects
+                <span
+                    class="last-name"
+                    style="-webkit-text-stroke: 1px var(--foreground-secondary); -webkit-text-stroke-color: var(--foreground-secondary); fill: transparent;"
+                    >Selected</span
+                > Projects
             </h2>
             <div class="projects-grid">
                 <ProjectCard
@@ -192,7 +196,13 @@
 
     <section id="contact">
         <div id="contact-container">
-            <h2 style="mix-blend-mode: var(--blend-mode);">Get in Touch</h2>
+            <h2 style="mix-blend-mode: var(--blend-mode);">
+                <span
+                    class="last-name"
+                    style="-webkit-text-stroke: 1px var(--foreground-secondary); -webkit-text-stroke-color: var(--foreground-secondary); fill: transparent;"
+                    >Get in</span
+                > Touch
+            </h2>
             <p id="contact-description">
                 I'm always open to new opportunities, collaborations, or just a
                 friendly chat about tech. Feel free to reach out!
@@ -317,7 +327,7 @@
         min-height: 35rem;
         margin-top: 15rem;
         padding-bottom: 3rem;
-        margin-left: -5rem; /* FIXME: hack to get timeline looking better */
+        /* margin-left: -5rem; FIXME: hack to get timeline looking better */
     }
 
     .link {
@@ -437,9 +447,10 @@
     .contact-text {
         font-family: var(--mono-font);
         font-size: var(--size-5);
-        font-weight: 400;
-        color: var(--foreground);
+        font-weight: 300;
+        color: var(--foreground-secondary);
         transition: color 0.3s ease;
+        text-decoration: underline;
     }
 
     .contact-item:hover .contact-text {

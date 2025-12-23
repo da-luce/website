@@ -200,25 +200,37 @@
     @media (max-width: 768px) {
         .timeline-line-bg {
             left: 0.8rem;
+            transform: translateX(-50%);
         }
 
         .timeline-content {
             grid-template-columns: auto 1fr;
             gap: 1rem;
+            padding-left: 0;
         }
 
         .content-left {
             display: none;
         }
 
-        .timeline-image {
-            width: 2.5rem;
-            height: 2.5rem;
+        .timeline-marker {
+            padding-left: 0.8rem;
         }
 
         .timeline-dot {
             width: 0.5rem;
             height: 0.5rem;
+            transform: translateX(-50%)
+                translateY(calc((var(--size-4) * 1.2 / 2) - (0.5rem / 2)));
+        }
+
+        .content-right {
+            padding-left: 0.5rem;
+        }
+
+        .timeline-image {
+            width: 2.5rem;
+            height: 2.5rem;
         }
     }
 </style>

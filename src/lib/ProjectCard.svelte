@@ -165,7 +165,7 @@
         display: flex;
         align-items: center;
         gap: 0.35rem;
-        color: var(--foreground-secondary, rgba(0, 0, 0, 0.6));
+        color: var(--foreground-secondary);
         flex-shrink: 0;
     }
 
