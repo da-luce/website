@@ -1,9 +1,22 @@
 <script lang="ts">
     export let href: string
     export let text: string
+
+    // Check if this is an internal anchor link
+    const isInternalLink = href.startsWith('#')
+
+    function handleClick(e: MouseEvent) {
+        if (isInternalLink) {
+            e.preventDefault()
+            const target = document.querySelector(href)
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+        }
+    }
 </script>
 
-<a {href} target="_blank">
+<a {href} target={isInternalLink ? undefined : '_blank'} on:click={handleClick}>
     <span>{text}</span>
 </a>
 

@@ -1,10 +1,55 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
+    import { Star } from 'lucide-svelte'
     import ArrowLink from './ArrowLink.svelte'
 
     export let imageSrc: string
     export let title: string
     export let description: string
     export let href: string
+
+    let stars: number | null = null
+    let loading = false
+    const MIN_STARS_THRESHOLD = 10 // Don't show stars below this threshold
+
+    // Extract GitHub owner/repo from URL
+    function extractGitHubRepo(
+        url: string
+    ): { owner: string; repo: string } | null {
+        const match = url.match(/github\.com\/([^\/]+)\/([^\/\?#]+)/)
+        if (match) {
+            return {
+                owner: match[1],
+                repo: match[2],
+            }
+        }
+        return null
+    }
+
+    // Fetch GitHub stars
+    async function fetchGitHubStars() {
+        const repoInfo = extractGitHubRepo(href)
+        if (!repoInfo) return
+
+        loading = true
+        try {
+            const response = await fetch(
+                `https://api.github.com/repos/${repoInfo.owner}/${repoInfo.repo}`
+            )
+            if (response.ok) {
+                const data = await response.json()
+                stars = data.stargazers_count
+            }
+        } catch (error) {
+            console.error('Failed to fetch GitHub stars:', error)
+        } finally {
+            loading = false
+        }
+    }
+
+    onMount(() => {
+        fetchGitHubStars()
+    })
 </script>
 
 <a
@@ -21,7 +66,18 @@
         {/if}
     </div>
     <div class="content">
-        <h3>{title} <ArrowLink {href} /></h3>
+        <div class="title-row">
+            <h3>
+                {title}
+                <ArrowLink {href} />
+            </h3>
+            {#if stars !== null && stars >= MIN_STARS_THRESHOLD}
+                <div class="stars">
+                    <Star class="star-icon" size={16} />
+                    <span class="star-count">{stars.toLocaleString()}</span>
+                </div>
+            {/if}
+        </div>
         <p>{description}</p>
     </div>
 </a>
@@ -84,12 +140,45 @@
         gap: 0.5rem;
     }
 
+    .title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
     h3 {
         font-family: var(--title-font);
         font-size: 1.25rem;
         font-weight: 600;
         margin: 0;
         color: var(--foreground);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .stars {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        color: var(--foreground-secondary, rgba(0, 0, 0, 0.6));
+        flex-shrink: 0;
+    }
+
+    .star-icon {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .star-count {
+        font-family: var(--mono-font);
+        font-size: 0.85rem;
+        font-weight: 400;
+        white-space: nowrap;
     }
 
     p {

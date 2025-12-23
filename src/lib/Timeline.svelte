@@ -39,7 +39,7 @@
     ></div>
     {#each items as item, index}
         <div class="timeline-item">
-            <div class="timeline-content">
+            <div class="timeline-content" style="opacity: {item.opacity ?? 1}">
                 <div class="content-left">
                     {#if isSvg(item.image)}
                         <div
@@ -68,7 +68,7 @@
                     {/if}
                 </div>
                 <div class="timeline-marker">
-                    {#if item.showDot !== false}
+                    {#if item.showDot !== false && (item.opacity === undefined || item.opacity >= 1)}
                         <div
                             class="timeline-dot"
                             style="background-color: {item.dotColor ||

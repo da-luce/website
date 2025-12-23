@@ -8,6 +8,10 @@
     import Timeline from '$lib/Timeline.svelte'
     import type { TimelineItem } from '$types/shared'
     import Divider from '$lib/Divider.svelte'
+    import LinkedInIcon from '$lib/icons/LinkedInIcon.svelte'
+    import GitHubIcon from '$lib/icons/GitHubIcon.svelte'
+    import MailIcon from '$lib/icons/MailIcon.svelte'
+    import SideNavigation from '$lib/SideNavigation.svelte'
 
     // Timeline data for About Me section
     const timelineItems: TimelineItem[] = [
@@ -20,13 +24,23 @@
             date: null,
             showDot: false,
             imageStyle:
-                'border-radius: 50%; box-shadow: 0 0 10px var(--background-primary);',
+                'border-radius: 50%; box-shadow: 0 0 10px var(--background-primary); margin-top: 5rem;',
             description:
                 "I'm a student and software engineer who loves automating everyday life with tech. I enjoy building tools that make tasks easier, and I also tinker with cool side projects like astroterm. Lately, I've been diving into cloud technologies and exploring how they can power larger ideas. When I'm not coding, you can usually find me skiing, mountain biking, or making pickles!",
         },
         {
+            title: 'Cornell University M.Eng CS',
+            image: '/icons/cornell.svg',
+            imageSize: '4rem',
+            opacity: 0.6,
+            date: 'Future - Spring 2026',
+            description:
+                'Will be continuing my education with a one year Master of Engineering program in Computer Science at Cornell University.',
+        },
+        {
             title: 'Databricks SWE Intern',
             image: '/icons/databricks.svg',
+            opacity: 0.6,
             date: 'Future - Summer 2026',
             description:
                 "I'm excited to be joining Databricks as a Software Engineer Intern in the summer of 2026!",
@@ -63,6 +77,8 @@
         },
     ]
 </script>
+
+<SideNavigation />
 
 <div id="page">
     <GradientBackground
@@ -121,7 +137,6 @@
         zIndex="0"
     />
 
-    <Socials />
     <Arrow />
 
     <section id="landing">
@@ -134,16 +149,16 @@
                 >
             </h1>
             <p id="subheading" class="link">
-                <Link text="Background" href="/about" />
-                <Link text="Projects" href="/projects" />
-                <Link text="Contact" href="/contact" />
+                <Link text="Background" href="#about" />
+                <Link text="Projects" href="#projects" />
+                <Link text="Contact" href="#contact" />
             </p>
         </div>
     </section>
 
     <section id="about">
         <div class="timeline-wrapper">
-            <Timeline items={timelineItems} topStyle="rounded" />
+            <Timeline items={timelineItems} topStyle="fade" />
         </div>
     </section>
 
@@ -171,6 +186,52 @@
                     description="A clean, minimalistic portfolio built with SvelteKit and modern web technologies."
                     href="https://github.com/da-luce/website"
                 />
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div id="contact-container">
+            <h2 style="mix-blend-mode: var(--blend-mode);">Get in Touch</h2>
+            <p id="contact-description">
+                I'm always open to new opportunities, collaborations, or just a
+                friendly chat about tech. Feel free to reach out!
+            </p>
+            <div class="contact-content">
+                <a
+                    href="mailto:daltonluce42@gmail.com"
+                    class="contact-item"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <div class="contact-icon">
+                        <MailIcon />
+                    </div>
+                    <span class="contact-text">daltonluce42@gmail.com</span>
+                </a>
+                <a
+                    href="https://linkedin.com/in/dalton-luce"
+                    class="contact-item"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <div class="contact-icon">
+                        <LinkedInIcon />
+                    </div>
+                    <span class="contact-text">linkedin.com/in/dalton-luce</span
+                    >
+                </a>
+                <a
+                    href="https://github.com/da-luce"
+                    class="contact-item"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <div class="contact-icon">
+                        <GitHubIcon />
+                    </div>
+                    <span class="contact-text">github.com/da-luce</span>
+                </a>
             </div>
         </div>
     </section>
@@ -321,6 +382,73 @@
         .projects-grid {
             flex-direction: column;
             align-items: center;
+        }
+    }
+
+    #contact {
+        margin-top: 8em;
+        margin-bottom: 5em;
+    }
+
+    #contact-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5em;
+        width: 100%;
+    }
+
+    #contact-description {
+        color: var(--foreground-secondary);
+        font-size: var(--size-5);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .contact-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+        width: 100%;
+        align-items: flex-end;
+    }
+
+    .contact-item {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 1rem;
+        text-decoration: none;
+        color: var(--foreground);
+        transition: transform 0.2s ease;
+    }
+
+    .contact-item:hover {
+        transform: translateX(-4px);
+    }
+
+    .contact-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .contact-text {
+        font-family: var(--mono-font);
+        font-size: var(--size-5);
+        font-weight: 400;
+        color: var(--foreground);
+        transition: color 0.3s ease;
+    }
+
+    .contact-item:hover .contact-text {
+        color: var(--foreground-secondary);
+    }
+
+    @media (max-width: 768px) {
+        #contact {
+            margin-top: 5em;
         }
     }
 </style>

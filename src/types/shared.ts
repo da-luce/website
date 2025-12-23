@@ -17,4 +17,5 @@ export interface TimelineItem {
     showDot?: boolean  // Optional, show timeline dot (defaults to true)
     dotColor?: string  // Optional, color of the timeline dot
     titleStyle?: string  // Optional CSS style for title
+    opacity?: number  // Optional opacity for the entire item
 }
