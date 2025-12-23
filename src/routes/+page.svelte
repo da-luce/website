@@ -12,7 +12,7 @@
     // Timeline data for About Me section
     const timelineItems: TimelineItem[] = [
         {
-            title: 'My Story',
+            title: 'Background',
             image: '/profile.png',
             imageSize: '16rem',
             date: null,
@@ -20,7 +20,14 @@
             imageStyle:
                 'border-radius: 50%; box-shadow: 0 0 10px var(--background-primary);',
             description:
-                "I'm a student and software engineer who loves automating everyday life with tech. I enjoy building tools that make tasks easier, and I also tinker with cool side projects like Astroterm--just for the fun of it. Lately, I've been diving into cloud technologies and exploring how they can power larger ideas. When I'm not coding, you can usually find me skiing, mountain biking, or making pickles!",
+                "I'm a student and software engineer who loves automating everyday life with tech. I enjoy building tools that make tasks easier, and I also tinker with cool side projects like astroterm. Lately, I've been diving into cloud technologies and exploring how they can power larger ideas. When I'm not coding, you can usually find me skiing, mountain biking, or making pickles!",
+        },
+        {
+            title: 'Databricks SWE Intern',
+            image: '/icons/databricks.svg',
+            date: 'Future - Summer 2026',
+            description:
+                "I'm excited to be joining Databricks as a Software Engineer Intern in the summer of 2026!",
         },
         {
             title: 'Cornell University B.S. ECE',
@@ -31,16 +38,10 @@
                 'Graduated from Cornell University with a Bachelor of Science in Electrical and Computer Engineering with a minor in Computer Science.',
         },
         {
-            title: 'Databricks SWE Intern',
-            image: '/icons/databricks.svg',
-            date: 'Summer 2026',
-            description: '...',
-        },
-        {
-            title: 'AWS SDE Intern',
-            image: '/icons/amazon.svg',
+            title: 'Amazon Web Services SDE Intern',
+            image: '/icons/aws.svg',
             date: 'Summer 2025',
-            description: '...',
+            description: 'Worked on the AWS Managed Streaming Kafka team.',
         },
         {
             title: 'Raytheon Technologies SWE Intern',
@@ -48,7 +49,7 @@
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
-                'Began my programming journey learning Python and fell in love with problem-solving.',
+                'DevOps internship focused on automating and improving internal tools, migration to Jira and GitLab.',
         },
         {
             title: 'Raytheon Technologies SWE Intern',
@@ -56,7 +57,7 @@
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
-                'Began my programming journey learning Python and fell in love with problem-solving.',
+                'Radar software internship focused on bug fixing in ADA.',
         },
     ]
 </script>
@@ -75,9 +76,7 @@
             >
         </h1>
         <p id="subheading" class="link">
-            <Link text="About" href="/about" />
-            <Link text="Experience" href="/experience" />
-            <Link text="Resume" href="/Dalton_Luce_Resume.pdf" />
+            <Link text="Background" href="/about" />
             <Link text="Projects" href="/projects" />
             <Link text="Contact" href="/contact" />
         </p>
@@ -86,7 +85,7 @@
 
 <section id="about">
     <div class="timeline-wrapper">
-        <Timeline items={timelineItems} />
+        <Timeline items={timelineItems} topStyle="rounded" />
     </div>
 </section>
 
@@ -196,9 +195,9 @@
     #about {
         height: auto;
         min-height: 35rem;
-        margin-top: 10rem;
+        margin-top: 15rem;
         padding-bottom: 3rem;
-        margin-left: -5rem; /* Slight offset since center looks weird */
+        margin-left: -5rem; /* FIXME: hack to get timeline looking better */
     }
 
     .link {

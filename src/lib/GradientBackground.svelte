@@ -148,8 +148,21 @@
             }
 
             // Reverse velocity if hitting the barrier
-            if (newX <= leftBarrier || newX >= rightBarrier) point.vx *= -1
-            if (newY <= bottomBarrier || newY >= topBarrier) point.vy *= -1
+            if (newX <= leftBarrier) {
+                newX = leftBarrier
+                point.vx *= -1
+            } else if (newX >= rightBarrier) {
+                newX = rightBarrier
+                point.vx *= -1
+            }
+
+            if (newY <= bottomBarrier) {
+                newY = bottomBarrier
+                point.vy *= -1
+            } else if (newY >= topBarrier) {
+                newY = topBarrier
+                point.vy *= -1
+            }
 
             return {
                 ...point,

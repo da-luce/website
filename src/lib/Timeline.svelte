@@ -3,14 +3,40 @@
     import SVGIcon from './SVGIcon.svelte'
 
     export let items: TimelineItem[] = []
+    export let topStyle: 'rounded' | 'fade' | 'flat' = 'fade'
+    export let bottomStyle: 'rounded' | 'fade' | 'flat' = 'fade'
+    export let dotColor: string = 'var(--foreground-secondary)'
 
     function isSvg(path: string): boolean {
         return path.toLowerCase().endsWith('.svg')
     }
+
+    function getLineBackground(): string {
+        const topPart =
+            topStyle === 'fade'
+                ? 'var(--background-primary) 0%, var(--foreground-secondary) 10%'
+                : 'var(--foreground-secondary) 0%'
+
+        const bottomPart =
+            bottomStyle === 'fade'
+                ? 'var(--foreground-secondary) 90%, var(--background-primary) 100%'
+                : 'var(--foreground-secondary) 100%'
+
+        return `linear-gradient(to bottom, ${topPart}, ${bottomPart})`
+    }
+
+    function getBorderRadius(): string {
+        const topRadius = topStyle === 'rounded' ? '2px' : '0'
+        const bottomRadius = bottomStyle === 'rounded' ? '2px' : '0'
+        return `${topRadius} ${topRadius} ${bottomRadius} ${bottomRadius}`
+    }
 </script>
 
 <div class="timeline-container">
-    <div class="timeline-line-bg"></div>
+    <div
+        class="timeline-line-bg"
+        style="background: {getLineBackground()}; border-radius: {getBorderRadius()};"
+    ></div>
     {#each items as item, index}
         <div class="timeline-item">
             <div class="timeline-content">
@@ -43,7 +69,11 @@
                 </div>
                 <div class="timeline-marker">
                     {#if item.showDot !== false}
-                        <div class="timeline-dot"></div>
+                        <div
+                            class="timeline-dot"
+                            style="background-color: {item.dotColor ||
+                                dotColor};"
+                        ></div>
                     {/if}
                 </div>
                 <div class="content-right">
@@ -74,8 +104,8 @@
         background: linear-gradient(
             to bottom,
             var(--background-primary) 0%,
-            var(--foreground) 10%,
-            var(--foreground) 90%,
+            var(--foreground-secondary) 10%,
+            var(--foreground-secondary) 90%,
             var(--background-primary) 100%
         );
         transform: translateX(-50%);
@@ -89,7 +119,7 @@
     .timeline-content {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
-        gap: 2rem;
+        gap: 1rem 2rem;
         align-items: start;
         margin-bottom: 3rem;
     }
@@ -98,6 +128,7 @@
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        padding-right: 1rem;
     }
 
     .timeline-image {
@@ -123,7 +154,7 @@
     .timeline-dot {
         width: 0.6rem;
         height: 0.6rem;
-        background-color: var(--foreground);
+        background-color: var(--foreground-secondary);
         border-radius: 50%;
         z-index: 2;
         flex-shrink: 0;
@@ -134,6 +165,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        padding-left: 1rem;
     }
 
     .timeline-title {
@@ -154,7 +186,7 @@
 
     .timeline-description {
         font-family: var(--mono-font);
-        font-size: var(--size-5);
+        font-size: var(--size-6);
         color: var(--foreground-secondary);
         line-height: 1.6;
         margin: 0;
