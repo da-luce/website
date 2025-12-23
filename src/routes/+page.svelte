@@ -2,17 +2,19 @@
     import Socials from '$lib/Socials.svelte'
     import Arrow from '$lib/Arrow.svelte'
     import GradientBackground from '$lib/GradientBackground.svelte'
-    import Project from '$lib/Project.svelte'
+    import ProjectCard from '$lib/ProjectCard.svelte'
     import Link from '$lib/Link.svelte'
-    import ArrowLink from '$lib/ArrowLink.svelte'
     import Footer from '$lib/Footer.svelte'
     import Timeline from '$lib/Timeline.svelte'
     import type { TimelineItem } from '$types/shared'
+    import Divider from '$lib/Divider.svelte'
 
     // Timeline data for About Me section
     const timelineItems: TimelineItem[] = [
         {
             title: 'Background',
+            titleStyle:
+                'font-size: var(--size-2); margin-top: -2rem; mix-blend-mode: var(--blend-mode);',
             image: '/profile.png',
             imageSize: '16rem',
             date: null,
@@ -62,70 +64,126 @@
     ]
 </script>
 
-<GradientBackground />
-<Socials />
-<Arrow />
+<div id="page">
+    <GradientBackground
+        numPoints={4}
+        leftBarrier={0.8}
+        rightBarrier={1.0}
+        topBarrier={1.0}
+        bottomBarrier={0.6}
+        fixedPoints={[
+            { index: 0, x: 1.0, y: 1.0 },
+            { index: 1, x: 1.0, y: 0.6 },
+        ]}
+        canvasTop="0"
+        canvasRight="0"
+        canvasBottom="auto"
+        canvasLeft="auto"
+        canvasWidth="100vw"
+        canvasHeight="200vh"
+    />
 
-<section id="landing">
-    <div>
-        <h1><span class="last-name">Hi,</span> I'm</h1>
-        <h1>
-            Dalton <span
-                class="hand"
-                style="font-size: 0.5em; vertical-align: middle;">👋</span
-            >
-        </h1>
-        <p id="subheading" class="link">
-            <Link text="Background" href="/about" />
-            <Link text="Projects" href="/projects" />
-            <Link text="Contact" href="/contact" />
-        </p>
-    </div>
-</section>
+    <!-- Bottom of first gradient -->
+    <Divider
+        position="absolute"
+        top="200dvh"
+        left="0"
+        width="100%"
+        zIndex="0"
+    />
 
-<section id="about">
-    <div class="timeline-wrapper">
-        <Timeline items={timelineItems} topStyle="rounded" />
-    </div>
-</section>
+    <GradientBackground
+        numPoints={4}
+        leftBarrier={0.0}
+        rightBarrier={0.3}
+        topBarrier={0.5}
+        bottomBarrier={0.0}
+        fixedPoints={[
+            { index: 0, x: 0.0, y: 0.0 },
+            { index: 1, x: 0.0, y: 0.5 },
+            { index: 2, x: 0.3, y: 0.0 },
+        ]}
+        canvasPosition="absolute"
+        canvasTop="auto"
+        canvasRight="auto"
+        canvasBottom="0"
+        canvasLeft="0"
+        canvasWidth="100vw"
+        canvasHeight="200vh"
+    />
 
-<section id="projects">
-    <div id="projects-container">
-        <h2>Projects</h2>
-        <Project
-            imageSrc="/blog.jpeg"
-            title="Blog"
-            desc="Welcome to my corner of the web, where I dive into the world of tech, programming, and engineering. As I work on new projects and explore the latest in software development, I document my experiences, tools, and insights."
-            tags={['UI/UX Design', 'Writing', 'SvelteKit']}
-            href="/posts"
-        />
-        <Project
-            videoSrc="/starsaver_small.mov"
-            title="Astroterm"
-            desc="I've always been interested in the command line—the power of ASCII characters and a limited selection of colors to portray more than just text. Astroterm enables users to display the positions of stars in real-time. This project allowed me to explore C programming deeply, combining my interests in astronomy and coding to create a compelling CLI tool. Through Astroterm, users can bring the beauty of the night sky right to their terminals."
-            tags={['C', 'Meson', 'ncurses']}
-            href="https://github.com/da-luce/astroterm"
-        />
-        <Project
-            videoSrc="/website.mov"
-            title="Personal Website"
-            desc="The website you're looking at right now! Though an engineer by study, I've always had a soft spot for clean, beautiful UIs. This is my crack at one using Svelte (my fav♡rite JS framework). Here, you'll find my projects as well as other works that highlight my journey in programming and design. Explore, enjoy, and get inspired!"
-            tags={['JavaScript', 'TypeScript', 'HTML & CSS', 'Svelte 4.0']}
-            href=""
-        />
-        <Project
-            videoSrc=""
-            title="More coming soon!"
-            desc="Feel free to drop a st☆r or two :)"
-            tags={[]}
-            href="https://github.com/da-luce/"
-        />
-    </div>
-</section>
+    <!-- Top edge of second gradient -->
+    <Divider
+        position="absolute"
+        bottom="200vh"
+        left="0"
+        width="100%"
+        zIndex="0"
+    />
 
-<Footer />
+    <Socials />
+    <Arrow />
+
+    <section id="landing">
+        <div>
+            <h1><span class="last-name">Hi,</span> I'm</h1>
+            <h1>
+                Dalton <span
+                    class="hand"
+                    style="font-size: 0.5em; vertical-align: middle;">👋</span
+                >
+            </h1>
+            <p id="subheading" class="link">
+                <Link text="Background" href="/about" />
+                <Link text="Projects" href="/projects" />
+                <Link text="Contact" href="/contact" />
+            </p>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="timeline-wrapper">
+            <Timeline items={timelineItems} topStyle="rounded" />
+        </div>
+    </section>
+
+    <section id="projects">
+        <div id="projects-container">
+            <h2 style="mix-blend-mode: var(--blend-mode);">
+                Selected Projects
+            </h2>
+            <div class="projects-grid">
+                <ProjectCard
+                    imageSrc="/blog.jpeg"
+                    title="Blog"
+                    description="Exploring tech, programming, and engineering through articles and tutorials."
+                    href="/posts"
+                />
+                <ProjectCard
+                    imageSrc="/astroterm.png"
+                    title="Astroterm"
+                    description="A CLI tool that displays star positions in real-time using C and ncurses."
+                    href="https://github.com/da-luce/astroterm"
+                />
+                <ProjectCard
+                    imageSrc="/website.png"
+                    title="Personal Website"
+                    description="A clean, minimalistic portfolio built with SvelteKit and modern web technologies."
+                    href="https://github.com/da-luce/website"
+                />
+            </div>
+        </div>
+    </section>
+
+    <Footer />
+</div>
 
 <style>
+    #page {
+        position: relative; /* anchor for absolute canvas */
+        min-height: 200vh; /* MUST be taller than viewport */
+        overflow-x: hidden;
+    }
     #last-name,
     h1 {
         font-size: var(--size-1);
@@ -135,6 +193,7 @@
     h2 {
         font-family: var(--title-font);
         font-weight: bold;
+        font-size: var(--size-2);
     }
     p {
         font-weight: 100;
@@ -245,6 +304,23 @@
         flex-direction: column;
         align-items: flex-start;
         display: flex;
-        gap: 4em;
+        gap: 2em;
+        width: 100%;
+    }
+
+    .projects-grid {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        width: 100%;
+        justify-content: left;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+        .projects-grid {
+            flex-direction: column;
+            align-items: center;
+        }
     }
 </style>

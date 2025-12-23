@@ -14,12 +14,12 @@
     function getLineBackground(): string {
         const topPart =
             topStyle === 'fade'
-                ? 'var(--background-primary) 0%, var(--foreground-secondary) 10%'
+                ? 'transparent 0%, var(--foreground-secondary) 10%'
                 : 'var(--foreground-secondary) 0%'
 
         const bottomPart =
             bottomStyle === 'fade'
-                ? 'var(--foreground-secondary) 90%, var(--background-primary) 100%'
+                ? 'var(--foreground-secondary) 90%, transparent 100%'
                 : 'var(--foreground-secondary) 100%'
 
         return `linear-gradient(to bottom, ${topPart}, ${bottomPart})`
@@ -77,7 +77,9 @@
                     {/if}
                 </div>
                 <div class="content-right">
-                    <h3 class="timeline-title">{item.title}</h3>
+                    <h3 class="timeline-title" style={item.titleStyle || ''}>
+                        {item.title}
+                    </h3>
                     <p class="timeline-date">{item.date}</p>
                     <p class="timeline-description">{item.description}</p>
                 </div>
@@ -182,6 +184,7 @@
         font-size: var(--size-5);
         color: var(--foreground-secondary);
         margin: 0;
+        font-weight: bold;
     }
 
     .timeline-description {

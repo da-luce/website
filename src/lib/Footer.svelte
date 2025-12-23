@@ -7,7 +7,9 @@
         Designed and hand coded by me <span class="emoji">✌️</span>
     </p>
     <div id="socials"><SocialsMobile /></div>
-    <p style="opacity: 0.4;">© Dalton Luce 2024. All Rights Reserved.</p>
+    <p style="opacity: 0.4; mix-blend-mode: var(--blend-mode);">
+        © Dalton Luce {new Date().getFullYear()}. All Rights Reserved.
+    </p>
 </footer>
 
 <style>

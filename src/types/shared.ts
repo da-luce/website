@@ -16,4 +16,5 @@ export interface TimelineItem {
     imageStyle?: string  // Optional CSS style (e.g., 'border-radius: 50%;' for circular)
     showDot?: boolean  // Optional, show timeline dot (defaults to true)
     dotColor?: string  // Optional, color of the timeline dot
+    titleStyle?: string  // Optional CSS style for title
 }

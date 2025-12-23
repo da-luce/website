@@ -13,8 +13,27 @@
     } from '../scripts/shaders'
     import { throttle } from '../scripts/throttle'
 
+    // Configurable props
+    export let numPoints: number = 4
+    export let leftBarrier: number = 0.8
+    export let rightBarrier: number = 1.0
+    export let topBarrier: number = 1.0
+    export let bottomBarrier: number = 0.6
+    export let fixedPoints: Array<{ index: number; x: number; y: number }> = [
+        { index: 0, x: 1.0, y: 1.0 }, // top-right by default
+        { index: 1, x: 1.0, y: 0.6 }, // bottom-right by default
+    ]
+    // Canvas positioning props
+    export let canvasPosition: string = 'absolute' // 'absolute' or 'fixed'
+    export let canvasTop: string = '0'
+    export let canvasRight: string = '0'
+    export let canvasBottom: string = 'auto'
+    export let canvasLeft: string = 'auto'
+    export let canvasWidth: string = '100vw'
+    export let canvasHeight: string = '200vh'
+    export let canvasZIndex: string = '0'
+
     // Settings
-    const numPoints = 4
     const minSpeed = 0.00002
     const maxSpeed = 0.0005
     const PIXEL_SCALE = 2 // 2 = chunky pixels, 4 = very chunky
@@ -25,11 +44,6 @@
 
     let shaderMouseX = 0
     let shaderMouseY = 0
-
-    const leftBarrier = 0.8
-    const rightBarrier = 1
-    const topBarrier = 1
-    const bottomBarrier = 0.6
 
     const lerpFactor = 0.05 // adjust for smoothness
 
@@ -138,13 +152,11 @@
                 }
             }
 
-            // Fix first and second points to corners
-            if (i === 0) {
-                newX = rightBarrier
-                newY = topBarrier
-            } else if (i === 1) {
-                newX = rightBarrier
-                newY = bottomBarrier
+            // Fix points based on fixedPoints configuration
+            const fixedPoint = fixedPoints.find((fp) => fp.index === i)
+            if (fixedPoint) {
+                newX = fixedPoint.x
+                newY = fixedPoint.y
             }
 
             // Reverse velocity if hitting the barrier
@@ -282,7 +294,7 @@
     const gradientPass = (
         gl: WebGLRenderingContext,
         program: WebGLProgram,
-        inputTexture: WebGLTexture,
+        inputTexture: WebGLTexture | null,
         outputFramebuffer: WebGLFramebuffer
     ) => {
         // Render to the custom framebuffer
@@ -344,7 +356,8 @@
     const presentPass = (
         gl: WebGLRenderingContext,
         program: WebGLProgram,
-        texture: WebGLTexture
+        texture: WebGLTexture,
+        outputFramebuffer: WebGLFramebuffer | null = null
     ) => {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null)
         gl.useProgram(program)
@@ -504,15 +517,14 @@
     })
 </script>
 
-<canvas bind:this={canvas}></canvas>
+<canvas
+    bind:this={canvas}
+    style="position: {canvasPosition}; top: {canvasTop}; right: {canvasRight}; bottom: {canvasBottom}; left: {canvasLeft}; width: {canvasWidth}; height: {canvasHeight}; z-index: {canvasZIndex};"
+></canvas>
 
 <style>
     canvas {
-        position: absolute;
-        top: 0;
-        right: 0;
         display: block;
-        width: 100vw;
-        height: 200vh;
+        pointer-events: none;
     }
 </style>
