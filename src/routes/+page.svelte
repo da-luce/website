@@ -33,23 +33,23 @@
             image: '/icons/cornell.svg',
             imageSize: '4rem',
             opacity: 0.6,
-            date: 'Future - Spring 2026',
+            date: 'Fall 2026',
             description:
-                'Will be continuing my education with a one year Master of Engineering program in Computer Science at Cornell University.',
+                'I am pursuing a one-year Master of Engineering in Computer Science at Cornell University, graduating in Fall 2026.',
         },
         {
             title: 'Databricks SWE Intern',
             image: '/icons/databricks.svg',
             opacity: 0.6,
-            date: 'Future - Summer 2026',
+            date: 'Summer 2026',
             description:
-                "I'm excited to be joining Databricks as a Software Engineer Intern in the summer of 2026!",
+                "I'm excited to be joining Databricks as a Software Engineer Intern for the summer of 2026!",
         },
         {
             title: 'Cornell University B.S. ECE',
             image: '/icons/cornell.svg',
-            imageSize: '4rem',
             date: 'Class of 2026',
+            imageSize: '4rem',
             description:
                 'Graduated from Cornell University with a Bachelor of Science in Electrical and Computer Engineering with a minor in Computer Science.',
         },
@@ -57,7 +57,8 @@
             title: 'Amazon Web Services SDE Intern',
             image: '/icons/aws.svg',
             date: 'Summer 2025',
-            description: 'Worked on the AWS Managed Streaming Kafka team.',
+            description:
+                'Built critical testing frameworks for AWS Managed Streaming Kafka (MSK), enabling faster local workflow validation and unblocking key CI/CD pipelines.',
         },
         {
             title: 'Raytheon Technologies SWE Intern',
@@ -65,7 +66,7 @@
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
-                'DevOps internship focused on automating and improving internal tools, migration to Jira and GitLab.',
+                'DevOps internship focused on automating and improving internal tools, supporting migration to Jira and GitLab.',
         },
         {
             title: 'Raytheon Technologies SWE Intern',
@@ -73,7 +74,7 @@
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
-                'Radar software internship focused on bug fixing in ADA.',
+                'Worked on radar software, fixing ADA bugs and improving system reliability.',
         },
     ]
 </script>
@@ -91,22 +92,10 @@
             { index: 0, x: 1.0, y: 1.0 },
             { index: 1, x: 1.0, y: 0.6 },
         ]}
-        canvasTop="0"
-        canvasRight="0"
-        canvasBottom="auto"
-        canvasLeft="auto"
-        canvasWidth="100vw"
-        canvasHeight="200vh"
+        class="gradient-top-right"
     />
 
-    <!-- Bottom of first gradient -->
-    <Divider
-        position="absolute"
-        top="200dvh"
-        left="0"
-        width="100%"
-        zIndex="0"
-    />
+    <Divider class="divider-top" />
 
     <GradientBackground
         numPoints={4}
@@ -119,23 +108,10 @@
             { index: 1, x: 0.0, y: 0.7 },
             { index: 2, x: 0.3, y: 0.0 },
         ]}
-        canvasPosition="absolute"
-        canvasTop="auto"
-        canvasRight="auto"
-        canvasBottom="0"
-        canvasLeft="0"
-        canvasWidth="100vw"
-        canvasHeight="200vh"
+        class="gradient-bottom-left"
     />
 
-    <!-- Top edge of second gradient -->
-    <Divider
-        position="absolute"
-        bottom="200vh"
-        left="0"
-        width="100%"
-        zIndex="0"
-    />
+    <Divider class="divider-bottom" />
 
     <Arrow />
 
@@ -255,9 +231,47 @@
 </div>
 
 <style>
+    :global(.gradient-top-right) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100dvw;
+        height: 200dvh;
+        z-index: 0;
+    }
+
+    :global(.gradient-bottom-left) {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100dvw;
+        height: 200dvh;
+        z-index: 0;
+    }
+
+    :global(.divider-top) {
+        --divider-height: 120px;
+        position: absolute;
+        top: calc(200dvh + var(--divider-height) / 2);
+        left: 0;
+        width: 100%;
+        height: var(--divider-height);
+        z-index: 0;
+    }
+
+    :global(.divider-bottom) {
+        --divider-height: 120px;
+        position: absolute;
+        bottom: calc(200dvh - var(--divider-height) / 2);
+        left: 0;
+        width: 100%;
+        height: var(--divider-height);
+        z-index: 0;
+    }
+
     #page {
         position: relative; /* anchor for absolute canvas */
-        min-height: 200vh; /* MUST be taller than viewport */
+        min-height: 200dvh; /* MUST be taller than viewport */
         overflow-x: hidden;
     }
     #last-name,
@@ -356,7 +370,7 @@
     }
 
     #landing {
-        height: 100vh;
+        height: 100dvh;
     }
 
     #subheading {

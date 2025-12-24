@@ -23,15 +23,6 @@
         { index: 0, x: 1.0, y: 1.0 }, // top-right by default
         { index: 1, x: 1.0, y: 0.6 }, // bottom-right by default
     ]
-    // Canvas positioning props
-    export let canvasPosition: string = 'absolute' // 'absolute' or 'fixed'
-    export let canvasTop: string = '0'
-    export let canvasRight: string = '0'
-    export let canvasBottom: string = 'auto'
-    export let canvasLeft: string = 'auto'
-    export let canvasWidth: string = '100vw'
-    export let canvasHeight: string = '200vh'
-    export let canvasZIndex: string = '0'
 
     // Settings
     const minSpeed = 0.00002
@@ -231,48 +222,26 @@
         return framebuffer
     }
 
-    const resizeCanvas = (
+    const resizeTexture = (
         gl: WebGLRenderingContext,
-        spGradient: WebGLProgram,
-        texture,
-        framebuffer
+        texture: WebGLTexture,
+        framebuffer: WebGLFramebuffer,
+        width: number,
+        height: number
     ) => {
-        if (!canvas) {
-            return
-        }
-
-        // Resize canvas (accounting for device pixel ratio-works on Retina)
-        const dpr = window.devicePixelRatio || 1
-        const scale = PIXEL_SCALE
-        const rect = canvas.getBoundingClientRect()
-        const cssWidth = rect.width
-        const cssHeight = rect.height
-
-        canvas.style.width = cssWidth + 'px'
-        canvas.style.height = cssHeight + 'px'
-
-        // 🔥 intentionally lower internal resolution
-        canvas.width = Math.floor((cssWidth * dpr) / scale)
-        canvas.height = Math.floor((cssHeight * dpr) / scale)
-
-        // Set viewport
-        gl.viewport(0, 0, canvas.width, canvas.height)
-
-        // Resize the texture
         gl.bindTexture(gl.TEXTURE_2D, texture)
         gl.texImage2D(
             gl.TEXTURE_2D,
             0,
             gl.RGBA,
-            canvas.width,
-            canvas.height,
+            width,
+            height,
             0,
             gl.RGBA,
             gl.UNSIGNED_BYTE,
             null
         )
 
-        // Resize the framebuffer
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer)
         gl.framebufferTexture2D(
             gl.FRAMEBUFFER,
@@ -281,8 +250,48 @@
             texture,
             0
         )
+    }
 
-        // Update resolution
+    const resizeCanvas = (
+        gl: WebGLRenderingContext,
+        spGradient: WebGLProgram,
+        textures: WebGLTexture[],
+        framebuffers: WebGLFramebuffer[]
+    ) => {
+        if (!canvas) return
+
+        // Get canvas dimensions from CSS (let CSS control sizing)
+        const rect = canvas.getBoundingClientRect()
+        const dpr = window.devicePixelRatio || 1
+        const scale = PIXEL_SCALE
+
+        // Update internal canvas resolution (intentionally lower for pixelated effect)
+        const newWidth = Math.floor((rect.width * dpr) / scale)
+        const newHeight = Math.floor((rect.height * dpr) / scale)
+
+        // Only resize if dimensions actually changed
+        if (canvas.width === newWidth && canvas.height === newHeight) {
+            return
+        }
+
+        canvas.width = newWidth
+        canvas.height = newHeight
+
+        // Update viewport
+        gl.viewport(0, 0, canvas.width, canvas.height)
+
+        // Resize all textures and framebuffers
+        for (let i = 0; i < textures.length; i++) {
+            resizeTexture(
+                gl,
+                textures[i],
+                framebuffers[i],
+                canvas.width,
+                canvas.height
+            )
+        }
+
+        // Update resolution uniform
         gl.useProgram(spGradient)
         const resolutionLocation = gl.getUniformLocation(
             spGradient,
@@ -429,6 +438,8 @@
     }
 
     onMount(() => {
+        console.log('GradientBackground onMount called')
+
         // Initialize WebGL
         const gl = canvas.getContext('webgl')
         if (!gl) {
@@ -438,8 +449,11 @@
             return
         }
 
+        console.log('WebGL initialized')
+
         // Initialize points
         points = initializePoints()
+        console.log('Points initialized')
 
         // Create shader programs
         const spGradient = initGradient(gl)
@@ -489,14 +503,24 @@
             requestAnimationFrame(render)
         }
 
-        resizeCanvas(gl, spGradient, textureA, framebufferA) // Set initial size
-        resizeCanvas(gl, spGradient, textureB, framebufferB)
-        resizeCanvas(gl, spGradient, textureC, framebufferC)
+        // Set initial size
+        const textures = [textureA, textureB, textureC]
+        const framebuffers = [framebufferA, framebufferB, framebufferC]
+        resizeCanvas(gl, spGradient, textures, framebuffers)
 
-        // Add window resize listener
-        window.addEventListener('resize', () => {
-            resizeCanvas(gl, spGradient, textureA, framebufferA)
-        })
+        // Simplified resize handling - just use window resize with debouncing
+        let resizeTimeout: ReturnType<typeof setTimeout>
+        const handleResize = () => {
+            // Debounce resize events
+            clearTimeout(resizeTimeout)
+            resizeTimeout = setTimeout(() => {
+                console.log('Resize triggered')
+                resizeCanvas(gl, spGradient, textures, framebuffers)
+            }, 100)
+        }
+
+        window.addEventListener('resize', handleResize)
+        console.log('Window resize listener added')
 
         const mouseHandler = (event: MouseEvent) => {
             const rect = canvas.getBoundingClientRect()
@@ -513,14 +537,16 @@
 
         render()
 
-        render()
+        // Cleanup function
+        return () => {
+            clearTimeout(resizeTimeout)
+            window.removeEventListener('resize', handleResize)
+            window.removeEventListener('mousemove', throttledMouseHandler)
+        }
     })
 </script>
 
-<canvas
-    bind:this={canvas}
-    style="position: {canvasPosition}; top: {canvasTop}; right: {canvasRight}; bottom: {canvasBottom}; left: {canvasLeft}; width: {canvasWidth}; height: {canvasHeight}; z-index: {canvasZIndex};"
-></canvas>
+<canvas bind:this={canvas} class={$$props.class}></canvas>
 
 <style>
     canvas {

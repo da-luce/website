@@ -24,7 +24,8 @@
         width: 3rem;
         height: 3rem;
         background-color: var(--background-primary);
-        border: 2px solid var(--foreground);
+        border: none;
+        outline: none;
         border-radius: 50%;
         cursor: pointer;
         z-index: 1001;
@@ -33,7 +34,6 @@
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     .hamburger-button:hover {
