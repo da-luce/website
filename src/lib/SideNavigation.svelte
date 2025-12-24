@@ -1,11 +1,9 @@
 <script lang="ts">
     import { onMount } from 'svelte'
+    import HamburgerMenu from './HamburgerMenu.svelte'
 
     let activeSection = $state('landing')
-    let isVisible = $state(true)
-    let scrollTimeout: number | undefined
-    let lastScrollY = 0
-    const SCROLL_THRESHOLD = 300 // px - minimum scroll distance to show nav
+    let isMenuOpen = $state(false)
 
     const sections = [
         { id: 'landing', label: 'Home' },
@@ -59,53 +57,8 @@
             }
         })
 
-        // Also observe landing section
-        const landingElement = document.getElementById('landing')
-        if (landingElement) {
-            observer.observe(landingElement)
-        }
-
-        // Mobile scroll behavior - show on scroll, hide after inactivity
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY
-            const scrollDelta = Math.abs(currentScrollY - lastScrollY)
-
-            // Only show navigation on mobile if scroll exceeds threshold
-            if (window.innerWidth <= 768) {
-                if (scrollDelta >= SCROLL_THRESHOLD) {
-                    isVisible = true
-                    lastScrollY = currentScrollY
-
-                    // Clear existing timeout
-                    if (scrollTimeout) {
-                        clearTimeout(scrollTimeout)
-                    }
-
-                    // Hide after 2 seconds of no scrolling
-                    scrollTimeout = window.setTimeout(() => {
-                        isVisible = false
-                    }, 2000)
-                }
-            } else {
-                // On desktop, always show
-                isVisible = true
-            }
-        }
-
-        // Check if mobile on mount
-        if (window.innerWidth <= 768) {
-            isVisible = false
-            lastScrollY = window.scrollY
-        }
-
-        window.addEventListener('scroll', handleScroll, { passive: true })
-
         return () => {
             observer.disconnect()
-            window.removeEventListener('scroll', handleScroll)
-            if (scrollTimeout) {
-                clearTimeout(scrollTimeout)
-            }
         }
     })
 
@@ -114,10 +67,28 @@
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' })
         }
+        // Close menu on mobile after clicking
+        isMenuOpen = false
+    }
+
+    function toggleMenu() {
+        isMenuOpen = !isMenuOpen
+    }
+
+    function closeMenu() {
+        isMenuOpen = false
     }
 </script>
 
-<nav class="side-navigation" class:visible={isVisible}>
+<!-- Mobile hamburger button -->
+<HamburgerMenu isOpen={isMenuOpen} onToggle={toggleMenu} />
+
+<!-- Mobile overlay -->
+{#if isMenuOpen}
+    <div class="menu-overlay" onclick={closeMenu}></div>
+{/if}
+
+<nav class="side-navigation" class:open={isMenuOpen}>
     {#each sections as section}
         <button
             class="nav-item"
@@ -128,13 +99,35 @@
             <span class="label">{section.label}</span>
         </button>
     {/each}
-    <a href="/posts" class="nav-item">
+    <a href="/posts" class="nav-item" onclick={closeMenu}>
         <span class="dot"></span>
         <span class="label">Blog</span>
     </a>
 </nav>
 
 <style>
+    /* Overlay backdrop */
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Side navigation - desktop style */
     .side-navigation {
         position: fixed;
         right: 2rem;
@@ -149,6 +142,7 @@
             transform 0.3s ease;
     }
 
+    /* Mobile styles */
     @media (max-width: 768px) {
         .side-navigation {
             right: 0;
@@ -161,13 +155,17 @@
             height: 100vh;
             justify-content: center;
             border-radius: 0;
-            /* box-shadow: -10px 0 20px var(--background-primary); */
+            box-shadow: -10px 0 20px rgba(0, 0, 0, 0.2);
         }
 
-        .side-navigation.visible {
+        .side-navigation.open {
             opacity: 1;
             transform: translateX(0);
             pointer-events: auto;
+        }
+
+        .side-navigation {
+            gap: 1.5rem;
         }
     }
 
@@ -237,10 +235,6 @@
         .nav-item.active .label {
             color: var(--foreground-primary);
             mix-blend-mode: normal;
-        }
-
-        .side-navigation {
-            gap: 1.5rem;
         }
     }
 </style>

@@ -157,8 +157,13 @@
     </section>
 
     <section id="about">
-        <div class="timeline-wrapper">
-            <Timeline items={timelineItems} topStyle="fade" />
+        <div>
+            <div class="mobile-profile-photo">
+                <img src="/profile.png" alt="Profile" />
+            </div>
+            <div class="timeline-wrapper">
+                <Timeline items={timelineItems} topStyle="fade" />
+            </div>
         </div>
     </section>
 
@@ -167,7 +172,7 @@
             <h2 style="mix-blend-mode: var(--blend-mode);">
                 <span
                     class="last-name"
-                    style="-webkit-text-stroke: 1px var(--foreground-secondary); -webkit-text-stroke-color: var(--foreground-secondary); fill: transparent;"
+                    style="-webkit-text-stroke: 2px var(--foreground-secondary); -webkit-text-stroke-color: var(--foreground-secondary); fill: transparent;"
                     >Selected</span
                 > Projects
             </h2>
@@ -199,7 +204,7 @@
             <h2 style="mix-blend-mode: var(--blend-mode);">
                 <span
                     class="last-name"
-                    style="-webkit-text-stroke: 1px var(--foreground-secondary); -webkit-text-stroke-color: var(--foreground-secondary); fill: transparent;"
+                    style="-webkit-text-stroke: 2px var(--foreground-secondary); -webkit-text-stroke-color: var(--foreground-secondary); fill: transparent;"
                     >Get in</span
                 > Touch
             </h2>
@@ -460,6 +465,32 @@
     @media (max-width: 768px) {
         #contact {
             margin-top: 5em;
+        }
+    }
+
+    /* Mobile profile photo - hidden on desktop, visible on mobile */
+    .mobile-profile-photo {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .mobile-profile-photo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .mobile-profile-photo img {
+            width: 70%;
+            max-width: 25rem;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--background-primary);
+            object-fit: cover;
+            margin-bottom: 2rem;
         }
     }
 </style>
