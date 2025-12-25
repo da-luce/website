@@ -15,6 +15,7 @@
     import ArrowLink from '$lib/ArrowLink.svelte'
     import HoverGroup from '$lib/HoverGroup.svelte'
     import ArrowIcon from '$lib/icons/ArrowIcon.svelte'
+    import { BLOB } from '$lib/config'
 
     // Timeline data for About Me section
     const timelineItems: TimelineItem[] = [
@@ -22,7 +23,7 @@
             title: 'Background',
             titleStyle:
                 'font-size: var(--size-2); margin-top: -2rem; mix-blend-mode: var(--blend-mode);',
-            image: 'blob/images/profile.png',
+            image: `${BLOB}/images/profile.png`,
             imageSize: '16rem',
             date: null,
             showDot: false,
@@ -33,7 +34,7 @@
         },
         {
             title: 'Cornell University M.Eng. CS',
-            image: 'blob/icons/cornell.svg',
+            image: `${BLOB}/icons/cornell.svg`,
             imageSize: '4rem',
             opacity: 0.6,
             date: 'Fall 2026',
@@ -42,7 +43,7 @@
         },
         {
             title: 'Databricks SWE Intern',
-            image: 'blob/icons/databricks.svg',
+            image: `${BLOB}/icons/databricks.svg`,
             opacity: 0.6,
             date: 'Summer 2026',
             description:
@@ -50,7 +51,7 @@
         },
         {
             title: 'Cornell University B.S. ECE',
-            image: 'blob/icons/cornell.svg',
+            image: `${BLOB}/icons/cornell.svg`,
             date: 'Class of 2026',
             imageSize: '4rem',
             description:
@@ -58,14 +59,14 @@
         },
         {
             title: 'Amazon Web Services SDE Intern',
-            image: 'blob/icons/aws.svg',
+            image: `${BLOB}/icons/aws.svg`,
             date: 'Summer 2025',
             description:
                 'Built critical testing frameworks for AWS Managed Streaming Kafka (MSK), enabling faster local workflow validation and unblocking key CI/CD pipelines.',
         },
         {
             title: 'Raytheon Technologies SWE Intern',
-            image: 'blob/icons/rtx.svg',
+            image: `${BLOB}/icons/rtx.svg`,
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
@@ -73,7 +74,7 @@
         },
         {
             title: 'Raytheon Technologies SWE Intern',
-            image: 'blob/icons/rtx.svg',
+            image: `${BLOB}/icons/rtx.svg`,
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
@@ -142,7 +143,7 @@
     <section id="about">
         <div>
             <div class="mobile-profile-photo">
-                <img src="blob/images/profile.png" alt="Profile" />
+                <img src="{BLOB}/images/profile.png" alt="Profile" />
             </div>
             <div class="timeline-wrapper">
                 <Timeline items={timelineItems} topStyle="fade" />
@@ -178,19 +179,19 @@
             </h2>
             <div class="projects-grid">
                 <ProjectCard
-                    imageSrc="blob/images/blog.jpeg"
+                    imageSrc="{BLOB}/images/blog.jpeg"
                     title="Blog"
                     description="Exploring tech, programming, and engineering through articles and tutorials."
                     href="/posts"
                 />
                 <ProjectCard
-                    imageSrc="blob/images/astroterm.png"
+                    imageSrc="{BLOB}/images/astroterm.png"
                     title="Astroterm"
                     description="A CLI tool that displays star positions in real-time using C and ncurses."
                     href="https://github.com/da-luce/astroterm"
                 />
                 <ProjectCard
-                    imageSrc="blob/images/website.png"
+                    imageSrc="{BLOB}/images/website.png"
                     title="Personal Website"
                     description="A clean, minimalistic portfolio built with SvelteKit and modern web technologies."
                     href="https://github.com/da-luce/website"

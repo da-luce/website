@@ -6,8 +6,7 @@
         "dev": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
-        "sync:s3": "./sync-s3.sh",
-        "deploy": "npm run sync:s3 && npm run build",
+        "deploy": "npm run build",
         "format": "prettier --write .",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"

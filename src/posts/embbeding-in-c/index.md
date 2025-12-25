@@ -14,7 +14,7 @@ tags:
 
 # Embedding Static Data Directly Into C Executables
 
-<img src="blob/posts/embed/embed.webp" alt="An abstract depiction of embedding data in an executable" style="
+<img src="https://dalton-website-artifacts.s3.us-east-2.amazonaws.com/posts/embed/embed.webp" alt="An abstract depiction of embedding data in an executable" style="
  display: block;
   margin-left: auto;
   margin-right: auto;
