@@ -3,9 +3,6 @@
 </script>
 
 <footer>
-    <p id="first-line">
-        Designed and hand coded by me <span class="emoji">✌️</span>
-    </p>
     <p style="opacity: 0.4; mix-blend-mode: var(--blend-mode);">
         © Dalton Luce {new Date().getFullYear()}. All Rights Reserved.
     </p>
@@ -42,15 +39,6 @@
             segoe ui symbol;
         display: inline-block;
         transition: transform 0.2s ease-in-out;
-    }
-
-    #first-line {
-        padding: 1em 1em 0em 1em;
-    }
-
-    /* Apply animation only when #first-line is hovered */
-    #first-line:hover .emoji {
-        animation: wave 1.5s infinite;
     }
 
     @keyframes wave {

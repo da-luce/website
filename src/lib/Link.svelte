@@ -25,7 +25,7 @@
         position: relative; /* needed for pseudo-element */
         overflow: hidden; /* clip the bubble */
         border: 3px solid var(--foreground);
-        border-radius: 0.75rem;
+        border-radius: var(--border-radius);
         padding: 0.4rem 1rem;
         text-decoration: none;
         display: inline-flex;
@@ -43,7 +43,7 @@
         top: -50%;
         left: -200%; /* offscreen to the left */
         width: 200%;
-        height: 200%;
+        height: 400%;
         background-color: var(--foreground);
         border-radius: 20rem;
         z-index: 0;

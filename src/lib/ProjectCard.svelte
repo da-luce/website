@@ -2,6 +2,9 @@
     import { onMount } from 'svelte'
     import { Star } from 'lucide-svelte'
     import ArrowLink from './ArrowLink.svelte'
+    import ArrowIcon from './icons/ArrowIcon.svelte'
+    import HoverGroup from './HoverGroup.svelte'
+    import Hover from './Hover.svelte'
 
     export let imageSrc: string
     export let title: string
@@ -52,46 +55,58 @@
     })
 </script>
 
-<a
-    {href}
-    class="card"
-    target={href.startsWith('http') ? '_blank' : '_self'}
-    rel={href.startsWith('http') ? 'noopener noreferrer' : ''}
->
-    <div class="image-container">
-        {#if imageSrc}
-            <img src={imageSrc} alt={title} />
-        {:else}
-            <div class="placeholder"></div>
-        {/if}
-    </div>
-    <div class="content">
-        <div class="title-row">
-            <h3>
-                {title}
-                <ArrowLink {href} />
-            </h3>
-            {#if stars !== null && stars >= MIN_STARS_THRESHOLD}
-                <div class="stars">
-                    <Star class="star-icon" size={16} />
-                    <span class="star-count">{stars.toLocaleString()}</span>
-                </div>
+<HoverGroup>
+    <a
+        {href}
+        class="card"
+        target={href.startsWith('http') ? '_blank' : '_self'}
+        rel={href.startsWith('http') ? 'noopener noreferrer' : ''}
+    >
+        <div class="image-container">
+            {#if imageSrc}
+                <img src={imageSrc} alt={title} />
+            {:else}
+                <div class="placeholder"></div>
             {/if}
         </div>
-        <p>{description}</p>
-    </div>
-</a>
+        <div class="content">
+            <div class="title-row">
+                <h3>
+                    {title}
+                    <div class="hover-move arrow-container">
+                        <ArrowIcon />
+                    </div>
+                </h3>
+                {#if stars !== null && stars >= MIN_STARS_THRESHOLD}
+                    <div class="stars">
+                        <Star class="star-icon" size={16} />
+                        <span class="star-count">{stars.toLocaleString()}</span>
+                    </div>
+                {/if}
+            </div>
+            <p>{description}</p>
+        </div>
+    </a>
+</HoverGroup>
 
 <style>
+    .arrow-container {
+        width: 1rem;
+        height: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .card {
         display: flex;
         flex-direction: column;
         background: var(--background-secondary, rgba(255, 255, 255, 0.05));
-        border-radius: 12px;
+        border-radius: var(--border-radius);
         overflow: hidden;
         transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+            transform var(--transition-speed) ease,
+            box-shadow var(--transition-speed) ease;
         text-decoration: none;
         color: inherit;
         width: 100%;

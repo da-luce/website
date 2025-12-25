@@ -12,6 +12,9 @@
     import GitHubIcon from '$lib/icons/GitHubIcon.svelte'
     import MailIcon from '$lib/icons/MailIcon.svelte'
     import SideNavigation from '$lib/SideNavigation.svelte'
+    import ArrowLink from '$lib/ArrowLink.svelte'
+    import HoverGroup from '$lib/HoverGroup.svelte'
+    import ArrowIcon from '$lib/icons/ArrowIcon.svelte'
 
     // Timeline data for About Me section
     const timelineItems: TimelineItem[] = [
@@ -19,7 +22,7 @@
             title: 'Background',
             titleStyle:
                 'font-size: var(--size-2); margin-top: -2rem; mix-blend-mode: var(--blend-mode);',
-            image: '/profile.png',
+            image: 'blob/images/profile.png',
             imageSize: '16rem',
             date: null,
             showDot: false,
@@ -30,7 +33,7 @@
         },
         {
             title: 'Cornell University M.Eng. CS',
-            image: '/icons/cornell.svg',
+            image: 'blob/icons/cornell.svg',
             imageSize: '4rem',
             opacity: 0.6,
             date: 'Fall 2026',
@@ -39,7 +42,7 @@
         },
         {
             title: 'Databricks SWE Intern',
-            image: '/icons/databricks.svg',
+            image: 'blob/icons/databricks.svg',
             opacity: 0.6,
             date: 'Summer 2026',
             description:
@@ -47,7 +50,7 @@
         },
         {
             title: 'Cornell University B.S. ECE',
-            image: '/icons/cornell.svg',
+            image: 'blob/icons/cornell.svg',
             date: 'Class of 2026',
             imageSize: '4rem',
             description:
@@ -55,14 +58,14 @@
         },
         {
             title: 'Amazon Web Services SDE Intern',
-            image: '/icons/aws.svg',
+            image: 'blob/icons/aws.svg',
             date: 'Summer 2025',
             description:
                 'Built critical testing frameworks for AWS Managed Streaming Kafka (MSK), enabling faster local workflow validation and unblocking key CI/CD pipelines.',
         },
         {
             title: 'Raytheon Technologies SWE Intern',
-            image: '/icons/rtx.svg',
+            image: 'blob/icons/rtx.svg',
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
@@ -70,7 +73,7 @@
         },
         {
             title: 'Raytheon Technologies SWE Intern',
-            image: '/icons/rtx.svg',
+            image: 'blob/icons/rtx.svg',
             imageSize: '6rem',
             date: 'Summer 2024',
             description:
@@ -92,26 +95,26 @@
             { index: 0, x: 1.0, y: 1.0 },
             { index: 1, x: 1.0, y: 0.6 },
         ]}
-        class="gradient-top-right"
+        class="gradient gradient-top-right"
     />
 
-    <Divider class="divider-top" />
+    <Divider class="divider divider-top" />
 
     <GradientBackground
         numPoints={4}
         leftBarrier={0.0}
         rightBarrier={0.3}
-        topBarrier={0.7}
+        topBarrier={0.5}
         bottomBarrier={0.0}
         fixedPoints={[
             { index: 0, x: 0.0, y: 0.0 },
-            { index: 1, x: 0.0, y: 0.7 },
+            { index: 1, x: 0.0, y: 0.5 },
             { index: 2, x: 0.3, y: 0.0 },
         ]}
-        class="gradient-bottom-left"
+        class="gradient gradient-bottom-left"
     />
 
-    <Divider class="divider-bottom" />
+    <Divider class="divider divider-bottom" />
 
     <Arrow />
 
@@ -128,6 +131,10 @@
                 <Link text="Background" href="#about" />
                 <Link text="Projects" href="#projects" />
                 <Link text="Contact" href="#contact" />
+                <Link
+                    text="Resume"
+                    href="https://dalton-cv-artifacts.s3.us-east-1.amazonaws.com/pdfs/dalton_luce_cv.pdf"
+                />
             </p>
         </div>
     </section>
@@ -135,11 +142,28 @@
     <section id="about">
         <div>
             <div class="mobile-profile-photo">
-                <img src="/profile.png" alt="Profile" />
+                <img src="blob/images/profile.png" alt="Profile" />
             </div>
             <div class="timeline-wrapper">
                 <Timeline items={timelineItems} topStyle="fade" />
             </div>
+            <HoverGroup>
+                <div>
+                    <a
+                        href="https://dalton-cv-artifacts.s3.us-east-1.amazonaws.com/pdfs/dalton_luce_cv.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="text-decoration: none;"
+                    >
+                        <span class="resume" style="opacity: 0.8;">
+                            <p>Full Resume</p>
+                            <div class="hover-move arrow-container">
+                                <ArrowIcon />
+                            </div>
+                        </span>
+                    </a>
+                </div>
+            </HoverGroup>
         </div>
     </section>
 
@@ -154,19 +178,19 @@
             </h2>
             <div class="projects-grid">
                 <ProjectCard
-                    imageSrc="/blog.jpeg"
+                    imageSrc="blob/images/blog.jpeg"
                     title="Blog"
                     description="Exploring tech, programming, and engineering through articles and tutorials."
                     href="/posts"
                 />
                 <ProjectCard
-                    imageSrc="/astroterm.png"
+                    imageSrc="blob/images/astroterm.png"
                     title="Astroterm"
                     description="A CLI tool that displays star positions in real-time using C and ncurses."
                     href="https://github.com/da-luce/astroterm"
                 />
                 <ProjectCard
-                    imageSrc="/website.png"
+                    imageSrc="blob/images/website.png"
                     title="Personal Website"
                     description="A clean, minimalistic portfolio built with SvelteKit and modern web technologies."
                     href="https://github.com/da-luce/website"
@@ -178,11 +202,12 @@
     <section id="contact">
         <div id="contact-container">
             <h2 style="mix-blend-mode: var(--blend-mode);">
+                Connect
                 <span
                     class="last-name"
                     style="-webkit-text-stroke: 2px var(--foreground-secondary); -webkit-text-stroke-color: var(--foreground-secondary); fill: transparent;"
-                    >Get in</span
-                > Touch
+                    >With Me</span
+                >
             </h2>
             <p id="contact-description">
                 I'm always open to new opportunities, collaborations, or just a
@@ -231,42 +256,38 @@
 </div>
 
 <style>
-    :global(.gradient-top-right) {
+    :global(.gradient) {
         position: absolute;
-        top: 0;
-        right: 0;
         width: 100dvw;
         height: 200dvh;
         z-index: 0;
+    }
+
+    :global(.divider) {
+        --divider-height: 30rem;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        height: var(--divider-height);
+        z-index: 0;
+    }
+
+    :global(.gradient-top-right) {
+        top: 0;
+        right: 0;
     }
 
     :global(.gradient-bottom-left) {
-        position: absolute;
         bottom: 0;
         left: 0;
-        width: 100dvw;
-        height: 200dvh;
-        z-index: 0;
     }
 
     :global(.divider-top) {
-        --divider-height: 120px;
-        position: absolute;
-        top: calc(200dvh + var(--divider-height) / 2);
-        left: 0;
-        width: 100%;
-        height: var(--divider-height);
-        z-index: 0;
+        top: calc(200dvh - var(--divider-height) / 2);
     }
 
     :global(.divider-bottom) {
-        --divider-height: 120px;
-        position: absolute;
         bottom: calc(200dvh - var(--divider-height) / 2);
-        left: 0;
-        width: 100%;
-        height: var(--divider-height);
-        z-index: 0;
     }
 
     #page {
@@ -293,6 +314,14 @@
         -webkit-text-stroke-width: 3px;
         -webkit-text-stroke-color: var(--foreground); /* optional outline */
         mix-blend-mode: var(--blend-mode);
+    }
+
+    .arrow-container {
+        width: 1rem;
+        height: 1rem;
+        display: flex;
+        align-items: center; /* vertically center */
+        justify-content: center; /* horizontally center */
     }
 
     .hand {
@@ -352,6 +381,13 @@
     .link {
         margin: 0 0.5em;
         mix-blend-mode: var(--blend-mode);
+    }
+    .resume {
+        display: flex; /* use flex instead of inline-flex */
+        justify-content: center; /* center children horizontally */
+        align-items: center; /* vertically align arrow and text */
+        gap: 0.4rem; /* space between text and arrow */
+        margin: 2rem auto; /* auto left/right centers this div in parent */
     }
 
     .about-container {
@@ -425,6 +461,7 @@
         align-items: flex-start;
         gap: 1.5em;
         width: 100%;
+        min-height: 50dvh;
     }
 
     #contact-description {

@@ -23,7 +23,7 @@
 </script>
 
 <div id="post-container">
-    <h1>The Post Stack.</h1>
+    <h1>The Stack.</h1>
     <h4>Push, pop, and read!</h4>
     <div class="icons">
         <a href="/" title="home" class="icon-container">
@@ -63,11 +63,20 @@
 <style>
     h1 {
         margin-bottom: 0.5rem;
+        font-family: var(--title-font);
+        font-weight: 800;
     }
 
     h4 {
-        font-family: var(--serif-font);
+        font-family: var(--mono-font);
+        color: var(--foreground-secondary);
     }
+
+    p {
+        font-family: var(--mono-font);
+        font-size: var(--size-5);
+    }
+
     #post-container {
         max-width: 40em;
         margin: var(--size-1) auto;
@@ -86,7 +95,7 @@
     }
     .hex-address {
         color: var(--foreground);
-        font-family: var(--mono-font);
+        font-family: 'Fira Code', monospace;
         font-weight: 300;
         font-size: var(--size-4);
         text-align: center;
@@ -110,12 +119,6 @@
             background-color 0.3s ease,
             transform 0.3s ease;
         border: none;
-    }
-
-    .icon-container:hover {
-        background-color: var(--highlight); /* Change color on hover */
-        transform: scale(1.1); /* Slight zoom effect on hover */
-        cursor: pointer;
     }
 
     .icon {
