@@ -13,35 +13,37 @@
     ]
 
     onMount(() => {
+        // Track intersection ratios for all sections
+        const sectionRatios = new Map<string, number>()
+
         // Intersection Observer for scroll spy
         const observerOptions = {
             root: null,
-            rootMargin: '0px',
-            threshold: [0, 0.25, 0.5, 0.75, 1.0],
+            rootMargin: '-10% 0px -10% 0px', // Activate when section is 10% into viewport
+            threshold: Array.from({ length: 21 }, (_, i) => i * 0.05), // More granular thresholds
         }
 
-        let maxVisibleSection = { id: 'landing', ratio: 0 }
-
         const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            // Update the ratios map for each observed entry
             entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    // Track which section has the largest intersection ratio
-                    if (entry.intersectionRatio > maxVisibleSection.ratio) {
-                        maxVisibleSection = {
-                            id: entry.target.id,
-                            ratio: entry.intersectionRatio,
-                        }
-                    }
+                sectionRatios.set(entry.target.id, entry.intersectionRatio)
+            })
+
+            // Find the section with the highest intersection ratio
+            let maxRatio = 0
+            let maxSectionId = activeSection
+
+            sectionRatios.forEach((ratio, id) => {
+                if (ratio > maxRatio) {
+                    maxRatio = ratio
+                    maxSectionId = id
                 }
             })
 
-            // Update active section based on the most visible one
-            if (maxVisibleSection.ratio > 0.3) {
-                activeSection = maxVisibleSection.id
+            // Update active section if we found any visible section
+            if (maxRatio > 0) {
+                activeSection = maxSectionId
             }
-
-            // Reset for next observation cycle
-            maxVisibleSection = { id: activeSection, ratio: 0 }
         }
 
         const observer = new IntersectionObserver(
