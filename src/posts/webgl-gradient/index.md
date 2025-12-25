@@ -21,7 +21,7 @@ Blurred gradients--a staple in modern UI trends. From [Stripe's homepage](https:
 
 _<p style="text-align: center;">A nice blurred gradient we'll produce with WebGL (and it moves!)</p>_
 
-<img src="https://dalton-website-artifacts.s3.us-east-2.amazonaws.com/posts/gradient/test.svg" class="svg-filter"/>
+<img src="{BLOB}/posts/gradient/test.svg" class="svg-filter"/>
 
 My journey to creating my dream gradient began where many UI experiments begin--I explored several approaches to achieve the dreamy, blobby gradient effect. The simplest approach seemed to be drawing on an HTML [Canvas](https://www.w3schools.com/html/html5_canvas.asp) element. The beloved canvas provides a ton of upfront tools for drawing lines, shapes, and other post processing effects. I created a proof of concept inspired by [this tutorial](https://www.youtube.com/watch?v=D6EiRSRhsbQ), but the effect wasn't exactly what I was looking for, and the performance was... well, not great. It seemed drawing directly onto the canvas was not going to be good solution for a full page gradient.
 

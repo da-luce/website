@@ -23,7 +23,7 @@
         right: 1.5rem;
         width: 3rem;
         height: 3rem;
-        background-color: var(--background-primary);
+        background-color: transparent;
         border: none;
         outline: none;
         border-radius: 50%;
@@ -34,6 +34,7 @@
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
+        backdrop-filter: blur(100px);
     }
 
     .hamburger-button:hover {

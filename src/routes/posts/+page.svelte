@@ -2,6 +2,7 @@
     import type { PageData } from './$types'
     import PostCard from '$lib/PostCard.svelte'
     import { goto } from '$app/navigation'
+    import { BLOB } from '$lib/config'
 
     let { data }: { data: PageData } = $props()
     let posts = data.visiblePosts
@@ -27,7 +28,7 @@
     <h4>Push, pop, and read!</h4>
     <div class="icons">
         <a href="/" title="home" class="icon-container">
-            <img src="/icons/home.svg" alt="Home" class="icon" />
+            <img src={`${BLOB}/icons/home.svg`} alt="Home" class="icon" />
         </a>
         <button
             type="button"
@@ -35,7 +36,7 @@
             class="icon-container"
             onclick={navigateToRandomPost}
         >
-            <img src="/icons/shuffle.svg" alt="Random" class="icon" />
+            <img src={`${BLOB}/icons/shuffle.svg`} alt="Random" class="icon" />
         </button>
     </div>
     {#if posts && posts.length > 0}
