@@ -15,6 +15,7 @@
     import ArrowLink from '$lib/ArrowLink.svelte'
     import HoverGroup from '$lib/HoverGroup.svelte'
     import ArrowIcon from '$lib/icons/ArrowIcon.svelte'
+    import SkillsScroll from '$lib/SkillsScroll.svelte'
     import { BLOB } from '$lib/config'
 
     // Timeline data for About Me section
@@ -30,7 +31,7 @@
             imageStyle:
                 'border-radius: 50%; box-shadow: 0 0 10px var(--background-primary); margin-top: 5rem;',
             description:
-                "I'm a student and software engineer who loves automating everyday life with tech. I enjoy building tools that make tasks easier, and I also tinker with cool side projects like astroterm. Lately, I've been diving into cloud technologies and exploring how they can power larger ideas. When I'm not coding, you can usually find me skiing, mountain biking, or making pickles!",
+                "I'm a student and software engineer who loves automating everyday life with tech. I enjoy building tools that make tasks easier, and I also tinker with cool side projects. Lately, I've been diving into cloud technologies and exploring how they can power larger ideas. When I'm not coding, you can usually find me skiing, mountain biking, or reading a good book.",
         },
         {
             title: 'Cornell University M.Eng. CS',
@@ -166,6 +167,7 @@
                 </div>
             </HoverGroup>
         </div>
+        <SkillsScroll />
     </section>
 
     <section id="projects">
@@ -418,7 +420,8 @@
         /* Take entire space of div, evenly spaced */
         display: flex;
         justify-content: left;
-        gap: 1.5em;
+        flex-wrap: wrap;
+        gap: clamp(0.75rem, 2.5vw, 1.5rem);
         margin-top: 0.5em;
     }
 
