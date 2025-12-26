@@ -38,12 +38,12 @@
 <div class="skills-scroll-container">
     <div class="scroll-row scroll-left">
         {#each topRowDuplicated as skill}
-            <Pill text={skill} interactive={true} />
+            <Pill text={skill} interactive={false} />
         {/each}
     </div>
     <div class="scroll-row scroll-right">
         {#each bottomRowDuplicated as skill}
-            <Pill text={skill} interactive={true} />
+            <Pill text={skill} interactive={false} />
         {/each}
     </div>
 </div>

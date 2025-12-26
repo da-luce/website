@@ -105,8 +105,8 @@
         border-radius: var(--border-radius);
         overflow: hidden;
         transition:
-            transform var(--transition-speed) ease,
-            box-shadow var(--transition-speed) ease;
+            transform var(--transition-duration) ease,
+            box-shadow var(--transition-duration) ease;
         text-decoration: none;
         color: inherit;
         width: 100%;

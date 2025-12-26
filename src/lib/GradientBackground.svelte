@@ -27,7 +27,7 @@
     // Settings
     const minSpeed = 0.00002
     const maxSpeed = 0.0005
-    const PIXEL_SCALE = 2 // 2 = chunky pixels, 4 = very chunky
+    const PIXEL_SCALE = 4 // Still yields good result and better performance
 
     // Detect if device is mobile/touch-enabled
     const isMobile = () => {
@@ -220,11 +220,9 @@
         gl.disable(gl.DITHER)
         gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false)
 
-        // Use NEAREST for pixelated look -- don't blur?
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
-        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+        // Use LINEAR filtering for smoother results
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 
         return texture
     }

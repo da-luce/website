@@ -9,6 +9,6 @@
     }
 
     .hover-group :global(.hover-move) {
-        transition: transform var(--transition-speed) ease;
+        transition: transform var(--transition-duration) ease;
     }
 </style>

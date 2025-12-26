@@ -37,7 +37,7 @@
     --blend-mode: color-burn;
 
     /* Transition speed */
-    --transition-speed: 0.3s;
+    --transition-duration: 0.3s;
 
     /* Border radius and spacing */
     --border-radius: 12px;

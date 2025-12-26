@@ -20,10 +20,16 @@
         line-height: 1.2;
         color: var(--foreground);
         background-color: transparent;
-        transition: color 0.35s ease-in-out;
+        transition: color var(--transition-duration) ease-in-out;
         font-family: var(--mono-font);
         font-size: var(--size-5);
         font-weight: 400;
+    }
+
+    .pill.interactive:hover {
+        background-color: var(--foreground);
+        color: var(--background-primary);
+        cursor: pointer;
     }
 
     .pill-text {
