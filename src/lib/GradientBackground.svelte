@@ -36,7 +36,7 @@
     let shaderMouseX = 0
     let shaderMouseY = 0
 
-    const lerpFactor = 0.05 // adjust for smoothness
+    const lerpFactor = 0.02 // adjust for smoothness (higher = smoother)
 
     const updateMouseUniform = () => {
         // Interpolate for smooth movement
