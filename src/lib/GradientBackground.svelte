@@ -1,17 +1,15 @@
 <script lang="ts">
     import { onMount } from 'svelte'
     import { createShaderProgram } from '$scripts/gl_utils'
-    import {
-        vsGradient,
-        fsGradient,
-        vsNoise,
-        fsNoise,
-        vsWarp,
-        fsWarp,
-        vsPresent,
-        fsPresent,
-    } from '../scripts/shaders'
-    import { throttle } from '../scripts/throttle'
+    import vsGradient from '$scripts/shaders/gradient.vert?raw'
+    import fsGradient from '$scripts/shaders/gradient.frag?raw'
+    import vsNoise from '$scripts/shaders/noise.vert?raw'
+    import fsNoise from '$scripts/shaders/noise.frag?raw'
+    import vsWarp from '$scripts/shaders/warp.vert?raw'
+    import fsWarp from '$scripts/shaders/warp.frag?raw'
+    import vsPresent from '$scripts/shaders/present.vert?raw'
+    import fsPresent from '$scripts/shaders/present.frag?raw'
+    import { throttle } from '$scripts/throttle'
 
     // Configurable props
     export let numPoints: number = 4
@@ -42,15 +40,15 @@
     let mouseX = 0
     let mouseY = 0
 
-    let shaderMouseX = 0
-    let shaderMouseY = 0
+    let smoothMouseX = 0
+    let smoothMouseY = 0
 
     const lerpFactor = 0.02 // adjust for smoothness (higher = smoother)
 
-    const updateMouseUniform = () => {
+    const updatedMouseSmoothed = () => {
         // Interpolate for smooth movement
-        shaderMouseX += (mouseX - shaderMouseX) * lerpFactor
-        shaderMouseY += (mouseY - shaderMouseY) * lerpFactor
+        smoothMouseX += (mouseX - smoothMouseX) * lerpFactor
+        smoothMouseY += (mouseY - smoothMouseY) * lerpFactor
     }
 
     type color = [number, number, number]
@@ -335,15 +333,14 @@
         // * Resolution only changes on resize
         // * Color information is constant
         const pointsLocation = gl.getUniformLocation(program, 'u_points')
-        const mouseLocation = gl.getUniformLocation(program, 'u_mouse')
+        const numPointsLocation = gl.getUniformLocation(program, 'u_numPoints')
 
         gl.uniform2fv(
             pointsLocation,
             new Float32Array(points.flatMap((p) => [p.x, p.y]))
         )
 
-        updateMouseUniform()
-        gl.uniform2f(mouseLocation, shaderMouseX, shaderMouseY)
+        gl.uniform1i(numPointsLocation, points.length)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -385,7 +382,7 @@
         gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
 
         const mouseLocation = gl.getUniformLocation(program, 'u_mouse')
-        gl.uniform2f(mouseLocation, shaderMouseX, shaderMouseY)
+        gl.uniform2f(mouseLocation, smoothMouseX, smoothMouseY)
 
         const timeLocation = gl.getUniformLocation(program, 'u_time')
         gl.uniform1f(timeLocation, time)
@@ -445,11 +442,7 @@
 
     const initGradient = (gl: WebGLRenderingContext): WebGLProgram => {
         // Create shader program
-        const spGradient = createShaderProgram(
-            gl,
-            vsGradient,
-            fsGradient(numPoints)
-        )
+        const spGradient = createShaderProgram(gl, vsGradient, fsGradient)
 
         // Link it
         gl.useProgram(spGradient)
@@ -564,6 +557,9 @@
 
             // Update point locations
             updatePoints()
+
+            // Update smooth mouse position for shader
+            updatedMouseSmoothed()
 
             // Calculate time in seconds
             const currentTime = (performance.now() - startTime) / 1000.0
