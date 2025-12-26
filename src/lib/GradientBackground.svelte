@@ -75,10 +75,10 @@
 
     // Light mode colors (lighter, more subtle versions)
     const colorPaletteLightRGB: Array<color> = [
-        [180, 255, 240], // Lighter cyan
-        [180, 230, 255], // Lighter blue
-        [180, 200, 255], // Lighter medium blue
-        [200, 180, 255], // Lighter purple
+        [148, 255, 228],
+        [148, 228, 255],
+        [148, 174, 255],
+        [175, 148, 255],
     ]
 
     const normalizeColor = (color: color): color => {
