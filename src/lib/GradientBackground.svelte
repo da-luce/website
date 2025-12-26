@@ -22,10 +22,35 @@
         { index: 1, x: 1.0, y: 0.6 }, // bottom-right by default
     ]
 
-    // Settings
+    // Global constants
+    const PIXEL_SCALE = 4 // Still yields good result and better performance
+    const mouseLerp = 0.02 // 0 < lerp < 1. Higher = smoother
+
+    // Warp effect settings
+    const baseWarpStrength = 0.05
+    const mouseWarpStrength = 0.15
+    const effectRadius = 0.25
+    const timeScale = 0.2
+
+    // Gradient settings
     const minSpeed = 0.00002
     const maxSpeed = 0.0005
-    const PIXEL_SCALE = 4 // Still yields good result and better performance
+
+    // Dark mode colors (original vibrant colors)
+    const colorPaletteDarkRGB: Array<color> = [
+        [102, 255, 217],
+        [102, 217, 255],
+        [102, 140, 255],
+        [140, 102, 255],
+    ]
+
+    // Light mode colors (lighter, more subtle versions)
+    const colorPaletteLightRGB: Array<color> = [
+        [148, 255, 228],
+        [148, 228, 255],
+        [148, 174, 255],
+        [175, 148, 255],
+    ]
 
     // Detect if device is mobile/touch-enabled
     const isMobile = () => {
@@ -43,12 +68,10 @@
     let smoothMouseX = 0
     let smoothMouseY = 0
 
-    const lerpFactor = 0.02 // adjust for smoothness (higher = smoother)
-
     const updatedMouseSmoothed = () => {
         // Interpolate for smooth movement
-        smoothMouseX += (mouseX - smoothMouseX) * lerpFactor
-        smoothMouseY += (mouseY - smoothMouseY) * lerpFactor
+        smoothMouseX += (mouseX - smoothMouseX) * mouseLerp
+        smoothMouseY += (mouseY - smoothMouseY) * mouseLerp
     }
 
     type color = [number, number, number]
@@ -62,22 +85,6 @@
 
     let canvas: HTMLCanvasElement
     let points: Array<Point> = []
-
-    // Dark mode colors (original vibrant colors)
-    const colorPaletteDarkRGB: Array<color> = [
-        [102, 255, 217],
-        [102, 217, 255],
-        [102, 140, 255],
-        [140, 102, 255],
-    ]
-
-    // Light mode colors (lighter, more subtle versions)
-    const colorPaletteLightRGB: Array<color> = [
-        [148, 255, 228],
-        [148, 228, 255],
-        [148, 174, 255],
-        [175, 148, 255],
-    ]
 
     const normalizeColor = (color: color): color => {
         return color.map((c) => c / 255) as color
@@ -387,6 +394,25 @@
         const timeLocation = gl.getUniformLocation(program, 'u_time')
         gl.uniform1f(timeLocation, time)
 
+        // Set warp effect parameters
+        const baseWarpStrengthLocation = gl.getUniformLocation(
+            program,
+            'u_baseWarpStrength'
+        )
+        gl.uniform1f(baseWarpStrengthLocation, baseWarpStrength)
+        const mouseWarpStrengthLocation = gl.getUniformLocation(
+            program,
+            'u_mouseWarpStrength'
+        )
+        gl.uniform1f(mouseWarpStrengthLocation, mouseWarpStrength)
+        const effectRadiusLocation = gl.getUniformLocation(
+            program,
+            'u_effectRadius'
+        )
+        gl.uniform1f(effectRadiusLocation, effectRadius)
+        const timeScaleLocation = gl.getUniformLocation(program, 'u_timeScale')
+        gl.uniform1f(timeScaleLocation, timeScale)
+
         const resolutionLocation = gl.getUniformLocation(
             program,
             'u_resolution'
@@ -570,11 +596,6 @@
             warpPass(gl, spWarp, textureB, framebufferC, currentTime)
             noisePass(gl, spNoise, textureC, framebufferD, 0.0, 20.0)
             presentPass(gl, spPresent, textureD, null)
-
-            // Clear the screen
-            // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-            // gl.clear(gl.COLOR_BUFFER_BIT)
-            // gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 
             // Animate
             requestAnimationFrame(render)
