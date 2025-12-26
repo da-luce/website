@@ -80,8 +80,8 @@ export const fsNoise = `
 
     void main() {
         // Apply the noise effect to offset texture coordinates
-        float n = noise(v_texCoord * 10.0); // Adjust the multiplier to control the noise frequency
-        vec2 scatter = vec2(noise(v_texCoord + n), noise(v_texCoord - n)) * 0.1; // Offset magnitude
+        float n = noise(v_texCoord * 1.0); // Adjust the multiplier to control the noise frequency
+        vec2 scatter = vec2(noise(v_texCoord + n), noise(v_texCoord - n)) * 0.0; // Offset magnitude
 
         // Offset the texture coordinates
         vec2 scatteredCoord = v_texCoord + scatter;
@@ -106,28 +106,46 @@ precision mediump float;
 
 uniform sampler2D u_firstPassTexture;
 uniform vec2 u_mouse;
+uniform float u_time;
 
 varying vec2 v_texCoord;
 
 void main() {
+    // Convert mouse from [-1,1] to [0,1] UV space
     vec2 mouseUV = u_mouse * 0.5 + 0.5;
     vec2 delta = v_texCoord - mouseUV;
     float dist = length(delta);
-
-    float radius = 0.15;
-    float strength = 0.5;
-    float falloff = smoothstep(radius, 0.0, dist);
-
-    vec2 dir = delta / (dist + 1e-5);
     
-    // Sample previous frame and accumulate
-    vec4 previous = texture2D(u_firstPassTexture, v_texCoord);
-    vec2 warpedCoord = v_texCoord + dir * strength * falloff;
-
-    vec4 newColor = texture2D(u_firstPassTexture, warpedCoord);
-
-    // Blend the new warp with the previous frame
-    gl_FragColor = mix(previous, newColor, 0.8); // adjust 0.0–1.0 for persistence
+    // Parameters for the warp effect
+    float effectRadius = 0.25; // How far from mouse the effect reaches
+    float warpStrength = 0.15; // Base strength of the warp
+    float t = u_time / 3.0;
+    
+    // Create a smooth falloff - effect is strongest near mouse, fades away
+    float falloff = smoothstep(effectRadius, 0.0, dist);
+    
+    // Start with base texture coordinates
+    vec2 pos = v_texCoord;
+    
+    // Only apply warp effect near the mouse
+    if (falloff > 0.01) {
+        // Center coordinates around mouse position for the warp calculation
+        vec2 centered = (v_texCoord - mouseUV) * 4.0;
+        
+        // Apply iterative sin/cos warping (creates flowing patterns)
+        for(float k = 1.0; k < 7.0; k += 1.0) { 
+            centered.x += warpStrength * sin(2.0 * t + k * 1.5 * centered.y) * falloff;
+            centered.y += warpStrength * cos(2.0 * t + k * 1.5 * centered.x) * falloff;
+        }
+        
+        // Convert back from centered coordinates
+        pos = mouseUV + centered / 4.0;
+    }
+    
+    // Sample the texture at the warped coordinates
+    vec4 color = texture2D(u_firstPassTexture, pos);
+    
+    gl_FragColor = color;
 }
 `
 

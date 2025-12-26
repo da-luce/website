@@ -347,7 +347,8 @@
         gl: WebGLRenderingContext,
         program: WebGLProgram,
         inputTexture: WebGLTexture,
-        outputFramebuffer: WebGLFramebuffer
+        outputFramebuffer: WebGLFramebuffer,
+        time: number
     ) => {
         gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
         gl.useProgram(program)
@@ -358,6 +359,9 @@
 
         const mouseLocation = gl.getUniformLocation(program, 'u_mouse')
         gl.uniform2f(mouseLocation, shaderMouseX, shaderMouseY)
+
+        const timeLocation = gl.getUniformLocation(program, 'u_time')
+        gl.uniform1f(timeLocation, time)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -480,6 +484,8 @@
         gl.clearColor(0, 0, 0, 0) // RGBA, alpha = 0 for transparency
         gl.clear(gl.COLOR_BUFFER_BIT)
 
+        let startTime = performance.now()
+
         const render = () => {
             // Canvas may not exist when updating shaders. Avoid errors.
             if (!canvas) {
@@ -489,10 +495,14 @@
             // Update point locations
             updatePoints()
 
+            // Calculate time in seconds
+            const currentTime = (performance.now() - startTime) / 1000.0
+
             // Gradient
             gradientPass(gl, spGradient, null, framebufferA)
-            noisePass(gl, spNoise, textureA, framebufferB)
-            presentPass(gl, spPresent, textureB, null)
+            warpPass(gl, spWarp, textureA, framebufferB, currentTime)
+            noisePass(gl, spNoise, textureB, framebufferC)
+            presentPass(gl, spPresent, textureC, null)
 
             // Clear the screen
             // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
