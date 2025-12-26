@@ -1,3 +1,4 @@
+import { BLOB } from '$lib/config'
 import type { PageServerLoad } from './$types'
 import { error } from '@sveltejs/kit'
 import fs from 'fs'
@@ -92,7 +93,10 @@ export const load: PageServerLoad = async ({ params }) => {
         const strippedContent = removeTitle(content)
 
         // Convert markdown to HTML using markdown-it with syntax highlighting
-        const htmlContent = md.render(strippedContent)
+        let htmlContent = md.render(strippedContent)
+
+        // Replace {BLOB} placeholder with actual CDN URL
+        htmlContent = htmlContent.replace(/\{BLOB\}/g, BLOB)
 
         const readTime = calculateReadTime(strippedContent)
 

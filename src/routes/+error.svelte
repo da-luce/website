@@ -5,7 +5,7 @@
 <div class="container">
     <div class="error">
         <h1 id="status">{$page.status}</h1>
-        <h2 id="message">{$page.error?.message}</h2>
+        <h2 id="message">{$page.error?.message} :(</h2>
     </div>
 </div>
 
@@ -21,21 +21,15 @@
     }
 
     /* FIXME: this effect is super blurry on Safari */
-    #status,
+    #status {
+        font-family: var(--title-font);
+        font-size: var(--size-1);
+        font-weight: bold;
+    }
+
     #message {
         font-family: var(--mono-font);
-        text-shadow:
-            0 0 10vh var(--foreground),
-            1vh 1vh 10vh #ff4c4c,
-            -1vh -1vh 10vh #274fff; /* Glowing effect */
-    }
-
-    #status {
-        font-size: var(--size-1);
-    }
-
-    #message {
+        font-weight: 200;
         font-size: var(--size-3);
-        font-weight: bold;
     }
 </style>

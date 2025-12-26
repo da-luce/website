@@ -17,6 +17,11 @@ const config = {
             $scripts: path.resolve('./src/scripts'),
             $types: path.resolve('./src/types'),
         },
+
+        // No paths.assets - CSS/JS served from hosting, blob images from S3 via explicit URLs
+        prerender: {
+            handleHttpError: 'ignore'
+        }
     },
 }
 

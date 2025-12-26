@@ -22,16 +22,14 @@
 
 <style>
     p {
-        font-family: var(--sans-font);
+        font-family: var(--mono-font);
         font-size: var(--size-5);
     }
     .date {
-        color: rgba(255, 255, 255, 0.3);
         font-family: var(--mono-font);
     }
 
     .desc {
-        color: rgba(255, 255, 255, 0.5);
         font-family: var(--mono-font);
     }
     h4 {
@@ -56,12 +54,6 @@
         transition: all 0.5s ease;
         min-height: 5rem;
 
-        /* Background animation */
-        background-image: radial-gradient(
-            ellipse at 50% 50%,
-            rgba(255, 255, 255, 0.1),
-            rgba(3, 12, 29, 1)
-        );
         background-size: 400% 400%;
         background-position: 50% 0%;
 
@@ -82,8 +74,7 @@
     }
 
     .hover:hover {
-        border-bottom: 10px solid var(--foreground);
-        transform: translateY(-5px);
+        transform: translateX(5px);
         background-size: 200% 200%;
         background-position: 50% 0%;
     }

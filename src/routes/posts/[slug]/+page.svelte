@@ -3,6 +3,7 @@
     let { data }: { data: PageData } = $props()
 
     import Socials from '$lib/Socials.svelte'
+    import { BLOB } from '$lib/config'
 </script>
 
 <article>
@@ -13,10 +14,10 @@
         </p>
         <div class="icons">
             <a href="/" title="home" class="icon-container">
-                <img src="/icons/home.svg" alt="Home" class="icon" />
+                <img src={`${BLOB}/icons/home.svg`} alt="Home" class="icon" />
             </a>
             <a href="/posts" title="posts" class="icon-container">
-                <img src="/icons/stack.svg" alt="Posts" class="icon" />
+                <img src={`${BLOB}/icons/stack.svg`} alt="Posts" class="icon" />
             </a>
         </div>
     </div>

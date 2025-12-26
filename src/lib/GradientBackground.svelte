@@ -6,17 +6,52 @@
         fsGradient,
         vsNoise,
         fsNoise,
+        vsWarp,
+        fsWarp,
+        vsPresent,
+        fsPresent,
     } from '../scripts/shaders'
     import { throttle } from '../scripts/throttle'
 
+    // Configurable props
+    export let numPoints: number = 4
+    export let leftBarrier: number = 0.8
+    export let rightBarrier: number = 1.0
+    export let topBarrier: number = 1.0
+    export let bottomBarrier: number = 0.6
+    export let fixedPoints: Array<{ index: number; x: number; y: number }> = [
+        { index: 0, x: 1.0, y: 1.0 }, // top-right by default
+        { index: 1, x: 1.0, y: 0.6 }, // bottom-right by default
+    ]
+
     // Settings
-    const numPoints = 5
-    const minSpeed = 0.002
-    const maxSpeed = 0.001
+    const minSpeed = 0.00002
+    const maxSpeed = 0.0005
+    const PIXEL_SCALE = 4 // Still yields good result and better performance
+
+    // Detect if device is mobile/touch-enabled
+    const isMobile = () => {
+        return (
+            'ontouchstart' in window ||
+            navigator.maxTouchPoints > 0 ||
+            window.innerWidth < 768
+        )
+    }
 
     // Existing global variables for mouse position
     let mouseX = 0
     let mouseY = 0
+
+    let shaderMouseX = 0
+    let shaderMouseY = 0
+
+    const lerpFactor = 0.02 // adjust for smoothness (higher = smoother)
+
+    const updateMouseUniform = () => {
+        // Interpolate for smooth movement
+        shaderMouseX += (mouseX - shaderMouseX) * lerpFactor
+        shaderMouseY += (mouseY - shaderMouseY) * lerpFactor
+    }
 
     type color = [number, number, number]
     interface Point {
@@ -30,20 +65,40 @@
     let canvas: HTMLCanvasElement
     let points: Array<Point> = []
 
-    const colorPalletteRGB: Array<color> = [
-        [1, 52, 77],
-        [3, 12, 29],
-        [3, 12, 29],
-        [3, 12, 29],
-        [3, 12, 29],
-        [3, 12, 29],
+    // Dark mode colors (original vibrant colors)
+    const colorPaletteDarkRGB: Array<color> = [
+        [102, 255, 217],
+        [102, 217, 255],
+        [102, 140, 255],
+        [140, 102, 255],
+    ]
+
+    // Light mode colors (lighter, more subtle versions)
+    const colorPaletteLightRGB: Array<color> = [
+        [148, 255, 228],
+        [148, 228, 255],
+        [148, 174, 255],
+        [175, 148, 255],
     ]
 
     const normalizeColor = (color: color): color => {
         return color.map((c) => c / 255) as color
     }
 
-    const colorPalletteNorm: Array<color> = colorPalletteRGB.map(normalizeColor)
+    // Detect current theme
+    const isDarkMode = () => {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
+
+    // Get the current color palette based on theme
+    const getCurrentColorPalette = (): Array<color> => {
+        const palette = isDarkMode()
+            ? colorPaletteDarkRGB
+            : colorPaletteLightRGB
+        return palette.map(normalizeColor)
+    }
+
+    let colorPaletteNorm: Array<color> = []
 
     // Initializes and returns points with random positions and velocities
     /**
@@ -62,46 +117,85 @@
             speedX *= Math.random() < 0.5 ? -1 : 1
             speedY *= Math.random() < 0.5 ? -1 : 1
 
+            // Make x and y inside the barriers
+            let x = Math.random() * (rightBarrier - leftBarrier) + leftBarrier
+            let y = Math.random() * (topBarrier - bottomBarrier) + bottomBarrier
+
             pointsLocal.push({
-                x: Math.random() * 2 - 1,
-                y: Math.random() * 2 - 1,
+                x: x,
+                y: y,
                 vx: speedX,
                 vy: speedY,
-                color: colorPalletteNorm[
-                    Math.floor(Math.random() * colorPalletteNorm.length)
+                color: colorPaletteNorm[
+                    Math.floor(i % colorPaletteNorm.length)
                 ],
             })
         }
 
         // Ensure we have at least one point with the first defined color
-        pointsLocal[0].color = colorPalletteNorm[0]
+        pointsLocal[0].color = colorPaletteNorm[0]
 
         return pointsLocal
     }
 
     // Update the positions of the points and handle boundary collisions
     const updatePoints = () => {
-        points = points.map((point) => {
+        const repulsionStrength = 0.00002 // Adjust for stronger/weaker repulsion
+        const repulsionRadius = 1.0 // Only repel if points are closer than this
+
+        points = points.map((point, i) => {
             let newX = point.x + point.vx
             let newY = point.y + point.vy
 
-            // Reverse the velocity if the point hits the boundary
-            if (newX <= -1 || newX >= 1) point.vx *= -1
-            if (newY <= -1 || newY >= 1) point.vy *= -1
+            // Apply repulsion from other points
+            for (let j = 0; j < points.length; j++) {
+                if (i === j) continue
+                const other = points[j]
+                let dx = newX - other.x
+                let dy = newY - other.y
+                let distSq = dx * dx + dy * dy
 
-            // Update position considering potential velocity reversal
+                if (distSq < repulsionRadius * repulsionRadius && distSq > 0) {
+                    let dist = Math.sqrt(distSq)
+                    // repulsion vector magnitude inversely proportional to distance
+                    let force = repulsionStrength / dist
+                    dx /= dist // normalize
+                    dy /= dist
+                    newX += dx * force
+                    newY += dy * force
+                }
+            }
+
+            // Fix points based on fixedPoints configuration
+            const fixedPoint = fixedPoints.find((fp) => fp.index === i)
+            if (fixedPoint) {
+                newX = fixedPoint.x
+                newY = fixedPoint.y
+            }
+
+            // Reverse velocity if hitting the barrier
+            if (newX <= leftBarrier) {
+                newX = leftBarrier
+                point.vx *= -1
+            } else if (newX >= rightBarrier) {
+                newX = rightBarrier
+                point.vx *= -1
+            }
+
+            if (newY <= bottomBarrier) {
+                newY = bottomBarrier
+                point.vy *= -1
+            } else if (newY >= topBarrier) {
+                newY = topBarrier
+                point.vy *= -1
+            }
+
             return {
                 ...point,
                 x: newX,
                 y: newY,
             }
         })
-
-        // Make the first point follow the mouse smoothly
-        let followPoint = points[0]
-        const lerpFactor = 0.02 // Adjust this value for smoother or faster movement
-        followPoint.x += (mouseX - followPoint.x) * lerpFactor
-        followPoint.y += (mouseY - followPoint.y) * lerpFactor
     }
 
     const initTexture = (gl: WebGLRenderingContext): WebGLTexture => {
@@ -122,6 +216,11 @@
         // Set texture parameters for NPOT texture
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+
+        gl.disable(gl.DITHER)
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false)
+
+        // Use LINEAR filtering for smoother results
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 
@@ -144,38 +243,26 @@
         return framebuffer
     }
 
-    const resizeCanvas = (
+    const resizeTexture = (
         gl: WebGLRenderingContext,
-        spGradient: WebGLProgram,
-        texture,
-        framebuffer
+        texture: WebGLTexture,
+        framebuffer: WebGLFramebuffer,
+        width: number,
+        height: number
     ) => {
-        if (!canvas) {
-            return
-        }
-
-        // Resize canvas
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-
-        // Set viewport
-        gl.viewport(0, 0, canvas.width, canvas.height)
-
-        // Resize the texture
         gl.bindTexture(gl.TEXTURE_2D, texture)
         gl.texImage2D(
             gl.TEXTURE_2D,
             0,
             gl.RGBA,
-            canvas.width,
-            canvas.height,
+            width,
+            height,
             0,
             gl.RGBA,
             gl.UNSIGNED_BYTE,
             null
         )
 
-        // Resize the framebuffer
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer)
         gl.framebufferTexture2D(
             gl.FRAMEBUFFER,
@@ -184,8 +271,48 @@
             texture,
             0
         )
+    }
 
-        // Update resolution
+    const resizeCanvas = (
+        gl: WebGLRenderingContext,
+        spGradient: WebGLProgram,
+        textures: WebGLTexture[],
+        framebuffers: WebGLFramebuffer[]
+    ) => {
+        if (!canvas) return
+
+        // Get canvas dimensions from CSS (let CSS control sizing)
+        const rect = canvas.getBoundingClientRect()
+        const dpr = window.devicePixelRatio || 1
+        const scale = PIXEL_SCALE
+
+        // Update internal canvas resolution (intentionally lower for pixelated effect)
+        const newWidth = Math.floor((rect.width * dpr) / scale)
+        const newHeight = Math.floor((rect.height * dpr) / scale)
+
+        // Only resize if dimensions actually changed
+        if (canvas.width === newWidth && canvas.height === newHeight) {
+            return
+        }
+
+        canvas.width = newWidth
+        canvas.height = newHeight
+
+        // Update viewport
+        gl.viewport(0, 0, canvas.width, canvas.height)
+
+        // Resize all textures and framebuffers
+        for (let i = 0; i < textures.length; i++) {
+            resizeTexture(
+                gl,
+                textures[i],
+                framebuffers[i],
+                canvas.width,
+                canvas.height
+            )
+        }
+
+        // Update resolution uniform
         gl.useProgram(spGradient)
         const resolutionLocation = gl.getUniformLocation(
             spGradient,
@@ -197,21 +324,26 @@
     const gradientPass = (
         gl: WebGLRenderingContext,
         program: WebGLProgram,
-        framebuffer: WebGLFramebuffer
+        inputTexture: WebGLTexture | null,
+        outputFramebuffer: WebGLFramebuffer
     ) => {
         // Render to the custom framebuffer
-        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer)
+        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
         gl.useProgram(program)
 
         // Pass new information to uniforms
         // * Resolution only changes on resize
         // * Color information is constant
         const pointsLocation = gl.getUniformLocation(program, 'u_points')
+        const mouseLocation = gl.getUniformLocation(program, 'u_mouse')
 
         gl.uniform2fv(
             pointsLocation,
             new Float32Array(points.flatMap((p) => [p.x, p.y]))
         )
+
+        updateMouseUniform()
+        gl.uniform2f(mouseLocation, shaderMouseX, shaderMouseY)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -219,15 +351,72 @@
     const noisePass = (
         gl: WebGLRenderingContext,
         program: WebGLProgram,
-        texture: WebGLTexture
+        inputTexture: WebGLTexture,
+        outputFramebuffer: WebGLFramebuffer,
+        strength: number = 0.05,
+        frequency: number = 0.0
     ) => {
-        // Render to the default framebuffer (screen)
+        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
+        gl.useProgram(program)
+
+        gl.activeTexture(gl.TEXTURE0)
+        gl.bindTexture(gl.TEXTURE_2D, inputTexture)
+        gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
+        const strengthLocation = gl.getUniformLocation(program, 'u_strength')
+        gl.uniform1f(strengthLocation, strength)
+        const frequencyLocation = gl.getUniformLocation(program, 'u_frequency')
+        gl.uniform1f(frequencyLocation, frequency)
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+    }
+
+    const warpPass = (
+        gl: WebGLRenderingContext,
+        program: WebGLProgram,
+        inputTexture: WebGLTexture,
+        outputFramebuffer: WebGLFramebuffer,
+        time: number
+    ) => {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
+        gl.useProgram(program)
+
+        gl.activeTexture(gl.TEXTURE0)
+        gl.bindTexture(gl.TEXTURE_2D, inputTexture)
+        gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
+
+        const mouseLocation = gl.getUniformLocation(program, 'u_mouse')
+        gl.uniform2f(mouseLocation, shaderMouseX, shaderMouseY)
+
+        const timeLocation = gl.getUniformLocation(program, 'u_time')
+        gl.uniform1f(timeLocation, time)
+
+        const resolutionLocation = gl.getUniformLocation(
+            program,
+            'u_resolution'
+        )
+        gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
+
+        const mouseEnabledLocation = gl.getUniformLocation(
+            program,
+            'u_mouseEnabled'
+        )
+        gl.uniform1f(mouseEnabledLocation, isMobile() ? 0.0 : 1.0)
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+    }
+
+    const presentPass = (
+        gl: WebGLRenderingContext,
+        program: WebGLProgram,
+        texture: WebGLTexture,
+        outputFramebuffer: WebGLFramebuffer | null = null
+    ) => {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null)
         gl.useProgram(program)
 
         gl.activeTexture(gl.TEXTURE0)
         gl.bindTexture(gl.TEXTURE_2D, texture)
-        gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
+        gl.uniform1i(gl.getUniformLocation(program, 'u_texture'), 0)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -270,6 +459,37 @@
         const redsLocation = gl.getUniformLocation(spGradient, 'u_reds')
         const greensLocation = gl.getUniformLocation(spGradient, 'u_greens')
         const bluesLocation = gl.getUniformLocation(spGradient, 'u_blues')
+        const alphasLocation = gl.getUniformLocation(spGradient, 'u_alphas')
+
+        const reds = new Float32Array(numPoints)
+        const greens = new Float32Array(numPoints)
+        const blues = new Float32Array(numPoints)
+        const alphas = new Float32Array(numPoints)
+        points.forEach((point, index) => {
+            reds[index] = point.color[0]
+            greens[index] = point.color[1]
+            blues[index] = point.color[2]
+            alphas[index] = 1.0 // Set alpha to fully opaque for all points
+        })
+
+        gl.uniform1fv(redsLocation, reds)
+        gl.uniform1fv(greensLocation, greens)
+        gl.uniform1fv(bluesLocation, blues)
+        gl.uniform1fv(alphasLocation, alphas)
+
+        return spGradient
+    }
+
+    // Function to update shader colors when theme changes
+    const updateShaderColors = (
+        gl: WebGLRenderingContext,
+        program: WebGLProgram
+    ) => {
+        gl.useProgram(program)
+
+        const redsLocation = gl.getUniformLocation(program, 'u_reds')
+        const greensLocation = gl.getUniformLocation(program, 'u_greens')
+        const bluesLocation = gl.getUniformLocation(program, 'u_blues')
 
         const reds = new Float32Array(numPoints)
         const greens = new Float32Array(numPoints)
@@ -284,11 +504,11 @@
         gl.uniform1fv(redsLocation, reds)
         gl.uniform1fv(greensLocation, greens)
         gl.uniform1fv(bluesLocation, blues)
-
-        return spGradient
     }
 
     onMount(() => {
+        console.log('GradientBackground onMount called')
+
         // Initialize WebGL
         const gl = canvas.getContext('webgl')
         if (!gl) {
@@ -298,19 +518,43 @@
             return
         }
 
+        console.log('WebGL initialized')
+
+        // Initialize color palette based on current theme
+        colorPaletteNorm = getCurrentColorPalette()
+
         // Initialize points
         points = initializePoints()
+        console.log('Points initialized')
 
         // Create shader programs
         const spGradient = initGradient(gl)
         const spNoise = createShaderProgram(gl, vsNoise, fsNoise)
+        const spWarp = createShaderProgram(gl, vsWarp, fsWarp)
+        const spPresent = createShaderProgram(gl, vsPresent, fsPresent)
 
         // ???
         initMesh(gl, spGradient)
+        initMesh(gl, spNoise)
+        initMesh(gl, spWarp)
+        initMesh(gl, spPresent)
 
-        // Create texture
-        const texture = initTexture(gl)
-        const framebuffer = initFramebuffer(gl, texture)
+        // Create textures
+        const textureA = initTexture(gl)
+        const textureB = initTexture(gl)
+        const textureC = initTexture(gl)
+        const textureD = initTexture(gl)
+
+        // Create framebuffers
+        const framebufferA = initFramebuffer(gl, textureA)
+        const framebufferB = initFramebuffer(gl, textureB)
+        const framebufferC = initFramebuffer(gl, textureC)
+        const framebufferD = initFramebuffer(gl, textureD)
+
+        gl.clearColor(0, 0, 0, 0) // RGBA, alpha = 0 for transparency
+        gl.clear(gl.COLOR_BUFFER_BIT)
+
+        let startTime = performance.now()
 
         const render = () => {
             // Canvas may not exist when updating shaders. Avoid errors.
@@ -321,25 +565,48 @@
             // Update point locations
             updatePoints()
 
-            gradientPass(gl, spGradient, framebuffer)
+            // Calculate time in seconds
+            const currentTime = (performance.now() - startTime) / 1000.0
 
-            noisePass(gl, spNoise, texture)
+            // Gradient
+            gradientPass(gl, spGradient, null, framebufferA)
+            noisePass(gl, spNoise, textureA, framebufferB, 0.0, 1.0)
+            warpPass(gl, spWarp, textureB, framebufferC, currentTime)
+            noisePass(gl, spNoise, textureC, framebufferD, 0.0, 20.0)
+            presentPass(gl, spPresent, textureD, null)
 
             // Clear the screen
-            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-            gl.clear(gl.COLOR_BUFFER_BIT)
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+            // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+            // gl.clear(gl.COLOR_BUFFER_BIT)
+            // gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 
             // Animate
             requestAnimationFrame(render)
         }
 
-        resizeCanvas(gl, spGradient, texture, framebuffer) // Set initial size
+        // Set initial size
+        const textures = [textureA, textureB, textureC, textureD]
+        const framebuffers = [
+            framebufferA,
+            framebufferB,
+            framebufferC,
+            framebufferD,
+        ]
+        resizeCanvas(gl, spGradient, textures, framebuffers)
 
-        // Add window resize listener
-        window.addEventListener('resize', () => {
-            resizeCanvas(gl, spGradient, texture, framebuffer)
-        })
+        // Simplified resize handling - just use window resize with debouncing
+        let resizeTimeout: ReturnType<typeof setTimeout>
+        const handleResize = () => {
+            // Debounce resize events
+            clearTimeout(resizeTimeout)
+            resizeTimeout = setTimeout(() => {
+                console.log('Resize triggered')
+                resizeCanvas(gl, spGradient, textures, framebuffers)
+            }, 100)
+        }
+
+        window.addEventListener('resize', handleResize)
+        console.log('Window resize listener added')
 
         const mouseHandler = (event: MouseEvent) => {
             const rect = canvas.getBoundingClientRect()
@@ -354,21 +621,44 @@
         // Add window mousemove
         window.addEventListener('mousemove', throttledMouseHandler)
 
-        render()
+        // Listen for theme changes
+        const themeMediaQuery = window.matchMedia(
+            '(prefers-color-scheme: dark)'
+        )
+        const handleThemeChange = () => {
+            console.log('Theme changed')
+            // Update color palette
+            colorPaletteNorm = getCurrentColorPalette()
+
+            // Update point colors
+            points = points.map((point, index) => ({
+                ...point,
+                color: colorPaletteNorm[index % colorPaletteNorm.length],
+            }))
+
+            // Update shader uniforms
+            updateShaderColors(gl, spGradient)
+        }
+
+        themeMediaQuery.addEventListener('change', handleThemeChange)
 
         render()
+
+        // Cleanup function
+        return () => {
+            clearTimeout(resizeTimeout)
+            window.removeEventListener('resize', handleResize)
+            window.removeEventListener('mousemove', throttledMouseHandler)
+            themeMediaQuery.removeEventListener('change', handleThemeChange)
+        }
     })
 </script>
 
-<canvas bind:this={canvas}></canvas>
+<canvas bind:this={canvas} class={$$props.class}></canvas>
 
 <style>
     canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
         display: block;
-        width: 100vw;
-        height: 100vh;
+        pointer-events: none;
     }
 </style>

@@ -8,58 +8,57 @@ export const vsGradient = `
 /* Dynamically take number of points. If we buffer an array with more
 space than the number of points, we get a dark spot in the middle of zeroed points */
 export const fsGradient = (numPoints: number) => `
-      #define NUM_POINTS ${numPoints}
+    #define NUM_POINTS ${numPoints}
 
-      precision mediump float;
+    precision mediump float;
 
-      uniform vec2 u_points[NUM_POINTS];
+    uniform vec2 u_points[NUM_POINTS];
+    uniform vec2 u_mouse;
 
-      uniform float u_reds[NUM_POINTS];
-      uniform float u_greens[NUM_POINTS];
-      uniform float u_blues[NUM_POINTS];
+    uniform float u_reds[NUM_POINTS];
+    uniform float u_greens[NUM_POINTS];
+    uniform float u_blues[NUM_POINTS];
+    uniform float u_alphas[NUM_POINTS];
 
-      uniform vec2 u_resolution;
+    uniform vec2 u_resolution;
 
-      float w_i (in vec2 x, in vec2 x_i, in float p) {
-          float distance = length(x - x_i);
-          return pow(distance, -p);
-      }
+    // Simple radial falloff
+    float falloff(float dist, float radius) {
+        return exp(- (dist * dist) / (radius * radius));
+    }
 
-      float u (in vec2 x, in float p, in float vals[NUM_POINTS], inout vec2 points[NUM_POINTS]) {
-          float weight_sum = 0.0;
-          float value_sum = 0.0;
+    void main() {
+        // Map pixel to [-1,1] with aspect correction
+        vec2 ndc = gl_FragCoord.xy / u_resolution * 2.0 - 1.0;
+        float aspect = u_resolution.x / u_resolution.y;
+        vec2 aspect_frag = vec2(ndc.x * aspect, ndc.y);
 
-          for (int i = 0; i < NUM_POINTS; ++i) {
-              weight_sum += w_i (x, points[i], p) * vals[i]; // Subtract a constant value from this to achieve the "ball effect"
-              value_sum += w_i (x, points[i], p);
-          }
-          return weight_sum > 0.0 ? weight_sum / value_sum: 0.0; // Avoid division by zero
-      }
+        // Parameters must be declared before the loop
+        float radius = 0.5; // how wide the blobs spread
+        float pointStrength = 1.0; // overall multiplier
 
-      void main() {
-          float p = 4.0;
+        vec3 color = vec3(0.0);
+        float alpha = 0.0;
 
-          // Convert fragment coordinates to normalized device coordinates
-          vec2 ndc_frag = gl_FragCoord.xy / u_resolution * 2.0 - 1.0;
+        for (int i = 0; i < NUM_POINTS; ++i) {
+            vec2 p = u_points[i] * 2.0 - 1.0;
+            p.x *= aspect; // correct for aspect ratio
+            float d = length(aspect_frag - p);
 
-          // Adjust normalized coordinates to maintain the aspect ratio
-          float aspect_ratio = u_resolution.x / u_resolution.y;
-          vec2 aspect_frag = vec2(ndc_frag.x * aspect_ratio, ndc_frag.y);
+            float influence = falloff(d, radius) * pointStrength;
 
-          // Ensure the points are correctly scaled to the aspect ratio
-          vec2 points[NUM_POINTS];
-          for (int i = 0; i < NUM_POINTS; ++i) {
-              points[i] = vec2(u_points[i].x * aspect_ratio, u_points[i].y);
-          }
+            vec3 pointColor = vec3(u_reds[i], u_greens[i], u_blues[i]);
+            float pointAlpha = u_alphas[i] * influence;
 
-          float r = u(aspect_frag, p, u_reds, points);
-          float g = u(aspect_frag, p, u_greens, points);
-          float b = u(aspect_frag, p, u_blues, points);
+            // Standard "over" blending
+            color = color * (1.0 - pointAlpha) + pointColor * pointAlpha;
+            alpha = alpha + pointAlpha * (1.0 - alpha); // cumulative alpha
+        }
 
-          vec3 color = vec3(r, g, b);
-          gl_FragColor = vec4(color, 1.0);
-      }
-  `
+        gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0));
+    }
+`
+
 
 export const vsNoise = `
     attribute vec4 aVertexPosition;
@@ -73,6 +72,8 @@ export const fsNoise = `
     precision mediump float;
     uniform sampler2D u_firstPassTexture;
     varying vec2 v_texCoord;
+    uniform float u_strength;
+    uniform float u_frequency;
 
     // Function to create noise effect
     float noise(vec2 coord) {
@@ -81,8 +82,8 @@ export const fsNoise = `
 
     void main() {
         // Apply the noise effect to offset texture coordinates
-        float n = noise(v_texCoord * 10.0); // Adjust the multiplier to control the noise frequency
-        vec2 scatter = vec2(noise(v_texCoord + n), noise(v_texCoord - n)) * 0.025; // Offset magnitude
+        float n = noise(v_texCoord * u_frequency); // Adjust the multiplier to control the noise frequency
+        vec2 scatter = vec2(noise(v_texCoord + n), noise(v_texCoord - n)) * u_strength; // Offset magnitude
 
         // Offset the texture coordinates
         vec2 scatteredCoord = v_texCoord + scatter;
@@ -92,4 +93,85 @@ export const fsNoise = `
 
         // Output the final color
         gl_FragColor = scatteredColor;
+    }`
+
+export const vsWarp = `
+    attribute vec4 aVertexPosition;
+    varying vec2 v_texCoord;
+    void main() {
+        gl_Position = aVertexPosition;
+        v_texCoord = aVertexPosition.xy * 0.5 + 0.5; // Map from [-1, 1] to [0, 1]
+    }`
+
+export const fsWarp = `
+precision mediump float;
+
+uniform sampler2D u_firstPassTexture;
+uniform vec2 u_mouse;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform float u_mouseEnabled;
+
+varying vec2 v_texCoord;
+
+void main() {
+    // Convert mouse from [-1,1] to [0,1] UV space
+    vec2 mouseUV = u_mouse * 0.5 + 0.5;
+    vec2 delta = v_texCoord - mouseUV;
+    float dist = length(delta);
+    
+    // Parameters for the warp effect
+    float effectRadius = 0.25; // How far from mouse the effect reaches
+    float baseWarpStrength = 0.05; // Subtle base warp always visible
+    float mouseWarpStrength = 0.15; // Additional warp near mouse
+    float t = u_time / 5.0;
+    
+    // Create a smooth falloff - effect is strongest near mouse, fades away
+    float falloff = smoothstep(effectRadius, 0.0, dist);
+    
+    // Calculate final warp strength: base + conditional mouse influence
+    float warpStrength = baseWarpStrength + mouseWarpStrength * falloff * u_mouseEnabled;
+    
+    // Calculate aspect ratio and apply correction
+    float aspect = u_resolution.x / u_resolution.y;
+    
+    // Calculate warp pattern based on FIXED canvas coordinates (not relative to mouse)
+    vec2 centered = (v_texCoord - 0.5) * 4.0; // Center around canvas center
+    centered.x *= aspect; // Apply aspect ratio correction
+    
+    // Apply iterative sin/cos warping to create flowing patterns
+    // This pattern is FIXED to the canvas and doesn't move with the mouse
+    for(float k = 1.0; k < 7.0; k += 1.0) { 
+        centered.x += warpStrength * sin(2.0 * t + k * 1.5 * centered.y);
+        centered.y += warpStrength * cos(2.0 * t + k * 1.5 * centered.x);
+    }
+    
+    // Convert back to texture coordinates (undo aspect correction)
+    centered.x /= aspect;
+    vec2 warpedPos = 0.5 + centered / 4.0;
+    
+    // Sample the warped texture
+    vec4 color = texture2D(u_firstPassTexture, warpedPos);
+    
+    gl_FragColor = color;
+}
+`
+
+export const fsPresent = `
+    precision mediump float;
+
+    uniform sampler2D u_texture;
+    varying vec2 v_texCoord;
+
+    void main() {
+        gl_FragColor = texture2D(u_texture, v_texCoord);
+    }
+`
+
+export const vsPresent = `
+    attribute vec4 aVertexPosition;
+    varying vec2 v_texCoord;
+    void main() {
+        gl_Position = aVertexPosition;
+        v_texCoord = aVertexPosition.xy * 0.5 + 0.5; // Map from [-1, 1] to [0, 1]
     }`
