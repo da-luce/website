@@ -1,3 +1,5 @@
+// Idea from: https://www.shadertoy.com/view/ttlGDf
+
 precision mediump float;
 
 uniform sampler2D u_firstPassTexture;
@@ -5,6 +7,12 @@ uniform vec2 u_mouse;
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform float u_mouseEnabled;
+
+// Parameters for warp effect
+uniform float u_baseWarpStrength;
+uniform float u_mouseWarpStrength;
+uniform float u_effectRadius;
+uniform float u_timeScale;
 
 varying vec2 v_texCoord;
 
@@ -14,17 +22,13 @@ void main() {
     vec2 delta = v_texCoord - mouseUV;
     float dist = length(delta);
 
-    // Parameters for the warp effect
-    float effectRadius = 0.25; // How far from mouse the effect reaches
-    float baseWarpStrength = 0.05; // Subtle base warp always visible
-    float mouseWarpStrength = 0.15; // Additional warp near mouse
-    float t = u_time / 5.0;
+    float t = u_time * u_timeScale; // Time scaling for animation
 
     // Create a smooth falloff - effect is strongest near mouse, fades away
-    float falloff = smoothstep(effectRadius, 0.0, dist);
+    float falloff = smoothstep(u_effectRadius, 0.0, dist);
 
     // Calculate final warp strength: base + conditional mouse influence
-    float warpStrength = baseWarpStrength + mouseWarpStrength * falloff * u_mouseEnabled;
+    float warpStrength = u_baseWarpStrength + u_mouseWarpStrength * falloff * u_mouseEnabled;
 
     // Calculate aspect ratio and apply correction
     float aspect = u_resolution.x / u_resolution.y;
@@ -36,8 +40,13 @@ void main() {
     // Apply iterative sin/cos warping to create flowing patterns
     // This pattern is FIXED to the canvas and doesn't move with the mouse
     for(float k = 1.0; k < 7.0; k += 1.0) {
-        centered.x += warpStrength * sin(2.0 * t + k * 1.5 * centered.y);
-        centered.y += warpStrength * cos(2.0 * t + k * 1.5 * centered.x);
+
+        // Slow phase shifts for less repetitive patterns
+        float slowPhaseX = sin(t * 0.1 + k);
+        float slowPhaseY = cos(t * 0.07 + k * 1.3);
+
+        centered.x += warpStrength * sin(2.0 * t + k * 1.5 * centered.y + slowPhaseX);
+        centered.y += warpStrength * cos(2.0 * t + k * 1.5 * centered.x + slowPhaseY);
     }
 
     // Convert back to texture coordinates (undo aspect correction)

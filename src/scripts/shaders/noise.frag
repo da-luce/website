@@ -1,3 +1,5 @@
+// Idea from https://www.shadertoy.com/view/Mt3czf
+
 precision mediump float;
 uniform sampler2D u_firstPassTexture;
 varying vec2 v_texCoord;
