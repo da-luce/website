@@ -26,5 +26,6 @@
     a {
         text-decoration: none;
         display: inline-block;
+        mix-blend-mode: var(--blend-mode);
     }
 </style>

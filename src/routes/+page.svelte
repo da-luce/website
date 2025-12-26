@@ -89,7 +89,7 @@
 <div id="page">
     <GradientBackground
         numPoints={4}
-        leftBarrier={0.8}
+        leftBarrier={0.6}
         rightBarrier={1.0}
         topBarrier={1.0}
         bottomBarrier={0.6}

@@ -29,6 +29,15 @@
     const maxSpeed = 0.0005
     const PIXEL_SCALE = 2 // 2 = chunky pixels, 4 = very chunky
 
+    // Detect if device is mobile/touch-enabled
+    const isMobile = () => {
+        return (
+            'ontouchstart' in window ||
+            navigator.maxTouchPoints > 0 ||
+            window.innerWidth < 768
+        )
+    }
+
     // Existing global variables for mouse position
     let mouseX = 0
     let mouseY = 0
@@ -56,26 +65,40 @@
     let canvas: HTMLCanvasElement
     let points: Array<Point> = []
 
-    const colorPalletteRGB: Array<color> = [
-        // In RGB
-        // #fc88e7,
-        // #fa4882,
-        // #fba834
-        // convert to RGB here
-        // [252, 136, 231],
-        // [250, 72, 130],
-        // [251, 168, 52],
+    // Dark mode colors (original vibrant colors)
+    const colorPaletteDarkRGB: Array<color> = [
         [102, 255, 217],
         [102, 217, 255],
         [102, 140, 255],
         [140, 102, 255],
     ]
 
+    // Light mode colors (lighter, more subtle versions)
+    const colorPaletteLightRGB: Array<color> = [
+        [180, 255, 240], // Lighter cyan
+        [180, 230, 255], // Lighter blue
+        [180, 200, 255], // Lighter medium blue
+        [200, 180, 255], // Lighter purple
+    ]
+
     const normalizeColor = (color: color): color => {
         return color.map((c) => c / 255) as color
     }
 
-    const colorPalletteNorm: Array<color> = colorPalletteRGB.map(normalizeColor)
+    // Detect current theme
+    const isDarkMode = () => {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
+
+    // Get the current color palette based on theme
+    const getCurrentColorPalette = (): Array<color> => {
+        const palette = isDarkMode()
+            ? colorPaletteDarkRGB
+            : colorPaletteLightRGB
+        return palette.map(normalizeColor)
+    }
+
+    let colorPaletteNorm: Array<color> = []
 
     // Initializes and returns points with random positions and velocities
     /**
@@ -103,14 +126,14 @@
                 y: y,
                 vx: speedX,
                 vy: speedY,
-                color: colorPalletteNorm[
-                    Math.floor(i % colorPalletteNorm.length)
+                color: colorPaletteNorm[
+                    Math.floor(i % colorPaletteNorm.length)
                 ],
             })
         }
 
         // Ensure we have at least one point with the first defined color
-        pointsLocal[0].color = colorPalletteNorm[0]
+        pointsLocal[0].color = colorPaletteNorm[0]
 
         return pointsLocal
     }
@@ -331,7 +354,9 @@
         gl: WebGLRenderingContext,
         program: WebGLProgram,
         inputTexture: WebGLTexture,
-        outputFramebuffer: WebGLFramebuffer
+        outputFramebuffer: WebGLFramebuffer,
+        strength: number = 0.05,
+        frequency: number = 0.0
     ) => {
         gl.bindFramebuffer(gl.FRAMEBUFFER, outputFramebuffer)
         gl.useProgram(program)
@@ -339,6 +364,10 @@
         gl.activeTexture(gl.TEXTURE0)
         gl.bindTexture(gl.TEXTURE_2D, inputTexture)
         gl.uniform1i(gl.getUniformLocation(program, 'u_firstPassTexture'), 0)
+        const strengthLocation = gl.getUniformLocation(program, 'u_strength')
+        gl.uniform1f(strengthLocation, strength)
+        const frequencyLocation = gl.getUniformLocation(program, 'u_frequency')
+        gl.uniform1f(frequencyLocation, frequency)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -362,6 +391,18 @@
 
         const timeLocation = gl.getUniformLocation(program, 'u_time')
         gl.uniform1f(timeLocation, time)
+
+        const resolutionLocation = gl.getUniformLocation(
+            program,
+            'u_resolution'
+        )
+        gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
+
+        const mouseEnabledLocation = gl.getUniformLocation(
+            program,
+            'u_mouseEnabled'
+        )
+        gl.uniform1f(mouseEnabledLocation, isMobile() ? 0.0 : 1.0)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -441,6 +482,32 @@
         return spGradient
     }
 
+    // Function to update shader colors when theme changes
+    const updateShaderColors = (
+        gl: WebGLRenderingContext,
+        program: WebGLProgram
+    ) => {
+        gl.useProgram(program)
+
+        const redsLocation = gl.getUniformLocation(program, 'u_reds')
+        const greensLocation = gl.getUniformLocation(program, 'u_greens')
+        const bluesLocation = gl.getUniformLocation(program, 'u_blues')
+
+        const reds = new Float32Array(numPoints)
+        const greens = new Float32Array(numPoints)
+        const blues = new Float32Array(numPoints)
+
+        points.forEach((point, index) => {
+            reds[index] = point.color[0]
+            greens[index] = point.color[1]
+            blues[index] = point.color[2]
+        })
+
+        gl.uniform1fv(redsLocation, reds)
+        gl.uniform1fv(greensLocation, greens)
+        gl.uniform1fv(bluesLocation, blues)
+    }
+
     onMount(() => {
         console.log('GradientBackground onMount called')
 
@@ -454,6 +521,9 @@
         }
 
         console.log('WebGL initialized')
+
+        // Initialize color palette based on current theme
+        colorPaletteNorm = getCurrentColorPalette()
 
         // Initialize points
         points = initializePoints()
@@ -475,11 +545,13 @@
         const textureA = initTexture(gl)
         const textureB = initTexture(gl)
         const textureC = initTexture(gl)
+        const textureD = initTexture(gl)
 
         // Create framebuffers
         const framebufferA = initFramebuffer(gl, textureA)
         const framebufferB = initFramebuffer(gl, textureB)
         const framebufferC = initFramebuffer(gl, textureC)
+        const framebufferD = initFramebuffer(gl, textureD)
 
         gl.clearColor(0, 0, 0, 0) // RGBA, alpha = 0 for transparency
         gl.clear(gl.COLOR_BUFFER_BIT)
@@ -500,9 +572,10 @@
 
             // Gradient
             gradientPass(gl, spGradient, null, framebufferA)
-            warpPass(gl, spWarp, textureA, framebufferB, currentTime)
-            noisePass(gl, spNoise, textureB, framebufferC)
-            presentPass(gl, spPresent, textureC, null)
+            noisePass(gl, spNoise, textureA, framebufferB, 0.0, 1.0)
+            warpPass(gl, spWarp, textureB, framebufferC, currentTime)
+            noisePass(gl, spNoise, textureC, framebufferD, 0.0, 20.0)
+            presentPass(gl, spPresent, textureD, null)
 
             // Clear the screen
             // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
@@ -514,8 +587,13 @@
         }
 
         // Set initial size
-        const textures = [textureA, textureB, textureC]
-        const framebuffers = [framebufferA, framebufferB, framebufferC]
+        const textures = [textureA, textureB, textureC, textureD]
+        const framebuffers = [
+            framebufferA,
+            framebufferB,
+            framebufferC,
+            framebufferD,
+        ]
         resizeCanvas(gl, spGradient, textures, framebuffers)
 
         // Simplified resize handling - just use window resize with debouncing
@@ -545,6 +623,27 @@
         // Add window mousemove
         window.addEventListener('mousemove', throttledMouseHandler)
 
+        // Listen for theme changes
+        const themeMediaQuery = window.matchMedia(
+            '(prefers-color-scheme: dark)'
+        )
+        const handleThemeChange = () => {
+            console.log('Theme changed')
+            // Update color palette
+            colorPaletteNorm = getCurrentColorPalette()
+
+            // Update point colors
+            points = points.map((point, index) => ({
+                ...point,
+                color: colorPaletteNorm[index % colorPaletteNorm.length],
+            }))
+
+            // Update shader uniforms
+            updateShaderColors(gl, spGradient)
+        }
+
+        themeMediaQuery.addEventListener('change', handleThemeChange)
+
         render()
 
         // Cleanup function
@@ -552,6 +651,7 @@
             clearTimeout(resizeTimeout)
             window.removeEventListener('resize', handleResize)
             window.removeEventListener('mousemove', throttledMouseHandler)
+            themeMediaQuery.removeEventListener('change', handleThemeChange)
         }
     })
 </script>
