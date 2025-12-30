@@ -11,6 +11,17 @@
         return path.toLowerCase().endsWith('.svg')
     }
 
+    function getDotStyle(item: TimelineItem): string {
+        const style = item.dotStyle || 'solid'
+        if (style === 'hollow') {
+            return `background-color: var(--background-primary); border: 2px solid ${item.dotColor || dotColor}; box-sizing: border-box;`
+        } else if (style === 'invisible') {
+            return 'background-color: transparent; border: none;'
+        } else {
+            return `background-color: ${item.dotColor || dotColor};`
+        }
+    }
+
     function getLineBackground(): string {
         const topPart =
             topStyle === 'fade'
@@ -39,8 +50,8 @@
     ></div>
     {#each items as item, index}
         <div class="timeline-item">
-            <div class="timeline-content" style="opacity: {item.opacity ?? 1}">
-                <div class="content-left">
+            <div class="timeline-content">
+                <div class="content-left" style="opacity: {item.opacity ?? 1}">
                     {#if isSvg(item.image)}
                         <div
                             class="timeline-icon"
@@ -53,6 +64,7 @@
                                 src={item.image}
                                 size={item.imageSize || '3rem'}
                                 color="var(--foreground)"
+                                openDot
                             />
                         </div>
                     {:else}
@@ -68,15 +80,9 @@
                     {/if}
                 </div>
                 <div class="timeline-marker">
-                    {#if item.showDot !== false && (item.opacity === undefined || item.opacity >= 1)}
-                        <div
-                            class="timeline-dot"
-                            style="background-color: {item.dotColor ||
-                                dotColor};"
-                        ></div>
-                    {/if}
+                    <div class="timeline-dot" style={getDotStyle(item)}></div>
                 </div>
-                <div class="content-right">
+                <div class="content-right" style="opacity: {item.opacity ?? 1}">
                     <h3 class="timeline-title" style={item.titleStyle || ''}>
                         {item.title}
                     </h3>

@@ -27,7 +27,7 @@
             image: `${BLOB}/images/profile.png`,
             imageSize: '16rem',
             date: null,
-            showDot: false,
+            dotStyle: 'invisible',
             imageStyle:
                 'border-radius: 50%; box-shadow: 0 0 10px var(--background-primary); margin-top: 5rem;',
             description:
@@ -37,6 +37,7 @@
             title: 'Cornell University M.Eng. CS',
             image: `${BLOB}/icons/cornell.svg`,
             imageSize: '4rem',
+            dotStyle: 'hollow',
             opacity: 0.6,
             date: 'Fall 2026',
             description:
@@ -46,6 +47,7 @@
             title: 'Databricks SWE Intern',
             image: `${BLOB}/icons/databricks.svg`,
             opacity: 0.6,
+            dotStyle: 'hollow',
             date: 'Summer 2026',
             description:
                 "I'm excited to be joining Databricks as a Software Engineer Intern for the summer of 2026!",
