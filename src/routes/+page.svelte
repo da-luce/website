@@ -137,7 +137,7 @@
                 <Link text="Contact" href="#contact" />
                 <Link
                     text="Resume"
-                    href="https://dalton-cv-artifacts.s3.us-east-1.amazonaws.com/pdfs/dalton_luce_cv.pdf"
+                    href="https://cdn.daltonluce.com/cv/pdfs/dalton_luce_cv.pdf"
                 />
             </p>
         </div>
@@ -154,7 +154,7 @@
             <HoverGroup>
                 <div>
                     <a
-                        href="https://dalton-cv-artifacts.s3.us-east-1.amazonaws.com/pdfs/dalton_luce_cv.pdf"
+                        href="https://cdn.daltonluce.com/cv/pdfs/dalton_luce_cv.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         style="text-decoration: none;"
