@@ -79,8 +79,6 @@ body {
     padding: 0;
     background-color: var(--background-primary);
     overflow-x: hidden;
-    overscroll-behavior-y: contain;
-    scroll-behavior: smooth;
 }
 
 h1 {
