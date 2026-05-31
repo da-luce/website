@@ -46,8 +46,6 @@
         {
             title: 'Databricks SWE Intern',
             image: `${BLOB}/icons/databricks.svg`,
-            opacity: 0.6,
-            dotStyle: 'hollow',
             date: 'Summer 2026',
             description:
                 "I'm excited to be joining Databricks as a Software Engineer Intern for the summer of 2026!",
